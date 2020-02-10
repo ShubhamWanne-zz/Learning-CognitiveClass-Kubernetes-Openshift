@@ -2,7 +2,7 @@
 
 Use this repository (GitLab project) as a refference when setting up your own course, tutorial or QuickLab project. When creating a repository for your course, you should create it by importing this starter project from a url:
 
-[](https://gph.is/g/aRWVMAJ)
+[How to create your own project from this Starter Project](https://gph.is/g/aRWVMAJ)
 
 
 ## Publish
