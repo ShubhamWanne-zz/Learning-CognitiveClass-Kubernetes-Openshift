@@ -1,10 +1,13 @@
-# PLACEHOLDER101 (**change me**)
+# Skills Network Starter Project (**change me**)
 
-This repository is setup as a template project for all projects use to manage Skills Network Lab content.
+Use this repository (GitLab project) as a refference when setting up your own course, tutorial or QuickLab project. When creating a repository for your course, you should create it by importing this starter project from a url:
+
+[](https://gph.is/g/aRWVMAJ)
+
 
 ## Publish
 
-GitLab CI will auto upload all content in this repository to IBM Cloud Object Storage (COS) upon content is merged into `master` branch. All content will become publicly accessible via IBM COS, please check out the [section](#section) below how to get the public url to the resource.
+Since you used starter project as a basis for your project, GitLab CI will auto upload all content in this repository to the IBM Cloud Object Storage (COS) when you merge your files into `master` branch. All content will become publicly accessible via IBM COS, please check out the [section](#section) below how to get the public url to the resource.
 
 ## Directory listing
 
