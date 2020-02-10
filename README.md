@@ -7,12 +7,10 @@ Use this repository (GitLab project) as a refference when setting up your own co
 
 ## Publish
 
-Since you used starter project as a basis for your project, GitLab CI will auto upload all content in this repository to the IBM Cloud Object Storage (COS) when you merge your files into `master` branch. All content will become publicly accessible via IBM COS, please check out the [section](#section) below how to get the public url to the resource.
+Since you used starter project as a basis for this project, GitLab CI will auto upload all content in this repository to the IBM Cloud Object Storage (COS) when you merge your files into `master` branch. All content will become publicly accessible via IBM COS, please check out the [section](#section) below how to get the public url to the resource.
 
-## Directory listing
+## Links to your content
 
-We use GitLab Pages to host a webpage to display the directory listing of each project. You can checkout the content and copy the public url to the resource.
+To use your content you are going to need a publicly accessible url (link). This link is created every time you merge your content in to master branch and it points to your content in the IBM Cloud Object Storage. You will find links to all pieces of your content in the GitLab Page for your project at `<https://ibm-skills-network.gitlab.io/courses/StarterProject>` and all of the pages for your project at  `<https://ibm-skills-network.gitlab.io/courses/<project_name>` 
 
-The webpage is accessible via `https://ibm-skills-network.gitlab.io/courses/<project_name>`
-
-For example, the url to the current project is <https://gitlab.com/ibm-skills-network/courses/placeholder101>, then the directory listing webpage is avaliable at <https://ibm-skills-network.gitlab.io/courses/placeholder101>
+For example, GitLab Pages for the Starter Project are at <https://gitlab.com/ibm-skills-network/courses/StarterProject>, and the actual page with all of the links is at <https://ibm-skills-network.gitlab.io/courses/StarterProject>
