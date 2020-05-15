@@ -13,4 +13,4 @@ Since you used starter project as a basis for this project, GitLab CI will auto 
 
 To use your content you are going to need a publicly accessible url (link). This link is created every time you merge your content in to master branch and it points to your content in the IBM Cloud Object Storage. You will find links to all pieces of your content in the GitLab Page for your project at `<https://ibm-skills-network.gitlab.io/courses/StarterProject>` and all of the pages for your project at  `<https://ibm-skills-network.gitlab.io/courses/<project_name>` 
 
-For example, GitLab Pages for the Starter Project are at <https://gitlab.com/ibm-skills-network/courses/StarterProject>, and the actual page with all of the links is at <https://ibm-skills-network.gitlab.io/courses/StarterProject>
+For example, GitLab Pages for the Starter Project are at <https://gitlab.com/ibm-skills-network/courses/StarterProject>, and the actual page with all of the links is at <https://ibm.gitlab.io/skills-network/courses/cc201/>
