@@ -2,13 +2,13 @@
 
 ## Outcomes
 
-You will understand the following concepts:
-- item1
-- item2
+In this lab, you will 
+- build your first container
+- upload your container image to IBM Container Registry (ICR)
 
 ## Prerequisites
 
-TBD
+The complete environment to finish this lab is provided for you at this link <tbd>
 
 # Step 1: Ensure environment is installed
 1. Open the terminal in the provided environment by using the menu in the editor `Terminal -> New Terminal`.
