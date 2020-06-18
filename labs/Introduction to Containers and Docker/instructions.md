@@ -1,41 +1,43 @@
-# Introduction to Containers, Docker and the IBM Container Registry
+# Introduction to Containers, Docker and IBM Cloud Container Registry
 
-## Outcomes
+## Objectives
 
-In this lab, you will 
-- build your first container
-- upload your container image to IBM Container Registry (ICR)
+In this lab, you will:
+- Pull an image from Docker Hub
+- Run an image as a container using `docker`
+- Build an image using a Dockerfile
+- Push an image to IBM Cloud Container Registry
 
 ## Prerequisites
 
-The complete environment to finish this lab is provided for you at this link <tbd>
+The complete environment needed for this lab is provided to you at this link <tbd>.
 
-# Step 1: Ensure environment is installed
-1. Open the terminal in the provided environment by using the menu in the editor `Terminal -> New Terminal`.
+# Verify environment and command line tools
+1. Open the terminal in the provided environment by using the menu in the editor: `Terminal -> New Terminal`.
    
    ![terminal](images/terminal.png)
 
-2. Make sure the environment has been configured by running the following commands in the terminal.
-   - Check docker is installed
+2. Make sure the environment is configured by running the following commands in the terminal.
+   - Verify `docker` is installed.
         ```
         theia@theiadocker-ulidder:/home/project$ docker --version
         >> Docker version 18.09.7, build 2d0083d
         ```
-   - Check ibmcloud CLI is installed
+   - Verify `ibmcloud` CLI is installed.
         ```
         theia@theiadocker-ulidder:/home/project$ ibmcloud --version
         >> ibmcloud version 1.0.0+908f90a-2020-03-30T06:37:22+00:00
         ```
 
-# Step 2: Let's pull our first docker image from Docker Hub
+# Pull an image from Docker Hub and run it as a container
 
-1. Use the docker command to see what images you currently have in this environment. You should see an empty table as shown below
+1. Use the `docker` command to see which images you currently have in this environment. You should see an empty table as shown below.
    ```
    theia@theiadocker-ulidder:/home/project$ docker images
     
    >> REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
    ```
-2. Let's download our first image from Docker Hub
+1. Pull your first image from Docker Hub
    ```
    theia@theiadocker-ulidder:/home/project$ docker pull hello-world
    
@@ -45,46 +47,46 @@ The complete environment to finish this lab is provided for you at this link <tb
     Digest: sha256:6a65f928fb91fcfbc963f7aa6d57c8eeb426ad9a20c7ee045538ef34847f44f1
     Status: Downloaded newer image for hello-world:latest
    ```
-3. If you do a `docker images` again, you should now see this image in the local environment.
+1. Run `docker images` again to see this image in the local environment.
    ```
     theia@theiadocker-ulidder:/home/project$ docker images
 
     >> REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
        hello-world         latest              bf756fb1ae65        4 months ago        13.3kB
    ```
-4. In order to build a container from this image, we can simply run it.
+1. Run the image as a container.
    ```
    theia@theiadocker-ulidder:/home/project$ docker run hello-world
    
    >> Hello from Docker!
    ```
-5. You just built an image and ran a container based on this image! You can see the list of containers by using the `docker ps` command. 
+1. Run the `docker ps` command to see the list of containers.
    ```
     theia@theiadocker-ulidder:/home/project$ docker ps -a
     >> CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
        08041e5d9e52        hello-world         "/hello"            3 minutes ago       Exited (0) 3 minutes ago                       sweet_gates
    ```
-6. Let's remove the container now that we are done with it.
+1. Remove the container now that we've run it.
    ```
-    theia@theiadocker-ulidder:/home/project$ docker container rm 08041e5d9e52
-    >> 08041e5d9e52
+    theia@theiadocker-ulidder:/home/project$ docker container rm <container_id>
+    >> <container_id>
 
     theia@theiadocker-ulidder:/home/project$ docker ps -a
     >> CONTAINER ID        IMAGE
    ```
 
-When done on downloading and running you first container! Let's build one on our own instead of using something from Docker Hub.
+Congratulations on pulling an image and running you first container! Now let's build an image on our own instead of using one pulled from Docker Hub.
 
-# Step 3: Build your own image using a Dockerfile
+# Build an image using a Dockerfile
 
-1. This directory contains a simple Node.js application that we will install in a container. 
-    - app.js is the main application. It simply replies with a hello world message.
-    - package.json defines the dependencies of the application.
-    - DockerFile is how we tell Docker to build our container.
+1. This directory contains a simple Node.js application that we will run in a container.
+    - app.js is the main application, which simply replies with a hello world message
+    - package.json defines the dependencies of the application
+    - Dockerfile defines the instructions Docker uses to build the image
   
-2. In order to build the container, simply type the following command
+2. Run this command to build the image.
     ```
-    docker build . -t containers_course:myimage
+    docker build . -t myimage:v1
 
 
     Sending build context to Docker daemon  8.192kB
@@ -131,42 +133,42 @@ When done on downloading and running you first container! Let's build one on our
     Removing intermediate container 017a0cc0915a
     ---> 0846c929b52f
     Successfully built 0846c929b52f
-    Successfully tagged containers_course:myimage
+    Successfully tagged myimage:v1
     ```
-3. If we now do a `docker ps`, we will see our container tagged `containers_course:myimage` in the table.
+3. Run `docker images` to see your image tagged `myimage:v1` in the table.
     ```
     docker images
 
 
     REPOSITORY                            TAG                 IMAGE ID            CREATED             SIZE
-    containers_course                     myimage             0846c929b52f        7 minutes ago       76.1MB
+    myimage                               v1                  0846c929b52f        7 minutes ago       76.1MB
     ```
 
-# Step 4: Run the image
-1. Now that we have build our own image, let's run the container.
+# Run the image as a container
+1. Now that your image is built, run it as a container with this command.
     ```
-    docker run -p 8080:8080 containers_course:myimage
+    docker run -p 8080:8080 myimage:v1
 
     Sample app is listening on port 8080.
     ```
 
-2. Split the terminal by using `Terminal -> Split Terminal` menu.
+1. Split the terminal by using the `Terminal -> Split Terminal` menu.
     
     ![Split the terminal](images/terminal-split.png)
 
-1. You can now use the curl command to ping the application
+1. Use the `curl` command to ping the application
 
     ```
     curl localhost:8080
 
     Hello world from 285d092bb4d0! Your app is up and running in a cluster!
     ```
-2. The final step is to stop the container. We can use `docker stop` command. It requires a container id as the second option. We are using `docker ps -q` to pass in the list of all running containers.
+1. Use the `docker stop` command to stop the container. It requires a container ID as the second option. This command uses `docker ps -q` to pass in the list of all running containers.
     ```
     docker stop $(docker ps -q)
     ```
 
-# Step 5: Publish the image to IBM Cloud Registry
+# Push the image to IBM Cloud Container Registry
 1. Log in to the IBM Cloud CLI: 
 
    ```
@@ -175,22 +177,22 @@ When done on downloading and running you first container! Let's build one on our
 
     **Note:** If you have a federated ID, use `ibmcloud login --sso` to log in to the IBM Cloud CLI. You know you have a federated ID when the login fails without the `--sso` and succeeds with the `--sso` option.
 
-2. In order to upload images to the IBM Cloud Container Registry, you first need to create a namespace with the following command: 
+1. In order to upload images to IBM Cloud Container Registry, you first need to create a namespace with the following command. Choose a unique name for your namespace.
 
    ```
    ibmcloud cr namespace-add <my_namespace>
    ```
 
-3. Build the container image with a `1` tag and push the image to the IBM Cloud Registry:
+1. Build the image, tag it `hello-world:1`, and push it to IBM Cloud Container Registry with one command.
 
    ```
    ibmcloud cr build --tag us.icr.io/<my_namespace>/hello-world:1 .
    ```
 
-4. Verify the image is built: 
+1. Verify that the image was built and pushed successfully. 
 
    ```
    ibmcloud cr images
    ```
 
-This concludes the guided exercise.
+Congratulations! You have completed the first lab of this course.
