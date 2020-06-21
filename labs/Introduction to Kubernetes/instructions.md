@@ -37,24 +37,6 @@ The complete environment to finish this lab is provided for you at this link <tb
       8", GitTreeState:"clean", BuildDate:"2020-05-20T20:48:06Z", GoVersion:"go1.13.9", Compiler:"gc", Platform:"linux/amd64"}
    ```
 
-
-what was done in lab 1
-- learned about docker (images and containers)
-- pushed an image to ibmcloud cr
-What do I want to show here?
-- you get a free cluster with this lab
-  - show some commands
-  - cluster info
-  - list all pods
-  - list all deployments
-- create a simple deployment
-  - run a pod first with dockerhub ngnix file
-  - run is an imperative command
-  - show commands to delete, etc
-  - explain describe command to get yaml and json
-- deploy previous application from ibmcloud cr to the cluster
-
-
 # Step 2: Work with kubectl CLI
 The kubectl CLI is already installed for you in this environment. Not only that, the environment created a free cluster for your use with one worker node. Let's look at some basic kubectl commands.
 
@@ -75,7 +57,7 @@ The kubectl CLI is already installed for you in this environment. Not only that,
 # Step 3: Create a pod
 1. Let's create our first pod. We will use the `nginx` image on Docker Hub to create this pod. As explained in the video for this module, you can create a pod imperatively or declaratively. 
 
-## Imperative creation using the `run` command
+## Using the `run` command to create a pod
 1. Let's look at the imperative way first where we tell the cluster what to do using the `kubectl run` command.
    ```
       $ kubectl run nginx --image nginx
@@ -178,10 +160,10 @@ The kubectl CLI is already installed for you in this environment. Not only that,
    ```
    Since we delete the deployment, the replicaset and the pods were deleted as well.
 
-## Imperative creation using the `create` command
-1. Another way to create the pod is by using the `create` command. This command creates a resource from a file in either JSON or YAML format. We have provided this file as `nginx.yaml` in the current directory. The file specifies the container name to be deployed in the pod.
+## Using the `create` command to create a pod
+1. Another way to create the pod is by using the `create` command. This command creates a resource from a file in either JSON or YAML format. We have provided this file as `nginx-create.yaml` in the current directory. Notice that this command is also imperative. It is explicitly telling kubectl what to create. The file specifies the container name to be deployed in the pod.
    ```
-      $ kubectl create -f nginx.yaml 
+      $ kubectl create -f nginx-create.yaml 
          pod/nginx created
    ```
 2. You can again get the pod by using the get command
@@ -190,16 +172,85 @@ The kubectl CLI is already installed for you in this environment. Not only that,
          NAME    READY   STATUS    RESTARTS   AGE
          nginx   1/1     Running   0          5s
    ```
-   Once again, kubectl creates a deployment behind the scenes.
-3. Let's delete the deploy as before by first getting the name.
+   In this case, kubectl does not create a deploy for us because the yaml file explicitly asked for a kind of `Pod`.
+3. Let's delete the pod as before by first getting the name.
    ```
+      $ kubectl get pods
+         NAME    READY   STATUS    RESTARTS   AGE
+         nginx   1/1     Running   0          63s
    ```
    and then using the 'kubectl delete <resource> <name>` command.
    ```
+      $ kubectl delete pod nginx
+         pod "nginx" deleted
    ```
-4. 
+
+## Using the `apply` command to declare a state
+1. The previous two ways to create a pod were imperative. We explicitly told kubectl what to do. While the imperative commands are easy to understand and execute in our simple example, they are not ideal for a production environment. These commands do not provide an audit trails and therefore are hard to manage when working in a team. With a declarative approach, we can simply define a desired state of our cluster and let the underlying platform take the best actions needed to get to that state. Let's take a look at an example.
+2. We have provided a sample nginx-apply.yaml file in this lab. Open that file in the editor. Notice the following:
+   1. we would like to get a `Deployment`
+   ```
+      kind: Deployment
+   ```
+   2. we would like three pods
+   ```
+      replicas: 3
+   ```
+   3. we want the pods to be created with the nginx container
+   ```
+      containers:
+      - image: nginx:latest
+        imagePullPolicy: Always
+        name: nginx
+   ```
+   You can ignore the rest for now. We will get to a lot of these concepts in the next lab.
+3. Let's give this desired state to kubectl and let it go it's magic
+   ```
+   $ kubectl create -f nginx-apply.yaml
+      deployment.apps/nginx created
+   ```
+4. Let's see our deploy using the `get` command.
+   ```
+      $ kubectl get deploy
+         NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+         nginx   3/3     3            3           18s
+   ```
+5. Let's see how many pods were created
+   ```
+      $ kubectl get pods
+         
+         NAME                    READY   STATUS    RESTARTS   AGE
+         nginx-dd6b5d745-8g4ck   1/1     Running   0          17s
+         nginx-dd6b5d745-frks2   1/1     Running   0          17s
+         nginx-dd6b5d745-zrtb6   1/1     Running   0          17s
+   ```
+We did not tell kubectl how to create the deployment. We simply gave it a desired state. If we were to delete a pod now, a new one will be created in place to keep the replicas at 3. Let's try it out.
+6. Let's delete the pod ending in `8g4ck`
+   ```
+      $ kubectl delete pod nginx-dd6b5d745-8g4ck
+         
+         pod "nginx-dd6b5d745-8g4ck" deleted
+
+   ```
+7. If we run the `get pods` command immediately after, you will see a new container is being created. If you don't see this status, it is possible that the pod was already created for you.
+   ```
+   $ kubectl get pods
+      
+      NAME                    READY   STATUS              RESTARTS   AGE
+      nginx-dd6b5d745-frks2   1/1     Running             0          3m7s
+      nginx-dd6b5d745-xqmbf   0/1     ContainerCreating   0          11s
+      nginx-dd6b5d745-zrtb6   1/1     Running 
+   ```
+8. Let's see the status again
+   ```
+      $ kubectl get pods
+
+         NAME                    READY   STATUS    RESTARTS   AGE
+         nginx-dd6b5d745-frks2   1/1     Running   0          3m50s
+         nginx-dd6b5d745-xqmbf   1/1     Running   0          54s
+         nginx-dd6b5d745-zrtb6   1/1     Running   0 
+   ```
+9.  One of the pod names should be different than what we had before.
 
 
-When done, close the browser tab.
-
-This concludes the guided exercise.
+This concludes the guided exercise. When done, close the browser tab.
