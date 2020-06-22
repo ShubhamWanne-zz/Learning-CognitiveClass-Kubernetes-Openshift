@@ -78,12 +78,10 @@ The complete environment needed for this lab is provided to you at this link <tb
 Congratulations on pulling an image and running you first container! Now let's build an image on our own instead of using one pulled from Docker Hub.
 
 # Build an image using a Dockerfile
-
 1. This directory contains a simple Node.js application that we will run in a container.
     - app.js is the main application, which simply replies with a hello world message
     - package.json defines the dependencies of the application
     - Dockerfile defines the instructions Docker uses to build the image
-  
 2. Run this command to build the image.
     ```
     docker build . -t myimage:v1
@@ -152,21 +150,25 @@ Congratulations on pulling an image and running you first container! Now let's b
     Sample app is listening on port 8080.
     ```
 
+    This command will continue running until it is exited, since the container runs a web app that is listening for requests. So we need to open another terminal window in order to query the app.
+    
 1. Split the terminal by using the `Terminal -> Split Terminal` menu.
     
     ![Split the terminal](images/terminal-split.png)
 
-1. Use the `curl` command to ping the application
-
+1. In the second terminal window, use the `curl` command to ping the application.
     ```
     curl localhost:8080
 
     Hello world from 285d092bb4d0! Your app is up and running in a cluster!
     ```
-1. Use the `docker stop` command to stop the container. It requires a container ID as the second option. This command uses `docker ps -q` to pass in the list of all running containers.
+1. In the second terminal window, use the `docker stop` command to stop the container. It requires a container ID as the second option. The below command uses `docker ps -q` to pass in the list of all running containers.
     ```
     docker stop $(docker ps -q)
     ```
+1. Close the second terminal window by using the `Terminal -> Close Terminal` menu. THIS IS TOTALLY MADE UP. VERIFY HOW THE WINDOW IS CLOSED IN THE ENV.
+
+In the original terminal window, you should see that the `docker run` command exited and you are able to type commands in this terminal window again.
 
 # Push the image to IBM Cloud Container Registry
 1. Log in to the IBM Cloud CLI: 
@@ -182,13 +184,11 @@ Congratulations on pulling an image and running you first container! Now let's b
    ```
    ibmcloud cr namespace-add <my_namespace>
    ```
-
 1. Build the image, tag it `hello-world:1`, and push it to IBM Cloud Container Registry with one command.
 
    ```
    ibmcloud cr build --tag us.icr.io/<my_namespace>/hello-world:1 .
    ```
-
 1. Verify that the image was built and pushed successfully. 
 
    ```
