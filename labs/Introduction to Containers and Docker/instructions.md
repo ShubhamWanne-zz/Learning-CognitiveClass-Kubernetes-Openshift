@@ -166,7 +166,10 @@ Congratulations on pulling an image and running you first container! Now let's b
     ```
     docker stop $(docker ps -q)
     ```
-1. Close the second terminal window by using the `Terminal -> Close Terminal` menu. THIS IS TOTALLY MADE UP. VERIFY HOW THE WINDOW IS CLOSED IN THE ENV.
+1. Close the second terminal window as it is no longer needed.
+    ```
+    exit
+    ```
 
 In the original terminal window, you should see that the `docker run` command exited and you are able to type commands in this terminal window again.
 
