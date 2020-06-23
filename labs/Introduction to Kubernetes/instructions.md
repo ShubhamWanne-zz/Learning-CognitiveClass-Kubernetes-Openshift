@@ -83,21 +83,7 @@ Let's create our first Pod. This Pod will run the `nginx` image from Docker Hub.
       NAME                     READY   STATUS    RESTARTS   AGE     IP             NODE            NOMINATED NODE   READINESS GATES
       nginx-6db489d4b7-2nzd8   1/1     Running   0          9m12s   172.30.69.74   10.114.85.172   <none>           <none>
    ```
-1. Delete the Pod.
-   ```
-   $ kubectl delete pod <opd_name>
-   
-      pod "nginx-6db489d4b7-2nzd8" deleted
-   ```
-1. Get the Pods to verify that the Pod was deleted.
-   ```
-      $ kubectl get pods
-
-         NAME                     READY   STATUS    RESTARTS   AGE
-         nginx-6db489d4b7-rstbf   1/1     Running   0          77s
-   ```
-   Wait a second! We deleted the Pod in the previous step, so why is it still there? The reason is that the `kubectl run` command actually created a `Deployment` with one replica. Therefore, Kubernetes automatically created a Pod for us when we deleted the original one. You will see the pod name is different now.
-1. Describe the Pod to get more details about it.
+2. Describe the Pod to get more details about it. Notice that there is a replicaset associated with this pod. The reason being `kubectl run` command actually created a `Deployment` with one replica.
    ```
    $ kubectl describe pod nginx-6db489d4b7-rstbf
 
@@ -144,18 +130,18 @@ Let's create our first Pod. This Pod will run the `nginx` image from Docker Hub.
    ```
    As you can see, the Pod has a ReplicaSet associated with it.
    
-1. List the Deployments in your namespace to verify that a Deployment was created.
+3. List the Deployments in your namespace to verify that a Deployment was created.
    ```
       $ kubectl get deploy
          NAME    READY   UP-TO-DATE   AVAILABLE   AGE
          nginx   1/1     1            1           32m
    ```
-1. Delete the Deployment.
+4. Delete the Deployment.
    ```
       $ kubectl delete deploy nginx
          deployment.apps "nginx" deleted  
    ```
-1. List the Pods to verify that none exist.
+5. List the Pods to verify that none exist.
    ```
       $ kubectl get pods
          No resources found in sn-labs-upkaribmwats namespace.
