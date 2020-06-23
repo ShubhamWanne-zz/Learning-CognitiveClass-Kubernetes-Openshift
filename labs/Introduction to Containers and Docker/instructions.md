@@ -1,4 +1,4 @@
-# Introduction to Containers, Docker and IBM Cloud Container Registry
+# Introduction to Containers, Docker, and IBM Cloud Container Registry
 
 ## Objectives
 
@@ -13,11 +13,11 @@ In this lab, you will:
 The complete environment needed for this lab is provided to you at this link <tbd>.
 
 # Verify environment and command line tools
-1. Open the terminal in the provided environment by using the menu in the editor: `Terminal -> New Terminal`.
+1. Open the terminal in the provided environment by using the menu in the editor: `Terminal > New Terminal`.
    
    ![terminal](images/terminal.png)
 
-2. Make sure the environment is configured by running the following commands in the terminal.
+2. Make sure the environment is configured by running the following commands in the terminal:
    - Verify `docker` is installed.
         ```
         theia@theiadocker-ulidder:/home/project$ docker --version
@@ -37,7 +37,7 @@ The complete environment needed for this lab is provided to you at this link <tb
     
    >> REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
    ```
-1. Pull your first image from Docker Hub
+1. Pull your first image from Docker Hub.
    ```
    theia@theiadocker-ulidder:/home/project$ docker pull hello-world
    
@@ -79,10 +79,10 @@ Congratulations on pulling an image and running you first container! Now let's b
 
 # Build an image using a Dockerfile
 1. This directory contains a simple Node.js application that we will run in a container.
-    - app.js is the main application, which simply replies with a hello world message
-    - package.json defines the dependencies of the application
-    - Dockerfile defines the instructions Docker uses to build the image
-2. Run this command to build the image.
+    - app.js is the main application, which simply replies with a hello world message.
+    - package.json defines the dependencies of the application.
+    - Dockerfile defines the instructions Docker uses to build the image.
+2. Run the following command to build the image:
     ```
     docker build . -t myimage:v1
 
@@ -143,16 +143,16 @@ Congratulations on pulling an image and running you first container! Now let's b
     ```
 
 # Run the image as a container
-1. Now that your image is built, run it as a container with this command.
+1. Now that your image is built, run it as a container with the following command:
     ```
     docker run -p 8080:8080 myimage:v1
 
     Sample app is listening on port 8080.
     ```
 
-    This command will continue running until it is exited, since the container runs a web app that is listening for requests. So we need to open another terminal window in order to query the app.
+    This command will continue running until it is exited, since the container runs a web app that is listening for requests. To query the app, we need to open another terminal window.
     
-1. Split the terminal by using the `Terminal -> Split Terminal` menu.
+1. Split the terminal by using the `Terminal > Split Terminal` menu.
     
     ![Split the terminal](images/terminal-split.png)
 
@@ -162,16 +162,16 @@ Congratulations on pulling an image and running you first container! Now let's b
 
     Hello world from 285d092bb4d0! Your app is up and running in a cluster!
     ```
-1. In the second terminal window, use the `docker stop` command to stop the container. It requires a container ID as the second option. The below command uses `docker ps -q` to pass in the list of all running containers.
+1. In the second terminal window, use the `docker stop` command to stop the container. The command requires a container ID as the second option. The command below uses `docker ps -q` to pass in the list of all running containers:
     ```
     docker stop $(docker ps -q)
     ```
-1. Close the second terminal window as it is no longer needed.
+1. Close the second terminal window, as it is no longer needed.
     ```
     exit
     ```
 
-In the original terminal window, you should see that the `docker run` command exited and you are able to type commands in this terminal window again.
+In the original terminal window, the `docker run` command has exited and you are able to type commands in the terminal window again.
 
 # Push the image to IBM Cloud Container Registry
 1. Log in to the IBM Cloud CLI: 
@@ -180,7 +180,7 @@ In the original terminal window, you should see that the `docker run` command ex
    ibmcloud login
    ```
 
-    **Note:** If you have a federated ID, use `ibmcloud login --sso` to log in to the IBM Cloud CLI. You know you have a federated ID when the login fails without the `--sso` and succeeds with the `--sso` option.
+    **Note:** If you have a federated ID, use `ibmcloud login --sso` to log in to the IBM Cloud CLI. You know you have a federated ID when the login fails without the `--sso` option and succeeds with the `--sso` option.
 
 1. In order to upload images to IBM Cloud Container Registry, you first need to create a namespace with the following command. Choose a unique name for your namespace.
 
