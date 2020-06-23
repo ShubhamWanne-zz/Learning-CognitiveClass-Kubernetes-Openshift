@@ -1,33 +1,33 @@
 # Introduction to Kubernetes
 
-## Outcomes
+## Objectives
 
-You learned the basics of Docker including images and containers in the last lab. You also pushed an image to IBM Cloud Registry. In this lab, you will
-- work with `kubectl` CLI
-- create your first pod
-- create your first deployment
+In this lab, you will:
+- work with the `kubectl` CLI.
+- create a Kubernetes Pod.
+- create a Kubernetes Deployment.
 
 ## Prerequisites
 
-The complete environment to finish this lab is provided for you at this link <tbd>. 
+The complete environment needed for this lab is provided to you at this link <tbd>.
 
-# Step 1: Ensure environment is installed
-1. Open the terminal in the provided environment by using the menu in the editor `Terminal -> New Terminal`.
-   
+# Ensure environment is installed
+1. Open the terminal in the provided environment by using the menu in the editor: `Terminal > New Terminal`.
+
    ![terminal](images/terminal.png)
 
-2. Make sure the environment has been configured by running the following commands in the terminal.
-   - Check docker is installed
+1. Make sure the environment is configured by running the following commands in the terminal:
+   - Verify `docker` is installed.
         ```
         theia@theiadocker-ulidder:/home/project$ docker --version
         >> Docker version 18.09.7, build 2d0083d
         ```
-   - Check ibmcloud CLI is installed
+   - Verify `ibmcloud` CLI is installed.
         ```
         theia@theiadocker-ulidder:/home/project$ ibmcloud --version
         >> ibmcloud version 1.0.0+908f90a-2020-03-30T06:37:22+00:00
 
-2. Make sure kubectl is installed by running the following commands in the terminal. You should get an output that looks something like this. The versions might be different.
+2. Make sure `kubectl` is installed by running the following command. You should see output that looks similar to this, though the versions might be different.
    ```
    $ kubectl version
    
@@ -37,28 +37,30 @@ The complete environment to finish this lab is provided for you at this link <tb
       8", GitTreeState:"clean", BuildDate:"2020-05-20T20:48:06Z", GoVersion:"go1.13.9", Compiler:"gc", Platform:"linux/amd64"}
    ```
 
-# Step 2: Work with kubectl CLI
-The kubectl CLI is already installed for you in this environment. Not only that, the environment created a free cluster for your use with one worker node. Let's look at some basic kubectl commands.
+# Work with the `kubectl` CLI
+The `kubectl` CLI is already installed for you in this environment. In addition, you already have access to one namespace in a Kubernetes cluster, and `kubectl` is already set up to target that cluster and namespace.
 
-1. Get cluster information using the `kubectl cluster-info` command
+Let's look at some basic `kubectl` commands.
+
+1. Get cluster information with the following command.
    ```
    $ kubectl config get-clusters
    
       NAME
       labs-user-sandbox-prod-tor01/bp1hokjw0e5bk715r7f0
    ```
-2. You also learned about pods in this module. Let's list all the pods currently in our cluster. If this is a new session for you, you will not see any pods.
+2. List all the Pods in your namespace. If this is a new session for you, you will not see any Pods.
       ```
       $ kubectl get pods
       
          No resources found in sn-labs-upkaribmwats namespace.
       ```
 
-# Step 3: Create a pod
-1. Let's create our first pod. We will use the `nginx` image on Docker Hub to create this pod. As explained in the video for this module, you can create a pod imperatively or declaratively. 
+# Create a Pod
+Let's create our first Pod. This Pod will run the `nginx` image from Docker Hub. As explained in the videos for this module, you can create a Pod imperatively or declaratively.
 
-## Using the `run` command to create a pod
-1. Let's look at the imperative way first where we tell the cluster what to do using the `kubectl run` command.
+## Create a Pod with an imperative command
+1. Run the `nginx` image as a container in Kubernetes.
    ```
       $ kubectl run nginx --image nginx
 
@@ -66,37 +68,36 @@ The kubectl CLI is already installed for you in this environment. Not only that,
 
          deployment.apps/nginx created
    ```
-   You will see a warning, but the pod has been created for you. 
-2. Let's see the actual pod using the `kubectl get <resource>` command. This command prints out the details of the cluster resource in a table format. There are many paratmers you can use with this command. Let's look at some simple use cases.
+   You will see a warning, but the Pod has been created for you. Note that this is an imerpative command as we told Kubernetes explicitly what to do: run `nginx`.
+1. List the Pods in your namespace.
    ```
    $ kubectl get pods
       NAME                     READY   STATUS    RESTARTS   AGE
       nginx-6db489d4b7-2nzd8   1/1     Running   0          2m55s
    ```
-   Great, the previous command indeed created a pod for us. It is called `nginx-6db489d4b7-2nzd8`. Your pod will most likely have a different name.  
+   Great, the previous command indeed created a Pod for us. It is named `nginx-6db489d4b7-2nzd8`. Your Pod will most likely have a different name.
 
-   You can also specify the wide option for the output that gets you some more details about the resource. 
-
+   You can also specify the wide option for the output to get more details about the resource.
    ```
    $ kubectl get pods -o wide
       NAME                     READY   STATUS    RESTARTS   AGE     IP             NODE            NOMINATED NODE   READINESS GATES
       nginx-6db489d4b7-2nzd8   1/1     Running   0          9m12s   172.30.69.74   10.114.85.172   <none>           <none>
    ```
-3. Let's delete this pod by using the `kubectl delete <resource> <name>` command.
+1. Delete the Pod.
    ```
-   $ kubectl delete pod nginx-6db489d4b7-2nzd8
+   $ kubectl delete pod <opd_name>
    
       pod "nginx-6db489d4b7-2nzd8" deleted
    ```
-4. Let's get all the pods another time to see if it was actually deleted.
+1. Get the Pods to verify that the Pod was deleted.
    ```
       $ kubectl get pods
 
          NAME                     READY   STATUS    RESTARTS   AGE
          nginx-6db489d4b7-rstbf   1/1     Running   0          77s
    ```
-   Wait a second! We deleted the pod in the previous step, so why is it still there? The reason is that the `kubectl run` command actually created a `deployment` for us with a `replica` of 1. Therefore, the cluster automatically created another pod for us when we deleted the original one. You will see the pod name is different as well. 
-5. We can use the `kubectl describe <resource> <name> command to see the details for this pod.
+   Wait a second! We deleted the Pod in the previous step, so why is it still there? The reason is that the `kubectl run` command actually created a `Deployment` with one replica. Therefore, Kubernetes automatically created a Pod for us when we deleted the original one. You will see the pod name is different now.
+1. Describe the Pod to get more details about it.
    ```
    $ kubectl describe pod nginx-6db489d4b7-rstbf
 
@@ -141,81 +142,82 @@ The kubectl CLI is already installed for you in this environment. Not only that,
    ...
    ...
    ```
-   As you can see, the pod has a replicaset associated wit it.
-6. In order to delete all the resources we have created so far, we need to delete the deployment itself using the `kubectl delete <resource> <name>` command. First, let's get the name of the deployment.
+   As you can see, the Pod has a ReplicaSet associated with it.
+   
+1. List the Deployments in your namespace to verify that a Deployment was created.
    ```
       $ kubectl get deploy
          NAME    READY   UP-TO-DATE   AVAILABLE   AGE
          nginx   1/1     1            1           32m
    ```
-   We can now delete the deployment resource as follows:
+1. Delete the Deployment.
    ```
       $ kubectl delete deploy nginx
          deployment.apps "nginx" deleted  
    ```
-7. If we list all the pods now, we will not see any.
+1. List the Pods to verify that none exist.
    ```
       $ kubectl get pods
          No resources found in sn-labs-upkaribmwats namespace.
    ```
-   Since we delete the deployment, the replicaset and the pods were deleted as well.
+   The ReplicaSet and the Pod were deleted since the owning Deloyment was deleted.
 
-## Using the `create` command to create a pod
-1. Another way to create the pod is by using the `create` command. This command creates a resource from a file in either JSON or YAML format. We have provided this file as `nginx-create.yaml` in the current directory. Notice that this command is also imperative. It is explicitly telling kubectl what to create. The file specifies the container name to be deployed in the pod.
+## Create a Pod with imperative object configuration
+Imperative object configuration lets you create objects imperatively while using a configuration file. A configuration file `nginx-create.yaml` is provided to you in this directory.
+
+WE SHOULD HAVE THEM INSPECT THE FILE HERE. I need to view the environment to know how to write this best.
+
+1. Imperatively create a Pod using the provided configuration file.
    ```
       $ kubectl create -f nginx-create.yaml 
          pod/nginx created
    ```
-2. You can again get the pod by using the get command
+   Note that this is indeed imperative as you explicitly told Kubernetes to *create* the resources defined in the file.
+1. List the Pods in your namespace.
    ```
       $ kubectl get pods
          NAME    READY   STATUS    RESTARTS   AGE
          nginx   1/1     Running   0          5s
    ```
-   In this case, kubectl does not create a deploy for us because the yaml file explicitly asked for a kind of `Pod`.
-3. Let's delete the pod as before by first getting the name.
-   ```
-      $ kubectl get pods
-         NAME    READY   STATUS    RESTARTS   AGE
-         nginx   1/1     Running   0          63s
-   ```
-   and then using the 'kubectl delete <resource> <name>` command.
+   In this case, `kubectl` does not create a Deployment for us, because the YAML file explicitly defined a Pod.
+1. Delete the Pod.
    ```
       $ kubectl delete pod nginx
          pod "nginx" deleted
    ```
 
-## Using the `apply` command to declare a state
-1. The previous two ways to create a pod were imperative. We explicitly told kubectl what to do. While the imperative commands are easy to understand and execute in our simple example, they are not ideal for a production environment. These commands do not provide an audit trails and therefore are hard to manage when working in a team. With a declarative approach, we can simply define a desired state of our cluster and let the underlying platform take the best actions needed to get to that state. Let's take a look at an example.
-2. We have provided a sample nginx-apply.yaml file in this lab. Open that file in the editor. Notice the following:
-   1. we would like to get a `Deployment`
+## Create a Pod with a declarative command
+The previous two ways to create a pod were imperative—we explicitly told `kubectl` what to do. While the imperative commands are easy to understand and execute, they are not ideal for a production environment. Let's look at declarative commands.
+
+1. A sample nginx-apply.yaml file is provided in this directory. Open that file in the editor. Notice the following:
+   1. We are creating a Deployment.
    ```
       kind: Deployment
    ```
-   2. we would like three pods
+   1. There will be three replica Pods for this Deployment.
    ```
       replicas: 3
    ```
-   3. we want the pods to be created with the nginx container
+   1. The Pods should run the `nginx` image.
    ```
       containers:
       - image: nginx:latest
         imagePullPolicy: Always
         name: nginx
    ```
-   You can ignore the rest for now. We will get to a lot of these concepts in the next lab.
-3. Let's give this desired state to kubectl and let it go it's magic
+   You can ignore the rest for now. We will get to a lot of those concepts in the next lab.
+1. Use the `kubectl apply` command to set this configuration as the desired state in Kubernetes.
    ```
-   $ kubectl create -f nginx-apply.yaml
+   $ kubectl apply -f nginx-apply.yaml
       deployment.apps/nginx created
    ```
-4. Let's see our deploy using the `get` command.
+1. Get the Deployments to ensure that one was created.
    ```
       $ kubectl get deploy
          NAME    READY   UP-TO-DATE   AVAILABLE   AGE
          nginx   3/3     3            3           18s
    ```
-5. Let's see how many pods were created
+1. List the Pods to ensure that three replicas exist.
    ```
       $ kubectl get pods
          
@@ -224,24 +226,26 @@ The kubectl CLI is already installed for you in this environment. Not only that,
          nginx-dd6b5d745-frks2   1/1     Running   0          17s
          nginx-dd6b5d745-zrtb6   1/1     Running   0          17s
    ```
-We did not tell kubectl how to create the deployment. We simply gave it a desired state. If we were to delete a pod now, a new one will be created in place to keep the replicas at 3. Let's try it out.
-6. Let's delete the pod ending in `8g4ck`
+With declarative management, we did not tell Kubernetes what actions needed to be performed. Instead, `kubectl` inferred that this Deployment needed to be created, so it created it. If you delete a Pod now, a new one will be created in its place to maintain three replicas.
+1. Delete one of the three Pods.
    ```
-      $ kubectl delete pod nginx-dd6b5d745-8g4ck
+      $ kubectl delete pod <pod_name>
          
          pod "nginx-dd6b5d745-8g4ck" deleted
 
    ```
-7. If we run the `get pods` command immediately after, you will see a new container is being created. If you don't see this status, it is possible that the pod was already created for you.
+1. List the Pods to see a new one being created.
    ```
    $ kubectl get pods
-      
+   ```
+   If you do this quickly enough, you can see the Pod being created.
+   ```
       NAME                    READY   STATUS              RESTARTS   AGE
       nginx-dd6b5d745-frks2   1/1     Running             0          3m7s
       nginx-dd6b5d745-xqmbf   0/1     ContainerCreating   0          11s
       nginx-dd6b5d745-zrtb6   1/1     Running 
    ```
-8. Let's see the status again
+   Otherwise, the statuses will all be the same, but the age of one Pod will be smaller than the others.
    ```
       $ kubectl get pods
 
@@ -250,7 +254,5 @@ We did not tell kubectl how to create the deployment. We simply gave it a desire
          nginx-dd6b5d745-xqmbf   1/1     Running   0          54s
          nginx-dd6b5d745-zrtb6   1/1     Running   0 
    ```
-9.  One of the pod names should be different than what we had before.
 
-
-This concludes the guided exercise. When done, close the browser tab.
+Congratulations! You have completed the second lab of this course.
