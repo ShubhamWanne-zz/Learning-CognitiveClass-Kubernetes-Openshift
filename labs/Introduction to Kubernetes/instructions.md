@@ -3,9 +3,9 @@
 ## Objectives
 
 In this lab, you will:
-- work with the `kubectl` CLI.
-- create a Kubernetes Pod.
-- create a Kubernetes Deployment.
+- Work with the `kubectl` CLI
+- Create a Kubernetes Pod
+- Create a Kubernetes Deployment
 
 ## Prerequisites
 
@@ -42,7 +42,7 @@ The `kubectl` CLI is already installed for you in this environment. In addition,
 
 Let's look at some basic `kubectl` commands.
 
-1. Get cluster information with the following command.
+1. Get cluster information with the following command:
    ```
    $ kubectl config get-clusters
    
@@ -68,7 +68,7 @@ Let's create our first Pod. This Pod will run the `nginx` image from Docker Hub.
 
          deployment.apps/nginx created
    ```
-   You will see a warning, but the Pod has been created for you. Note that this is an imerpative command as we told Kubernetes explicitly what to do: run `nginx`.
+   You will see a warning, but the Pod has been created for you. Note that this is an imerpative command, as we told Kubernetes explicitly what to do: run `nginx`.
 1. List the Pods in your namespace.
    ```
    $ kubectl get pods
@@ -83,7 +83,7 @@ Let's create our first Pod. This Pod will run the `nginx` image from Docker Hub.
       NAME                     READY   STATUS    RESTARTS   AGE     IP             NODE            NOMINATED NODE   READINESS GATES
       nginx-6db489d4b7-2nzd8   1/1     Running   0          9m12s   172.30.69.74   10.114.85.172   <none>           <none>
    ```
-2. Describe the Pod to get more details about it. Notice that there is a replicaset associated with this pod. The reason being `kubectl run` command actually created a `Deployment` with one replica.
+2. Describe the Pod to get more details about it. Notice that there is a ReplicaSet associated with this Pod because the `kubectl run` command actually created a `Deployment` with one replica.
    ```
    $ kubectl describe pod nginx-6db489d4b7-rstbf
 
@@ -149,7 +149,7 @@ Let's create our first Pod. This Pod will run the `nginx` image from Docker Hub.
    The ReplicaSet and the Pod were deleted since the owning Deloyment was deleted.
 
 ## Create a Pod with imperative object configuration
-Imperative object configuration lets you create objects imperatively while using a configuration file. A configuration file `nginx-create.yaml` is provided to you in this directory.
+Imperative object configuration lets you create objects imperatively while using a configuration file. A configuration file, `nginx-create.yaml`, is provided to you in this directory.
 
 WE SHOULD HAVE THEM INSPECT THE FILE HERE. I need to view the environment to know how to write this best.
 
@@ -158,14 +158,14 @@ WE SHOULD HAVE THEM INSPECT THE FILE HERE. I need to view the environment to kno
       $ kubectl create -f nginx-create.yaml 
          pod/nginx created
    ```
-   Note that this is indeed imperative as you explicitly told Kubernetes to *create* the resources defined in the file.
+   Note that this is indeed imperative, as you explicitly told Kubernetes to *create* the resources defined in the file.
 1. List the Pods in your namespace.
    ```
       $ kubectl get pods
          NAME    READY   STATUS    RESTARTS   AGE
          nginx   1/1     Running   0          5s
    ```
-   In this case, `kubectl` does not create a Deployment for us, because the YAML file explicitly defined a Pod.
+   In this case, `kubectl` does not create a Deployment for us because the YAML file explicitly defined a Pod.
 1. Delete the Pod.
    ```
       $ kubectl delete pod nginx
@@ -173,7 +173,7 @@ WE SHOULD HAVE THEM INSPECT THE FILE HERE. I need to view the environment to kno
    ```
 
 ## Create a Pod with a declarative command
-The previous two ways to create a pod were imperative—we explicitly told `kubectl` what to do. While the imperative commands are easy to understand and execute, they are not ideal for a production environment. Let's look at declarative commands.
+The previous two ways to create a Pod were imperative -- we explicitly told `kubectl` what to do. While the imperative commands are easy to understand and run, they are not ideal for a production environment. Let's look at declarative commands.
 
 1. A sample nginx-apply.yaml file is provided in this directory. Open that file in the editor. Notice the following:
    1. We are creating a Deployment.
@@ -212,7 +212,7 @@ The previous two ways to create a pod were imperative—we explicitly told `kube
          nginx-dd6b5d745-frks2   1/1     Running   0          17s
          nginx-dd6b5d745-zrtb6   1/1     Running   0          17s
    ```
-With declarative management, we did not tell Kubernetes what actions needed to be performed. Instead, `kubectl` inferred that this Deployment needed to be created, so it created it. If you delete a Pod now, a new one will be created in its place to maintain three replicas.
+With declarative management, we did not tell Kubernetes what actions had to be performed. Instead, `kubectl` inferred that this Deployment needed to be created, so it created it. If you delete a Pod now, a new one will be created in its place to maintain three replicas.
 1. Delete one of the three Pods.
    ```
       $ kubectl delete pod <pod_name>
@@ -231,7 +231,7 @@ With declarative management, we did not tell Kubernetes what actions needed to b
       nginx-dd6b5d745-xqmbf   0/1     ContainerCreating   0          11s
       nginx-dd6b5d745-zrtb6   1/1     Running 
    ```
-   Otherwise, the statuses will all be the same, but the age of one Pod will be smaller than the others.
+   Otherwise, the status of each will be the same, but the age of one Pod will be less than the others.
    ```
       $ kubectl get pods
 
