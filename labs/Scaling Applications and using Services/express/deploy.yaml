@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-kubernetes
+  name: hello-world
 spec:
   selector:
     matchLabels:
-      app: hello-kubernetes
+      app: hello-world
   template:
     metadata:
       labels:
-        app: hello-kubernetes
+        app: hello-world
     spec:
       containers:
-      - name: hello-kubernetes
-        image: us.icr.io/sn-labs-upkaribmwats/hello-world:1
+      - name: hello-world
+        image: us.icr.io/<my_namespace>/hello-world:1
         ports:
         - containerPort: 8080
       imagePullSecrets:
