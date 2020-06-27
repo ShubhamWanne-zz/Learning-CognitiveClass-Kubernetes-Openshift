@@ -3,7 +3,7 @@
 ## Objectives
 
 In this lab, you will:
-- Autoscale an application using relicaset
+- Scale an application using relicaset
 - Apply rolling updates to an application
 - Use configmaps and secrets to store information
 - Bind an external service to an application
@@ -30,9 +30,7 @@ In this lab, you will:
    cd Scaling\ Applications\ and\ using\ Services/
    ```
 
-# Autoscale your application using replicaset
-
-## Build and and upload application image to IBM Container Registry
+# Build and and upload application image to IBM Container Registry
 1. Change directory to `express`
    ```
       cd express
@@ -90,7 +88,7 @@ In this lab, you will:
    ```
    We will use this image in your IBM Cloud Container Registry to deploy the express application on the cluster in the next step.
    
-## Deploy the application
+# Deploy the application
 1. Start by running your image as a deployment. We have provided a sample deploy.yaml file in the express directory for your convenience. Remember to replace `<my_namespace>` with your own namespace and then run: 
    ```
       kubectl apply -f deploy.yaml
@@ -161,7 +159,7 @@ In this lab, you will:
    ```
    The host name should reflect your pod name.
    
-## Scaling the application using Replicaset
+# Scaling the application using Replicaset
 1. Now that you know how to deploy and access the application from the terminal, let's make sure we always have three copies of the application running different pods. This is very easy to do with the `scale` command:
    ```
    kubectl scale deploy hello-world --replicas=3
@@ -189,30 +187,16 @@ In this lab, you will:
    Hello world from hello-world-d7d7849fb-dz2v7!
    Hello world from hello-world-d7d7849fb-nncz2!
    ```
-   As you can see, the host name is rotating between our three pods. This is great, but let's automate this scaling. First let's go back to one replica by using the scale command to set replicas to 1:
-   ```
-   kubectl scale deploy hello-world --replicas=1
-   ```
-   If you get the pods now, you might actually see two of the getting terminated:
-   ```
-   NAME                          READY   STATUS        RESTARTS   AGE
-   hello-world-d7d7849fb-dz2v7   1/1     Terminating   0          14m
-   hello-world-d7d7849fb-nncz2   1/1     Terminating   0          14m
-   hello-world-d7d7849fb-sb4x2   1/1     Running       0          25m
-   ```
-   Eventually, you will be left with a single pod:
-   ```
-   NAME                          READY   STATUS    RESTARTS   AGE
-   hello-world-d7d7849fb-sb4x2   1/1     Running   0          25m
-   ```
+   As you can see, the host name is rotating between our three pods.
 
 ## AutoScaling the application
 1. Instead of hard coding to a pre-determined number of pods, we can provide a min and max to kubectl command along with a set of constraints that will trigger additional pods. Here is an example:
    ```
    kubectl autoscale deploy hello-world --min=2 --max=5 --cpu-percent=10 
    ```
-2. TBD - `autoscaling` might not work in the quicklab environment
+2. The autoscaling feature has been disabled in the lab environment at this time.
 
-## Apply rolling updates
+# Apply rolling updates
+1. Rolling updates provide an easy way to update our application in a 
 
 Congratulations! You have completed the first lab of this course.
