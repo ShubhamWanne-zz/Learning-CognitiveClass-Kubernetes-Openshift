@@ -1,71 +1,86 @@
 # Introduction to Containers, Docker, and IBM Cloud Container Registry
 
 ## Objectives
-
 In this lab, you will:
 - Pull an image from Docker Hub
 - Run an image as a container using `docker`
 - Build an image using a Dockerfile
 - Push an image to IBM Cloud Container Registry
 
-## Prerequisites
+# Verify the environment and command line tools
+1. A terminal window should already be opened to the right of these instructions. If not, open a terminal by using the menu in the editor: `Terminal > New Terminal`.
+![terminal](images/terminal.png)
 
-The complete environment needed for this lab is provided to you at this link <tbd>.
+2. Verify that `docker` CLI is installed.
+```
+theia@theiadocker-ulidder:/home/project$ docker --version
+```
+You should see output similar to this, though the version may be different.
+```
+Docker version 18.09.7, build 2d0083d
+```
 
-# Verify environment and command line tools
-1. Open the terminal in the provided environment by using the menu in the editor: `Terminal > New Terminal`.
-   
-   ![terminal](images/terminal.png)
+3. Verify that `ibmcloud` CLI is installed.
+```
+theia@theiadocker-ulidder:/home/project$ ibmcloud version
+```
+You should see output similar to this, though the version may be different.
+```
+ibmcloud version 1.0.0+908f90a-2020-03-30T06:37:22+00:00
+```
 
-2. Make sure the environment is configured by running the following commands in the terminal:
-   - Verify `docker` is installed.
-        ```
-        theia@theiadocker-ulidder:/home/project$ docker --version
-        >> Docker version 18.09.7, build 2d0083d
-        ```
-   - Verify `ibmcloud` CLI is installed.
-        ```
-        theia@theiadocker-ulidder:/home/project$ ibmcloud --version
-        >> ibmcloud version 1.0.0+908f90a-2020-03-30T06:37:22+00:00
-        ```
+3. Clone the git repository that contains the artifacts needed for this lab.
+```
+git clone https://gitlab.com/ibm/skills-network/courses/cc201.git
+```
+
+4. Change to the directory for this first lab.
+```
+cd cc201/labs/Introduction\ to\ Containers\ and\ Docker/
+```
+
+5. List the contents of this directory to see the artifacts for this lab.
+```
+ls
+```
 
 # Pull an image from Docker Hub and run it as a container
+1. Use the `docker` CLI to list your images.
+```
+theia@theiadocker-ulidder:/home/project$ docker images
+```
+You should see an empty table as shown here.
+```
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+```
 
-1. Use the `docker` command to see which images you currently have in this environment. You should see an empty table as shown below.
-   ```
-   theia@theiadocker-ulidder:/home/project$ docker images
-    
-   >> REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-   ```
-1. Pull your first image from Docker Hub.
-   ```
-   theia@theiadocker-ulidder:/home/project$ docker pull hello-world
-   
-    >> Using default tag: latest
-    latest: Pulling from library/hello-world
-    0e03bdcc26d7: Pull complete 
-    Digest: sha256:6a65f928fb91fcfbc963f7aa6d57c8eeb426ad9a20c7ee045538ef34847f44f1
-    Status: Downloaded newer image for hello-world:latest
-   ```
-1. Run `docker images` again to see this image in the local environment.
-   ```
-    theia@theiadocker-ulidder:/home/project$ docker images
+2. Pull your first image from Docker Hub.
+```
+docker pull hello-world
+```
 
-    >> REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-       hello-world         latest              bf756fb1ae65        4 months ago        13.3kB
-   ```
-1. Run the image as a container.
-   ```
-   theia@theiadocker-ulidder:/home/project$ docker run hello-world
-   
-   >> Hello from Docker!
-   ```
-1. Run the `docker ps` command to see the list of containers.
-   ```
-    theia@theiadocker-ulidder:/home/project$ docker ps -a
-    >> CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
-       08041e5d9e52        hello-world         "/hello"            3 minutes ago       Exited (0) 3 minutes ago                       sweet_gates
-   ```
+3. List images again to see this image in the local environment.
+```
+docker images
+```
+You should now see the hello-world image present.
+```
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+hello-world         latest              bf756fb1ae65        5 months ago        13.3kB
+```
+
+4. Run the `hello-world` image as a container.
+```
+docker run hello-world
+```
+This image prints out a simple hello message and some explanation of what Docker did to generate this message.
+
+5. List the containers to see that your container ran and exited successully.
+```
+docker ps -a
+>> CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+   08041e5d9e52        hello-world         "/hello"            3 minutes ago       Exited (0) 3 minutes ago                       sweet_gates
+```
 1. Remove the container now that we've run it.
    ```
     theia@theiadocker-ulidder:/home/project$ docker container rm <container_id>
