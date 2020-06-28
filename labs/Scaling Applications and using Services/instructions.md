@@ -137,7 +137,7 @@ In this lab, you will:
    Events:                   <none>
    ```
 
-   Take note of the "NodePort:" line as `<nodeport>`. It is 31801 in the output above.
+   Take note of the "NodePort:" line as `<nodeport>`, listed as 31801 in the output above. The port number listed for you might be different.
 
 6. We also need the IP our the single node in this cluster. The security policy in this temporary account does not let you ask for node details. However, we can get the IP from the pod details with the following command: 
    ```
@@ -174,7 +174,7 @@ In this lab, you will:
    hello-world-d7d7849fb-nncz2   1/1     Running   0          9s
    hello-world-d7d7849fb-sb4x2   1/1     Running   0          10m
    ```
-3. If you access your application now multiple times, you should see a different host name every now and then as the load balancer picks a different node to deliver the application. Here is a fun way to execute the curl command 10 times `for i in `seq 1 10`; do curl <nodeip>:<port>; done`. Replace <nodeip> and <port> with your node IP and port. The output should look something like:
+3. If you access your application now multiple times, you should see a different host name every now and then as the load balancer picks a different node to deliver the application. Here is a fun way to execute the curl command 10 times `for i in `seq 1 10`; do curl <nodeip>:<port> && echo ""; done`. Replace <nodeip> and <port> with your node IP and port. The output should look something like:
    ```
    Hello world from hello-world-d7d7849fb-sb4x2!
    Hello world from hello-world-d7d7849fb-nncz2!
@@ -197,6 +197,143 @@ In this lab, you will:
 2. The autoscaling feature has been disabled in the lab environment at this time.
 
 # Apply rolling updates
-1. Rolling updates provide an easy way to update our application in a 
+1. Rolling updates provide an easy way to update our application in an automated and controlled fashion. Remember, we first deployed our application using the image we built and pushed to IBM Cloud Container registry. Let's make a change to the application and push a new image with a tag of 2.
+2. Open the `app.js` file in the editor and change the welcome message to 
+   ```
+   res.send('Hello world from ' + hostname)
+   ```
+   to 
+   ```
+   res.send('Welcome to ' + hostname)
+   ```
+3. Now, push this image back to ICR using the following command:
+   ```
+   ibmcloud cr build --tag us.icr.io/sn-labs-ulidder/hello-world:2 .
+   ```
+4. You can see the list of images by executing the following command:
+   ```
+   ibmcloud cr images
+   ```
+   You should see a list as shown here with the same image and tags 1 and 2:
+   ```
+   Listing images...
+
+   Repository                              Tag   Digest         Namespace         Created         Size    Security status   
+   us.icr.io/sn-labs-ulidder/hello-world   1     9031783c9cd3   sn-labs-ulidder   1 day ago       27 MB   No Issues   
+   us.icr.io/sn-labs-ulidder/hello-world   2     7cd6b48c5a08   sn-labs-ulidder   2 minutes ago   27 MB   No Issues 
+   ```
+5. Let's update our deploy application to use this image instead:
+   ```
+   kubectl set image deployments/hello-world hello-world=us.icr.io/<my_namespace>/hello-world:2
+   ```
+   Replace `<my_namespace>` with your own namespace. You can list all namespaces by using the following command:
+   ```
+   ibmcloud cr namespace-list
+   ```
+6. You can use the IP and port from the previous section to curl the end point by using the following command:
+   ```
+   for i in `seq 1 10`; do curl node_ip:port && echo ""; done
+   ```
+   Replace `node_ip` and `port` accordingly. You should see output from all the replicas:
+   ```
+   Welcome to hello-world-f575d97dc-mwldb
+   Welcome to hello-world-f575d97dc-4gjvn
+   Welcome to hello-world-f575d97dc-mwldb
+   Welcome to hello-world-f575d97dc-sj4qd
+   Welcome to hello-world-f575d97dc-sj4qd
+   Welcome to hello-world-f575d97dc-4gjvn
+   Welcome to hello-world-f575d97dc-mwldb
+   Welcome to hello-world-f575d97dc-sj4qd
+   Welcome to hello-world-f575d97dc-sj4qd
+   Welcome to hello-world-f575d97dc-4gjvn
+   ```
+7. You can get a status of the rolling update by using the following command:
+   ```
+   kubectl rollout status deployments/hello-world
+   ```
+   You should see an output like this:
+   ```
+   deployment "hello-world" successfully rolled out
+   ```
+8. You can also describe the deployment to see the image being used
+   ```
+   kubectl describe deploy hello-world | grep Image
+   ```
+   You should see the full image name with the tag:
+   ```
+   Image:        us.icr.io/sn-labs-ulidder/hello-world:2
+   ```
+9. Let's undo our update by using the following command:
+    ```
+    kubectl rollout undo deployments/hello-world                                       
+    ```
+10. If we now describe the deployment and grep for Image, we will see the image was rolled back to tag 1:
+    ```
+    Image:        us.icr.io/sn-labs-ulidder/hello-world:1
+    ```
+
+# Use configmaps and secrets to store information
+1. Configmaps and secrets are used to store information outside the code so we don't hardcode anything. Let's store the message that the application returns back in a configmap. When we use the curl command, the application returns a message from app.js file as follows:
+   ```
+      app.get('/', function(req, res) {
+         res.send('Welcome to ' + hostname + '\n')
+      })
+   ```
+2. Let's extract the message `Welcome to` to a configmap. The easiest way to do this would be to use a string literal in the deployment file. Change the `deploy.yaml` file by adding the `env` section to the container as follows:
+   ```
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+   name: hello-world
+   spec:
+   selector:
+      matchLabels:
+         app: hello-world
+   template:
+      metadata:
+         labels:
+         app: hello-world
+      spec:
+         containers:
+         - name: hello-world
+         image: us.icr.io/sn-labs-ulidder/hello-world:1 
+         ports:
+         - containerPort: 8080
+         env:
+         - name: MESSAGE
+            value: "Greeting from "
+         imagePullSecrets:
+         - name: icr
+   ```
+3. In order to use this new configmap, change the `app.js` file as follows:
+   ```
+   app.get('/', function(req, res) {
+      res.send(process.env.MESSAGE + ' ' + hostname)
+   })
+   ```
+4. Since we changed the code, we need push this image back to IBM Cloud Container Registry with a new tag:
+   ```
+   ibmcloud cr build --tag us.icr.io/sn-labs-ulidder/hello-world:2 .
+   ```
+5. Finally, let's also change the deploy.yaml file as follows to grab this new image:
+   ```
+   image: us.icr.io/<my_namespace>/hello-world:3
+   ```
+   Please fill out <my_namespace> with your actual namespace.
+7. Now, apply this new deploy.yaml file to our cluster:
+   ```
+   kubectl apply -f deploy.yaml
+   ```
+8. Finally, let's do the curl command again and see the output. You will need get the node ip and the port again if you dont' remember from the sections above.
+   ```
+   curl 10.114.85.153:30459 -w "\n"
+   ```
+   You will see an output as follows:
+   ```
+   Greeting from  hello-world-79f857647d-fjjws
+   ```
+   The `Greeting from` text is coming from the environment variable set in the deploy descriptor.
+
+   TODO: extact the string to a properties file.
 
 Congratulations! You have completed the first lab of this course.
