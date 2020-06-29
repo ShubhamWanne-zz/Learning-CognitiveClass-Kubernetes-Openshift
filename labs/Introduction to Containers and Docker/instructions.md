@@ -142,16 +142,20 @@ ibmcloud target
 ```
 ibmcloud cr namespaces
 ```
-Note your namespace as you will need to use it as part of your image name before you push an image to Container Registry.
 
-3. Tag your image so that it can be pushed to IBM Cloud Container Registry. Make sure to substitue your namespace into this command.
+3. Export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign.
 ```
-docker tag myimage:v1 us.icr.io/<my_namespace>/hello-world:1
+export MY_NAMESPACE=<my_namespace>
 ```
 
-4. Push the newly tagged image to IBM Cloud Container Registry. Make sure to substitue your namespace into this command.
+3. Tag your image so that it can be pushed to IBM Cloud Container Registry.
 ```
-docker push us.icr.io/<my_namespace>/hello-world:1
+docker tag myimage:v1 us.icr.io/$MY_NAMESPACE/hello-world:1
+```
+
+4. Push the newly tagged image to IBM Cloud Container Registry.
+```
+docker push us.icr.io/$MY_NAMESPACE/hello-world:1
 ```
 
 5. Verify that the image was successfully pushed by listing images in Container Registry.
