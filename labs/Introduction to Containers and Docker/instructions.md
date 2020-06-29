@@ -8,7 +8,7 @@ In this lab, you will:
 - Push an image to IBM Cloud Container Registry
 
 # Verify the environment and command line tools
-1. A terminal window should already be opened to the right of these instructions. If not, open a terminal by using the menu in the editor: `Terminal > New Terminal`.
+1. Open a terminal window by using the menu in the editor: `Terminal > New Terminal`.
 ![New terminal](images/new-terminal.png)
 
 2. Verify that `docker` CLI is installed.
