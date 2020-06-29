@@ -83,9 +83,9 @@ Congratulations on pulling an image and running you first container! Now let's b
 
 # Build an image using a Dockerfile
 1. The current working directory contains a simple Node.js application that we will run in a container. The app will print a hello message along with the hostname. The following files are needed to run the app in a container:
-- app.js is the main application, which simply replies with a hello world message.
-- package.json defines the dependencies of the application.
-- Dockerfile defines the instructions Docker uses to build the image.
+    - app.js is the main application, which simply replies with a hello world message.
+    - package.json defines the dependencies of the application.
+    - Dockerfile defines the instructions Docker uses to build the image.
 
 2. Use the Explorer to view the files needed for this app. Click the Explorer icon (it looks like a sheet of paper) on the left side of the window, and then navigate to the directory for this lab: `cc201 > labs > Introduction to Containers and Docker`. In particular, click `Dockerfile` in order to view the Dockerfile we'll use to build an image. If you don't understand any of the instructions in the Dockerfile, review the module videos.
 ![Dockerfile in Explorer](images/dockerfile-explorer.png)
@@ -96,7 +96,7 @@ docker build . -t myimage:v1
 ```
 As seen in the module videos, the output should include a step for each instruction in the Dockerfile. Each step creates a new layer in the image.
 
-3. List images to see your image tagged `myimage:v1` in the table.
+4. List images to see your image tagged `myimage:v1` in the table.
 ```
 docker images
 ```
