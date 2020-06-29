@@ -10,11 +10,14 @@ In this lab, you will:
 
 # Clone the repository
 1. You can skip this step if you have already cloned the repository for the previous lab. Otherwise, clone the labs using the following commands:
+    
     ```
     git clone https://gitlab.com/ibm/skills-network/courses/cc201.git
     ```
+    
     If you now open the Explorer panel on the left, you will see the `cc201` directory listed:
     ![](images/project-explorer.png)
+    
 2. We will perform the remainder of this lab in the terminal. If you don't have it open at the bottom, you can start a new terminal by clicking on `Terminal > New Terminal`. Once the terminal is open, change to the labs directory:
    ```
    cd cc201/labs/
