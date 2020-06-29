@@ -20,9 +20,9 @@ In this lab, you will:
     
 2. We will perform the remainder of this lab in the terminal. If you don't have it open at the bottom, you can start a new terminal by clicking on `Terminal > New Terminal`. Once the terminal is open, change to the labs directory:
    
-   ```
-   cd cc201/labs/
-   ```
+    ```
+    cd cc201/labs/
+    ```
    
 3. You will see the following subdirectories: 
    ```
