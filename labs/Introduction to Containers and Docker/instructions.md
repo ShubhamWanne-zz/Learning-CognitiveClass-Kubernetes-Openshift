@@ -83,9 +83,9 @@ Congratulations on pulling an image and running you first container! Now let's b
 
 # Build an image using a Dockerfile
 1. The current working directory contains a simple Node.js application that we will run in a container. The app will print a hello message along with the hostname. The following files are needed to run the app in a container:
-    - app.js is the main application, which simply replies with a hello world message.
-    - package.json defines the dependencies of the application.
-    - Dockerfile defines the instructions Docker uses to build the image.
+- app.js is the main application, which simply replies with a hello world message.
+- package.json defines the dependencies of the application.
+- Dockerfile defines the instructions Docker uses to build the image.
 
 2. Use the Explorer to view the files needed for this app. Click the Explorer icon (it looks like a sheet of paper) on the left side of the window, and then navigate to the directory for this lab: `cc201 > labs > Introduction to Containers and Docker`. In particular, click `Dockerfile` in order to view the Dockerfile we'll use to build an image. If you don't understand any of the instructions in the Dockerfile, review the module videos.
 ![Dockerfile in Explorer](images/dockerfile-explorer.png)
@@ -101,6 +101,8 @@ As seen in the module videos, the output should include a step for each instruct
 docker images
 ```
 Note that compared to the `hello-world` image, this image has a different image ID. This means that the two images consist of different layers—in other words, they're not the same image.
+
+You should also see a `node` image in the images output. This is because the `docker build` command pulled `node:9.4.0-alpine` to use it as the base image for the image you built..
 
 # Run the image as a container
 1. Now that your image is built, run it as a container with the following command:
@@ -156,6 +158,6 @@ docker push us.icr.io/<my_namespace>/hello-world:1
 ```
 ibmcloud cr images
 ```
-You should see your image name in the output.
+You should see your image name in the output. Recall from the module videos that we discussed Vulnerability Advisor, which scans images in IBM Cloud Container Registry for common vulnerabililties and exposures. In the last column of the output, note that Vulnerability Advisor is either scanning your image or it has provided a security status, depending on how quickly you list the images and how long the scan takes.
 
 Congratulations! You have completed the first lab of this course.
