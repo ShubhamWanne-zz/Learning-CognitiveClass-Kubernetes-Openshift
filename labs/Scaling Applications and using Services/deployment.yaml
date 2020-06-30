@@ -5,22 +5,16 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: hello-world
+      run: hello-world
   template:
     metadata:
       labels:
-        app: hello-world
+        run: hello-world
     spec:
       containers:
       - name: hello-world
-        image: us.icr.io/<my_namespace>/hello-world:3
+        image: us.icr.io/<my_namespace>/hello-world:1
         ports:
         - containerPort: 8080
-        env:
-        - name: MESSAGE
-          valueFrom:
-            configMapKeyRef:
-              name: my-config
-              key: MESSAGE
       imagePullSecrets:
         - name: icr

@@ -107,7 +107,7 @@ docker images
 ```
 Note that compared to the `hello-world` image, this image has a different image ID. This means that the two images consist of different layers—in other words, they're not the same image.
 
-You should also see a `node` image in the images output. This is because the `docker build` command pulled `node:9.4.0-alpine` to use it as the base image for the image you built..
+You should also see a `node` image in the images output. This is because the `docker build` command pulled `node:9.4.0-alpine` to use it as the base image for the image you built.
 
 # Run the image as a container
 1. Now that your image is built, run it as a container with the following command:

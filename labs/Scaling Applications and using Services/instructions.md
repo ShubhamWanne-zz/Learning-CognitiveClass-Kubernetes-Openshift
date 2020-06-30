@@ -4,7 +4,7 @@
 In this lab, you will:
 - Scale an application with a ReplicaSet
 - Apply rolling updates to an application
-- Use a ConfigMap and Secret to store information
+- Use a ConfigMap to store application configuration
 
 # Verify the environment and command line tools
 1. If a terminal is not already open, open a terminal window by using the menu in the editor: `Terminal > New Terminal`.
@@ -31,35 +31,31 @@ ls
 ```
 
 # Build and and push application image to IBM Cloud Container Registry
-1. Change to the `express` directory.
-```
-cd express
-```
 
-2. Check whether your namespace is still set as an environment variable after the first lab.
+1. Check whether your namespace is still set as an environment variable after the first lab.
 ```
 echo $MY_NAMESPACE
 ```
 
-3. If it's not set, export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your namespace, run `ibmcloud cr namespaces`.
+2. If it's not set, export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your namespace, run `ibmcloud cr namespaces`.
 ```
 export MY_NAMESPACE=<my_namespace>
 ```
 
-4. Build and push the image again, as it may have been deleted automatically since you completed the first lab.
+3. Build and push the image again, as it may have been deleted automatically since you completed the first lab.
 ```
 docker build -t us.icr.io/$MY_NAMESPACE/hello-world:1 . && docker push us.icr.io/$MY_NAMESPACE/hello-world:1
 ```
 
 # Deploy the application to Kubernetes
-1. A sample `hello-world-apply.yaml` file is provided in this directory. Use the Explorer to edit `deployment.yaml`. You need to insert your namespace where it says `<my_namespace>`. Make sure to save the file when you're done.
+1. A sample `hello-world-apply.yaml` file is provided in this directory. Use the Explorer to edit `deployment.yaml`. The path to this file is `cc201/labs/Scaling Applications and using Services/`. You need to insert your namespace where it says `<my_namespace>`. Make sure to save the file when you're done.
 
 1. Run your image as a Deployment.
 ```
 kubectl apply -f deployment.yaml
 ```
 
-2. List Pod until the status is "Running".
+2. List Pods until the status is "Running".
 ```
 kubectl get pods
 ```
@@ -122,7 +118,7 @@ You should see that the queries are going to different Pods.
 # Perform rolling updates
 Rolling updates are an easy way to update our application in an automated and controlled fashion. To simulate an update, let's first build a new version of our application and push it to Container Registry.
 
-1. Use the Explorer to edit `app.js`. Change the welcome message from `res.send('Hello world from ' + hostname + '!')` to `res.send('Welcome to ' + hostname + '!')`. Make sure to save the file when you're done.
+1. Use the Explorer to edit `app.js`. The path to this file is `cc201/labs/Scaling Applications and using Services/`. Change the welcome message from `res.send('Hello world from ' + hostname + '!')` to `res.send('Welcome to ' + hostname + '!')`. Make sure to save the file when you're done.
 
 2. Build and push this new version to Container Registry. Update the tag to indicate that this is a second version of this application.
 ```
@@ -139,12 +135,7 @@ ibmcloud cr images
 kubectl set image deployment/hello-world hello-world=us.icr.io/$MY_NAMESPACE/hello-world:2
 ```
 
-5. Ping your application to ensure that the new welcome message is displayed.
-```
-curl $NODE_IP:$NODE_PORT
-```
-
-6. Get a status of the rolling update by using the following command:
+5. Get a status of the rolling update by using the following command:
 ```
 kubectl rollout status deployment/hello-world
 ```
@@ -153,13 +144,18 @@ You should see an output like this, indicating that the rollout succeeded:
 deployment "hello-world" successfully rolled out
 ```
 
-7. You can also get the Deployment with the `wide` option to see that the new tag is used.
+6. You can also get the Deployment with the `wide` option to see that the new tag is used for the image.
 ```
 kubectl get deployments -o wide
 ```
 Look for the `IMAGES` column and ensure that the tag is `2`.
 
-8. It's possible that a new version of our application contains a bug. In that case, Kubernetes can roll back the deployment like this:
+7. Ping your application to ensure that the new welcome message is displayed.
+```
+curl $NODE_IP:$NODE_PORT
+```
+
+8. It's possible that a new version of an application contains a bug. In that case, Kubernetes can roll back the Deployment like this:
 ```
 kubectl rollout undo deployment/hello-world
 ```
@@ -183,11 +179,11 @@ ConfigMaps and Secrets are used to store configuration information separate from
 kubectl create configmap app-config --from-literal=MESSAGE="This message came from a ConfigMap!"
 ```
 
-2. Use the Explorer to open the `deployment-configmap-env-var.yaml` file. Notice the section reproduced below. This indicates that environment variables should be defined in the container from the data in the ConfigMap `app-config`.
+2. Use the Explorer to open the `deployment-configmap-env-var.yaml` file. The path to this file is `cc201/labs/Scaling Applications and using Services/`. Notice the section reproduced below. The bottom portion indicates that environment variables should be defined in the container from the data in the ConfigMap `app-config`.
 ```
 containers:
 - name: hello-world
-  image: us.icr.io/<my_namespace>/hello-world:2
+  image: us.icr.io/<my_namespace>/hello-world:3
   ports:
   - containerPort: 8080
   envFrom:
@@ -195,11 +191,11 @@ containers:
     name: app-config
 ```
 
-3. Use the Explorer to open the `app.js` file. Find the line that says, `res.send('Hello world from ' + hostname + '!')`. Edit this line to look like the following:
+3. Use the Explorer to open the `app.js` file. The path to this file is `cc201/labs/Scaling Applications and using Services/`. Find the line that says, `res.send('Hello world from ' + hostname + '!')`. Edit this line to look like the following
 ```
 res.send(process.env.MESSAGE)
 ```
-This indicates that requests to the app will return the environment variable `MESSAGE`.
+Make sure to save the file when you're done. This change indicates that requests to the app will return the environment variable `MESSAGE`.
 
 4. Build and push a new image that contains your new application code.
 ```
