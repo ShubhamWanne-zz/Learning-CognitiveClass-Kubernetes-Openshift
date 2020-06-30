@@ -48,7 +48,7 @@ docker build -t us.icr.io/$MY_NAMESPACE/hello-world:1 . && docker push us.icr.io
 ```
 
 # Deploy the application to Kubernetes
-1. A sample `hello-world-apply.yaml` file is provided in this directory. Use the Explorer to edit `deployment.yaml`. The path to this file is `cc201/labs/Scaling Applications and using Services/`. You need to insert your namespace where it says `<my_namespace>`. Make sure to save the file when you're done.
+1. Use the Explorer to edit `deployment.yaml` in this directory. The path to this file is `cc201/labs/Scaling Applications and using Services/`. You need to insert your namespace where it says `<my_namespace>`. Make sure to save the file when you're done.
 
 1. Run your image as a Deployment.
 ```
@@ -114,6 +114,11 @@ kubectl get pods
 for i in `seq 10`; do curl $NODE_IP:$NODE_PORT; done
 ```
 You should see that the queries are going to different Pods.
+
+4. Likewise, you can use the `scale` command to scale down your Deployment.
+```
+kubectl scale deployment hello-world --replicas=1
+```
 
 # Perform rolling updates
 Rolling updates are an easy way to update our application in an automated and controlled fashion. To simulate an update, let's first build a new version of our application and push it to Container Registry.
