@@ -123,7 +123,7 @@ kubectl scale deployment hello-world --replicas=1
 5. Check the Pods to see that two are deleted or being deleted.
 ```
 kubectl get pods
-``
+```
 
 # Perform rolling updates
 Rolling updates are an easy way to update our application in an automated and controlled fashion. To simulate an update, let's first build a new version of our application and push it to Container Registry.
