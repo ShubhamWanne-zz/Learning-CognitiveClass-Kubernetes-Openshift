@@ -79,7 +79,7 @@ export MY_NAMESPACE=<my_namespace>
 
 3. Build and push the image again, as it may have been deleted automatically since you completed the first lab.
 ```
-docker build -t us.icr.io/$MY_NAMESPACE/hello-world:1 /home/project/cc201/labs/Introduction\ to\ Containers\ and\ Docker/ && docker push us.icr.io/$MY_NAMESPACE/hello-world:1
+docker build -t us.icr.io/$MY_NAMESPACE/hello-world:1 . && docker push us.icr.io/$MY_NAMESPACE/hello-world:1
 ```
 
 4. Run the `hello-world` image as a container in Kubernetes.
