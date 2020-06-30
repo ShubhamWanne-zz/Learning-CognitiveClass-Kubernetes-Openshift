@@ -152,28 +152,30 @@ The previous two ways to create a Pod were imperative -- we explicitly told `kub
 - The Pods should run the `hello-world` image (`- image: us.icr.io/<my_namespace>/hello-world:1`).
 You can ignore the rest for now. We will get to a lot of those concepts in the next lab.
 
-2. Use the `kubectl apply` command to set this configuration as the desired state in Kubernetes.
+2. Use the Explorer to edit `hello-world-apply.yaml`. You need to insert your namespace where it says `<my_namespace>`.
+
+3. Use the `kubectl apply` command to set this configuration as the desired state in Kubernetes.
 ```
 kubectl apply -f hello-world-apply.yaml
 ```
 
-3. Get the Deployments to ensure that one was created.
+4. Get the Deployments to ensure that one was created.
 ```
 kubectl get deployments
 ```
 
-4. List the Pods to ensure that three replicas exist.
+5. List the Pods to ensure that three replicas exist.
 ```
 kubectl get pods
 ```
 With declarative management, we did not tell Kubernetes which actions to perform. Instead, `kubectl` inferred that this Deployment needed to be created. If you delete a Pod now, a new one will be created in its place to maintain three replicas.
 
-5. Note one of the Pod names from the previous step, and delete that Pod.
+6. Note one of the Pod names from the previous step, and delete that Pod.
 ```
 kubectl delete pod <pod_name>
 ```
 
-6. List the Pods to see a new one being created.
+7. List the Pods to see a new one being created.
 ```
 kubectl get pods
 ```
@@ -193,7 +195,7 @@ hello-world-dd6b5d745-m89fc   1/1     Running   0          12s
 hello-world-dd6b5d745-qvs9t   1/1     Running   0          39s
 ```
 
-7. Delete the Deployment.
+8. Delete the Deployment.
 ```
 kubectl delete deployment hello-world
 ```
