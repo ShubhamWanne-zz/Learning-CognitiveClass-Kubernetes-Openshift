@@ -68,7 +68,7 @@ docker run hello-world
 ```
 This prints out a simple hello message and some explanation of what Docker did to generate this message.
 
-5. List the containers to see that your container ran and exited successully.
+5. List the containers to see that your container ran and exited successfully.
 ```
 docker ps -a
 ```
@@ -110,7 +110,7 @@ You should also see a `node` image in the images output. This is because the `do
 docker run -p 8080:8080 myimage:v1
 ```
 The output should indicate that your application is listening on port 8080. This command will continue running until it is quit, since the container runs a web app that continually listens for requests. So to query the app, we need to open another terminal window.
-    
+
 2. Split the terminal by using the `Terminal > Split Terminal` menu.
 ![Split the terminal](images/terminal-split.png)
 
@@ -162,6 +162,6 @@ docker push us.icr.io/$MY_NAMESPACE/hello-world:1
 ```
 ibmcloud cr images
 ```
-You should see your image name in the output. Recall from the module videos that we discussed Vulnerability Advisor, which scans images in IBM Cloud Container Registry for common vulnerabililties and exposures. In the last column of the output, note that Vulnerability Advisor is either scanning your image or it has provided a security status, depending on how quickly you list the images and how long the scan takes.
+You should see your image name in the output. Recall from the module videos that we discussed Vulnerability Advisor, which scans images in IBM Cloud Container Registry for common vulnerabilities and exposures. In the last column of the output, note that Vulnerability Advisor is either scanning your image or it has provided a security status, depending on how quickly you list the images and how long the scan takes.
 
 Congratulations! You have completed the first lab of this course.

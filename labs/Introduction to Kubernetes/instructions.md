@@ -8,7 +8,7 @@ In this lab, you will:
 - Create a ReplicaSet that maintains a set number of replicas
 
 # Verify the environment and command line tools
-1. If a terminal is not alreaedy open, open a terminal window by using the menu in the editor: `Terminal > New Terminal`.
+1. If a terminal is not already open, open a terminal window by using the menu in the editor: `Terminal > New Terminal`.
 ![New terminal](images/new-terminal.png)
 
 2. Verify that `kubectl` CLI is installed.
@@ -64,15 +64,25 @@ kubectl get pods
 ```
 
 # Create a Pod with an imperative command
-Now it's time to create your first Pod. This Pod will run the `nginx` image from Docker Hub. As explained in the videos for this module, you can create a Pod imperatively or declaratively. Let's do it imperatively first.
+Now it's time to create your first Pod. This Pod will run the `hello-world` image you built and pushed to IBM Cloud Container Registry in the last lab. As explained in the videos for this module, you can create a Pod imperatively or declaratively. Let's do it imperatively first.
 
-1. Run the `nginx` image as a container in Kubernetes.
+1. Check whether your namespace is still set as an environment variable after the first lab.
 ```
-kubectl run nginx --image nginx
+echo $MY_NAMESPACE
 ```
-You will see a warning, but the Pod has been created for you. Note that this is an imerpative command, as we told Kubernetes explicitly what to do: run `nginx`.
 
-2. List the Pods in your namespace.
+2. If it's not set, export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your namespace, run `ibmcloud cr images`.
+```
+export MY_NAMESPACE=<my_namespace>
+```
+
+3. Run the `hello-world` image as a container in Kubernetes.
+```
+kubectl run hello-world --image us.icr.io/$MY_NAMESPACE/hello-world:1
+```
+You will see a warning, but the Pod has been created for you. Note that this is an imperative command, as we told Kubernetes explicitly what to do: run `hello-world`.
+
+4. List the Pods in your namespace.
 ```
 kubectl get pods
 ```
@@ -83,42 +93,42 @@ You can also specify the wide option for the output to get more details about th
 kubectl get pods -o wide
 ```
 
-3. Note the Pod name from the previous step, and describe the Pod to get more details about it.
+5. Note the Pod name from the previous step, and describe the Pod to get more details about it.
 ```
 kubectl describe pod <pod_name>
 ```
 If you look closely at the output, you'll notice that there is a ReplicaSet associated with this Pod. This is because the `kubectl run` command actually created a Deployment with one replica, which in turn created a ReplicaSet.
-   
-4. List the Deployments in your namespace to verify that a Deployment was created.
+
+6. List the Deployments in your namespace to verify that a Deployment was created.
 ```
 kubectl get deployments
 ```
 
-5. List the ReplicaSets in your namespace to verify that a ReplicaSet was also created.
+7. List the ReplicaSets in your namespace to verify that a ReplicaSet was also created.
 ```
 kubectl get replicasets
 ```
 
-6. Delete the Deployment. This will also delete the ReplicaSet and the Pod.
+8. Delete the Deployment. This will also delete the ReplicaSet and the Pod.
 ```
-kubectl delete deployment nginx
+kubectl delete deployment hello-world
 ```
 
-7. List the Pods to verify that none exist.
+9. List the Pods to verify that none exist.
 ```
 kubectl get pods
 ```
-The ReplicaSet and the Pod were deleted since the owning Deloyment was deleted.
+The ReplicaSet and the Pod were deleted since the owning Deployment was deleted.
 
 # Create a Pod with imperative object configuration
-Imperative object configuration lets you create objects imperatively while using a configuration file. A configuration file, `nginx-create.yaml`, is provided to you in this directory.
+Imperative object configuration lets you create objects imperatively while using a configuration file. A configuration file, `hello-world-create.yaml`, is provided to you in this directory.
 
-1. Use the Explorer to view the configuration file. Click the Explorer icon (it looks like a sheet of paper) on the left side of the window, and then navigate to the directory for this lab: `cc201 > labs > Introduction to Kubernetes`. Click `nginx-create.yaml` to view the configuration file.
+1. Use the Explorer to view the configuration file. Click the Explorer icon (it looks like a sheet of paper) on the left side of the window, and then navigate to the directory for this lab: `cc201 > labs > Introduction to Kubernetes`. Click `hello-world-create.yaml` to view the configuration file.
 ![Imperative object configuration file in Explorer](images/imperative-obj-config-explorer.png)
 
 2. Imperatively create a Pod using the provided configuration file.
 ```
-kubectl create -f nginx-create.yaml 
+kubectl create -f hello-world-create.yaml
 ```
 Note that this is indeed imperative, as you explicitly told Kubernetes to *create* the resources defined in the file.
 
@@ -130,21 +140,21 @@ In this case, `kubectl` does not create a Deployment for us, because the YAML fi
 
 4. Delete the Pod.
 ```
-kubectl delete pod nginx
+kubectl delete pod hello-world
 ```
 
 # Create a Pod with a declarative command
 The previous two ways to create a Pod were imperative -- we explicitly told `kubectl` what to do. While the imperative commands are easy to understand and run, they are not ideal for a production environment. Let's look at declarative commands.
 
-1. A sample `nginx-apply.yaml` file is provided in this directory. Use the Explorer again to open this file. Notice the following:
+1. A sample `hello-world-apply.yaml` file is provided in this directory. Use the Explorer again to open this file. Notice the following:
 - We are creating a Deployment (`kind: Deployment`).
 - There will be three replica Pods for this Deployment (`replicas: 3`).
-- The Pods should run the `nginx` image (`- image: nginx:latest`).
+- The Pods should run the `hello-world` image (`- image: us.icr.io/<my_namespace>/hello-world:1`).
 You can ignore the rest for now. We will get to a lot of those concepts in the next lab.
 
 2. Use the `kubectl apply` command to set this configuration as the desired state in Kubernetes.
 ```
-kubectl apply -f nginx-apply.yaml
+kubectl apply -f hello-world-apply.yaml
 ```
 
 3. Get the Deployments to ensure that one was created.
@@ -170,22 +180,22 @@ kubectl get pods
 If you do this quickly enough, you can see one Pod being terminated and another Pod being created.
 ```
 NAME                    READY   STATUS              RESTARTS   AGE
-nginx-dd6b5d745-2jw5s   0/1     Terminating         0          35s
-nginx-dd6b5d745-f9xjk   1/1     Running             0          35s
-nginx-dd6b5d745-m89fc   0/1     ContainerCreating   0          8s
-nginx-dd6b5d745-qvs9t   1/1     Running             0          35s
+hello-world-dd6b5d745-2jw5s   0/1     Terminating         0          35s
+hello-world-dd6b5d745-f9xjk   1/1     Running             0          35s
+hello-world-dd6b5d745-m89fc   0/1     ContainerCreating   0          8s
+hello-world-dd6b5d745-qvs9t   1/1     Running             0          35s
 ```
 Otherwise, the status of each will be the same, but the age of one Pod will be less than the others.
 ```
 NAME                    READY   STATUS    RESTARTS   AGE
-nginx-dd6b5d745-f9xjk   1/1     Running   0          39s
-nginx-dd6b5d745-m89fc   1/1     Running   0          12s
-nginx-dd6b5d745-qvs9t   1/1     Running   0          39s
+hello-world-dd6b5d745-f9xjk   1/1     Running   0          39s
+hello-world-dd6b5d745-m89fc   1/1     Running   0          12s
+hello-world-dd6b5d745-qvs9t   1/1     Running   0          39s
 ```
 
 7. Delete the Deployment.
 ```
-kubectl delete deployment nginx
+kubectl delete deployment hello-world
 ```
 
 Congratulations! You have completed the second lab of this course.
