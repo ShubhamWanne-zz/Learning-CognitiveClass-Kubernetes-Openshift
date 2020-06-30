@@ -29,17 +29,22 @@ You should see output similar to this, though the version may be different.
 ibmcloud version 1.0.0+908f90a-2020-03-30T06:37:22+00:00
 ```
 
-3. Clone the git repository that contains the artifacts needed for this lab.
+3. Change to your project folder.
+```
+cd /home/project
+```
+
+4. Clone the git repository that contains the artifacts needed for this lab.
 ```
 git clone https://gitlab.com/ibm/skills-network/courses/cc201.git
 ```
 
-4. Change to the directory for this first lab.
+5. Change to the directory for this first lab.
 ```
 cd cc201/labs/Introduction\ to\ Containers\ and\ Docker/
 ```
 
-5. List the contents of this directory to see the artifacts for this lab.
+6. List the contents of this directory to see the artifacts for this lab.
 ```
 ls
 ```

@@ -6,6 +6,7 @@ In this lab, you will:
 - Create a Kubernetes Pod
 - Create a Kubernetes Deployment
 - Create a ReplicaSet that maintains a set number of replicas
+- Witness Kubernetes load balancing in action
 
 # Verify the environment and command line tools
 1. If a terminal is not already open, open a terminal window by using the menu in the editor: `Terminal > New Terminal`.
@@ -71,7 +72,7 @@ Now it's time to create your first Pod. This Pod will run the `hello-world` imag
 echo $MY_NAMESPACE
 ```
 
-2. If it's not set, export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your namespace, run `ibmcloud cr images`.
+2. If it's not set, export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your namespace, run `ibmcloud cr namespaces`.
 ```
 export MY_NAMESPACE=<my_namespace>
 ```
