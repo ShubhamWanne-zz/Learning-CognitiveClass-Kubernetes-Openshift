@@ -38,7 +38,7 @@ In this lab, you will:
 # Build and and upload application image to IBM Container Registry
 1. Change directory to `express`
    ```
-      cd express
+   cd express
    ```
 2. As part of the environment, you are already signed into a temporary IBM Cloud account. Let's list all the namespaces in IBM Cloud Container Registry in this temporary account:
    ```
@@ -277,7 +277,7 @@ In this lab, you will:
     Image:        us.icr.io/sn-labs-ulidder/hello-world:1
     ```
 
-# Use configmaps and secrets to store information
+# Using configmap string literal to store variables
 1. Configmaps and secrets are used to store information outside the code so we don't hardcode anything. Let's store the message that the application returns back in a configmap. When we use the curl command, the application returns a message from app.js file as follows:
    ```
       app.get('/', function(req, res) {
@@ -318,7 +318,7 @@ In this lab, you will:
    ```
 4. Since we changed the code, we need push this image back to IBM Cloud Container Registry with a new tag:
    ```
-   ibmcloud cr build --tag us.icr.io/sn-labs-ulidder/hello-world:2 .
+   ibmcloud cr build --tag us.icr.io/sn-labs-ulidder/hello-world:3 .
    ```
 5. Finally, let's also change the deploy.yaml file as follows to grab this new image:
    ```
@@ -339,6 +339,12 @@ In this lab, you will:
    ```
    The `Greeting from` text is coming from the environment variable set in the deploy descriptor.
 
-   TODO: extact the string to a properties file.
+# Service binding
+1. We will use the IBM Watson Tone Analyzer service as an example. This service understand emotions and communication style in text. In order to create this service, type the following command in the terminal:
+   ```
+   ibmcloud resource service-instance-create tone-analyze tone-analyzer standard us-south
+   ```
+   For this example, we are using 
+2. TBD
 
 Congratulations! You have completed the first lab of this course.
