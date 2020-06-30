@@ -152,7 +152,7 @@ The previous two ways to create a Pod were imperative -- we explicitly told `kub
 - The Pods should run the `hello-world` image (`- image: us.icr.io/<my_namespace>/hello-world:1`).
 You can ignore the rest for now. We will get to a lot of those concepts in the next lab.
 
-2. Use the Explorer to edit `hello-world-apply.yaml`. You need to insert your namespace where it says `<my_namespace>`.
+2. Use the Explorer to edit `hello-world-apply.yaml`. You need to insert your namespace where it says `<my_namespace>`. Make sure the save the file when you're done.
 
 3. Use the `kubectl apply` command to set this configuration as the desired state in Kubernetes.
 ```
