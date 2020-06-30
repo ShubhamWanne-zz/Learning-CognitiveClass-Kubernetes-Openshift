@@ -78,9 +78,9 @@ export MY_NAMESPACE=<my_namespace>
 
 3. Run the `hello-world` image as a container in Kubernetes.
 ```
-kubectl run hello-world --image us.icr.io/$MY_NAMESPACE/hello-world:1
+kubectl run hello-world --image us.icr.io/$MY_NAMESPACE/hello-world:1 --overrides='{ "spec": { "imagePullSecrets": [{"name": "icr"}] } }'
 ```
-You will see a warning, but the Pod has been created for you. Note that this is an imperative command, as we told Kubernetes explicitly what to do: run `hello-world`.
+You will see a warning, but the Pod has been created for you. The `--overrides` option here allows us to specify the needed credentials to pull this image from IBM Cloud Container Registry. Note that this is an imperative command, as we told Kubernetes explicitly what to do: run `hello-world`.
 
 4. List the Pods in your namespace.
 ```

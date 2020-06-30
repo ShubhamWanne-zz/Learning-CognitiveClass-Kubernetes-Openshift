@@ -27,6 +27,8 @@ spec:
         ports:
         - containerPort: 80
           protocol: TCP
+      imagePullSecrets:
+      - name: icr
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       securityContext: {}

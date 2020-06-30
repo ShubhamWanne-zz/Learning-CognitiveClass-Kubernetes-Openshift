@@ -8,3 +8,5 @@ spec:
     image: us.icr.io/<my_namespace>/hello-world:1
     ports:
     - containerPort: 80
+  imagePullSecrets:
+  - name: icr
