@@ -120,10 +120,15 @@ You should see that the queries are going to different Pods.
 kubectl scale deployment hello-world --replicas=1
 ```
 
+5. Check the Pods to see that two are deleted or being deleted.
+```
+kubectl get pods
+``
+
 # Perform rolling updates
 Rolling updates are an easy way to update our application in an automated and controlled fashion. To simulate an update, let's first build a new version of our application and push it to Container Registry.
 
-1. Use the Explorer to edit `app.js`. The path to this file is `cc201/labs/Scaling Applications and using Services/`. Change the welcome message from `res.send('Hello world from ' + hostname + '!')` to `res.send('Welcome to ' + hostname + '!')`. Make sure to save the file when you're done.
+1. Use the Explorer to edit `app.js`. The path to this file is `cc201/labs/Scaling Applications and using Services/`. Change the welcome message from `'Hello world from ' + hostname + '! Your app is up and running!\n'` to `'Welcome to ' + hostname + '! Your app is up and running!\n'`. Make sure to save the file when you're done.
 
 2. Build and push this new version to Container Registry. Update the tag to indicate that this is a second version of this application.
 ```
@@ -196,15 +201,15 @@ containers:
     name: app-config
 ```
 
-3. Use the Explorer to open the `app.js` file. The path to this file is `cc201/labs/Scaling Applications and using Services/`. Find the line that says, `res.send('Hello world from ' + hostname + '!')`. Edit this line to look like the following
+3. Use the Explorer to open the `app.js` file. The path to this file is `cc201/labs/Scaling Applications and using Services/`. Find the line that says, `res.send('Hello world from ' + hostname + '! Your app is up and running!\n')`. Edit this line to look like the following
 ```
-res.send(process.env.MESSAGE)
+res.send(process.env.MESSAGE + '\n')
 ```
 Make sure to save the file when you're done. This change indicates that requests to the app will return the environment variable `MESSAGE`.
 
 4. Build and push a new image that contains your new application code.
 ```
-docker build us.icr.io/$MY_NAMESPACE/hello-world:3 && docker push us.icr.io/$MY_NAMESPACE/hello-world:3
+docker build -t us.icr.io/$MY_NAMESPACE/hello-world:3 . && docker push us.icr.io/$MY_NAMESPACE/hello-world:3
 ```
 The `deployment-configmap-env-var.yaml` file is already configured to use the tag `3`.
 
@@ -219,13 +224,18 @@ curl $NODE_IP:$NODE_PORT
 ```
 If you see the message, "This message came from a ConfigMap!", then great job!
 
-7. Because the configuration is separate from the code, the message can be changed without redeploying the code. Using the following two commands, delete the old ConfigMap and create a new one with the same name but a different message.
+7. Because the configuration is separate from the code, the message can be changed without rebuilding the image. Using the following two commands, delete the old ConfigMap and create a new one with the same name but a different message.
 ```
 kubectl delete configmap app-config
-kubectl create configmap app-config --from-literal=MESSAGE="This message is different, and you didn't have to redeploy the app!"
+kubectl create configmap app-config --from-literal=MESSAGE="This message is different, and you didn't have to rebuild the image!"
 ```
 
-8. Ping your application again to see if the new message from the environment variable is returned.
+8. Restart the Deployment so that the containers restart. This is necessary since the environment variables are set at start time.
+```
+kubectl rollout restart deployment hello-world
+```
+
+9. Ping your application again to see if the new message from the environment variable is returned.
 ```
 curl $NODE_IP:$NODE_PORT
 ```
