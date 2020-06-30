@@ -227,7 +227,7 @@ hello-world-dd6b5d745-qvs9t   1/1     Running   0          7m    172.30.69.68   
 ```
 Using this sample output, you could choose `10.114.85.153`, `10.114.85.151`, or `10.114.85.172` for the node IP address.
 
-4. Export the node IP address as an environment variable.
+4. Export the node IP address as an environment variable. Make sure to substitute the copied IP address into this command.
 ```
 export NODE_IP=<node_ip>
 ```
@@ -243,7 +243,7 @@ NAME          TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
 hello-world   NodePort   172.21.121.84   <none>        8080:31758/TCP   58s
 ```
 
-6. Export the port as an environment variable.
+6. Export the port as an environment variable. Make sure to substitute the copied port into this command.
 ```
 export NODE_PORT=<node_port>
 ```
