@@ -99,22 +99,17 @@ kubectl describe pod <pod_name>
 ```
 If you look closely at the output, you'll notice that there is a ReplicaSet associated with this Pod. This is because the `kubectl run` command actually created a Deployment with one replica, which in turn created a ReplicaSet.
 
-6. List the Deployments in your namespace to verify that a Deployment was created.
+6. List the Deployments and ReplicaSets in your namespace to verify that one of each was created.
 ```
-kubectl get deployments
-```
-
-7. List the ReplicaSets in your namespace to verify that a ReplicaSet was also created.
-```
-kubectl get replicasets
+kubectl get deployments,replicasets
 ```
 
-8. Delete the Deployment. This will also delete the ReplicaSet and the Pod.
+7. Delete the Deployment. This will also delete the ReplicaSet and the Pod.
 ```
 kubectl delete deployment hello-world
 ```
 
-9. List the Pods to verify that none exist.
+8. List the Pods to verify that none exist.
 ```
 kubectl get pods
 ```
@@ -123,22 +118,24 @@ The ReplicaSet and the Pod were deleted since the owning Deployment was deleted.
 # Create a Pod with imperative object configuration
 Imperative object configuration lets you create objects imperatively while using a configuration file. A configuration file, `hello-world-create.yaml`, is provided to you in this directory.
 
-1. Use the Explorer to view the configuration file. Click the Explorer icon (it looks like a sheet of paper) on the left side of the window, and then navigate to the directory for this lab: `cc201 > labs > Introduction to Kubernetes`. Click `hello-world-create.yaml` to view the configuration file.
+1. Use the Explorer to view and edit the configuration file. Click the Explorer icon (it looks like a sheet of paper) on the left side of the window, and then navigate to the directory for this lab: `cc201 > labs > Introduction to Kubernetes`. Click `hello-world-create.yaml` to view the configuration file.
 ![Imperative object configuration file in Explorer](images/imperative-obj-config-explorer.png)
 
-2. Imperatively create a Pod using the provided configuration file.
+2. Use the Explorer to edit `hello-world-apply.yaml`. You need to insert your namespace where it says `<my_namespace>`. Make sure the save the file when you're done.
+
+3. Imperatively create a Pod using the provided configuration file.
 ```
 kubectl create -f hello-world-create.yaml
 ```
 Note that this is indeed imperative, as you explicitly told Kubernetes to *create* the resources defined in the file.
 
-3. List the Pods in your namespace.
+4. List the Pods in your namespace.
 ```
 kubectl get pods
 ```
 In this case, `kubectl` does not create a Deployment for us, because the YAML file explicitly defined a Pod.
 
-4. Delete the Pod.
+5. Delete the Pod.
 ```
 kubectl delete pod hello-world
 ```
@@ -195,9 +192,69 @@ hello-world-dd6b5d745-m89fc   1/1     Running   0          12s
 hello-world-dd6b5d745-qvs9t   1/1     Running   0          39s
 ```
 
-8. Delete the Deployment.
+# Load balancing the application
+Since there are three replicas of this application deployed in the cluster, Kubernetes will load balance requests across these three instances. Let's expose our application to the internet and see how Kubernetes load balances requests.
+
+1. In order to access the application, we have to expose it to the internet via a Kubernetes Service.
 ```
-kubectl delete deployment hello-world
+kubectl expose deployment/hello-world --type=NodePort --port=8080 --name=hello-world --target-port=8080
+```
+This command creates what is called a NodePort Service. This will open up a port on the worker node to allow the application to be accessed using that port and the IP address of the node.
+
+2. List Services in order to see that this service was created.
+```
+kubectl get services
+```
+
+3. Two things are needed to access this application: a worker node IP address and the correct port. To get a worker node IP, rerun the list Pods command with the `wide` option and note any one of the node IP addresses (from the column entitled `NODE`):
+```
+kubectl get pods -o wide
+```
+Here is some sample output.
+```
+NAME                          READY   STATUS    RESTARTS   AGE   IP               NODE            NOMINATED NODE   READINESS GATES
+hello-world-dd6b5d745-f9xjk   1/1     Running   0          7m    172.30.104.185   10.114.85.153   <none>           <none>
+hello-world-dd6b5d745-m89fc   1/1     Running   0          7m    172.30.165.182   10.114.85.151   <none>           <none>
+hello-world-dd6b5d745-qvs9t   1/1     Running   0          7m    172.30.69.68     10.114.85.172   <none>           <none>
+```
+Using this sample output, you could choose `10.114.85.153`, `10.114.85.151`, or `10.114.85.172` for the node IP address.
+
+4. Export the node IP address as an environment variable.
+```
+export NODE_IP=<node_ip>
+```
+Using the sample output, one correct command would be `export NODE_IP=10.114.85.153`.
+
+5. To get the port number, run the following command and note the port.
+```
+kubectl get services
+```
+Here is some sample output. In this sample, the port number we need is `31758`.
+```
+NAME          TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+hello-world   NodePort   172.21.121.84   <none>        8080:31758/TCP   58s
+```
+
+6. Export the port as an environment variable.
+```
+export NODE_PORT=<node_port>
+```
+Using the sample output, the correct command would be `export NODE_PORT=31758`.
+
+7. Ping the application to get a response.
+```
+curl $NODE_IP:$NODE_PORT
+```
+
+8. Notice that this output includes the Pod name. Run the command ten times and note the different Pod names in each line of output.
+```
+for i in `seq 10`; do curl $NODE_IP:$NODE_PORT; done
+```
+You should see more than one Pod name, and quite possibly all three Pod names, in the output. This is because Kubernetes load balances the requests across the three replicas, so each request may hit a different instance of our application.
+
+9. Delete the Deployment and Service.
+```
+kubectl delete deployment hello-world service hello-world
 ```
 
 Congratulations! You have completed the second lab of this course.
