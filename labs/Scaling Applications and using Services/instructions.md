@@ -30,7 +30,7 @@ cd cc201/labs/Scaling\ Applications\ and\ using\ Services/
 ls
 ```
 
-# Build and and push application image to IBM Cloud Container Registry
+# Build and push application image to IBM Cloud Container Registry
 
 1. Check whether your namespace is still set as an environment variable after the first lab.
 ```
