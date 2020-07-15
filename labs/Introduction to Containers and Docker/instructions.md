@@ -15,7 +15,7 @@ In this lab, you will:
 ```
 docker --version
 ```
-You should see output similar to this, though the version may be different.
+You should see output similar to this, though the version may be different:
 ```
 Docker version 18.09.7, build 2d0083d
 ```
@@ -24,7 +24,7 @@ Docker version 18.09.7, build 2d0083d
 ```
 ibmcloud version
 ```
-You should see output similar to this, though the version may be different.
+You should see output similar to this, though the version may be different:
 ```
 ibmcloud version 1.0.0+908f90a-2020-03-30T06:37:22+00:00
 ```
@@ -71,7 +71,7 @@ You should now see the `hello-world` image present in the table.
 ```
 docker run hello-world
 ```
-This prints out a simple hello message and some explanation of what Docker did to generate this message.
+This command prints out a simple hello message and some explanation of what Docker did to generate this message.
 
 5. List the containers to see that your container ran and exited successfully.
 ```
@@ -92,7 +92,7 @@ Congratulations on pulling an image and running you first container! Now let's b
 - package.json defines the dependencies of the application.
 - Dockerfile defines the instructions Docker uses to build the image.
 
-2. Use the Explorer to view the files needed for this app. Click the Explorer icon (it looks like a sheet of paper) on the left side of the window, and then navigate to the directory for this lab: `cc201 > labs > Introduction to Containers and Docker`. In particular, click `Dockerfile` in order to view the Dockerfile we'll use to build an image. If you don't understand any of the instructions in the Dockerfile, review the module videos.
+2. Use the Explorer to view the files needed for this app. Click the Explorer icon (it looks like a sheet of paper) on the left side of the window, and then navigate to the directory for this lab: `cc201 > labs > Introduction to Containers and Docker`. Click `Dockerfile` to view the Dockerfile we'll use to build an image. If you don't understand any of the instructions in the Dockerfile, review the module videos.
 ![Dockerfile in Explorer](images/dockerfile-explorer.png)
 
 3. Run the following command to build the image:
@@ -114,9 +114,9 @@ You should also see a `node` image in the images output. This is because the `do
 ```
 docker run -p 8080:8080 myimage:v1
 ```
-The output should indicate that your application is listening on port 8080. This command will continue running until it is quit, since the container runs a web app that continually listens for requests. So to query the app, we need to open another terminal window.
+The output should indicate that your application is listening on port 8080. This command will continue running until it is quit, since the container runs a web app that continually listens for requests. To query the app, we need to open another terminal window.
 
-2. Split the terminal by using the `Terminal > Split Terminal` menu.
+2. To split the terminal, click `Terminal > Split Terminal`.
 ![Split the terminal](images/terminal-split.png)
 
 3. In the second terminal window, use the `curl` command to ping the application.
