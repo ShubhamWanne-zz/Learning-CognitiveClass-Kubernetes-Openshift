@@ -16,7 +16,7 @@ In this lab, you will:
 ```
 kubectl version
 ```
-You should see output similar to this, though the versions may be different.
+You should see output similar to this, though the versions may be different:
 ```
 Client Version: version.Info{Major:"1", Minor:"17", GitVersion:"v1.17.2", GitCommit:"59603c6e503c87169aea6106f57b9f242f64df89", G
 itTreeState:"clean", BuildDate:"2020-01-18T23:30:10Z", GoVersion:"go1.13.5", Compiler:"gc", Platform:"linux/amd64"}
@@ -45,7 +45,7 @@ ls
 ```
 
 # Use the `kubectl` CLI
-Recall that Kubernetes namespaces allow you to virtualize a cluster. You already have access to one namespace in a Kubernetes cluster, and `kubectl` is already set to target that cluster and namespace.
+Recall that Kubernetes namespaces enable you to virtualize a cluster. You already have access to one namespace in a Kubernetes cluster, and `kubectl` is already set to target that cluster and namespace.
 
 Let's look at some basic `kubectl` commands.
 
@@ -54,7 +54,7 @@ Let's look at some basic `kubectl` commands.
 kubectl config get-clusters
 ```
 
-2. A `kubectl` context is a group of access parameters, including a cluster, a user, and a namespace. View your current context with this command:
+2. A `kubectl` context is a group of access parameters, including a cluster, a user, and a namespace. View your current context with the following command:
 ```
 kubectl config get-contexts
 ```
@@ -86,7 +86,7 @@ docker build -t us.icr.io/$MY_NAMESPACE/hello-world:1 . && docker push us.icr.io
 ```
 kubectl run hello-world --image us.icr.io/$MY_NAMESPACE/hello-world:1 --overrides='{ "spec": { "imagePullSecrets": [{"name": "icr"}] } }'
 ```
-You will see a warning, but the Pod has been created for you. The `--overrides` option here allows us to specify the needed credentials to pull this image from IBM Cloud Container Registry. Note that this is an imperative command, as we told Kubernetes explicitly what to do: run `hello-world`.
+You will see a warning, but the Pod has been created for you. The `--overrides` option here enables us to specify the needed credentials to pull this image from IBM Cloud Container Registry. Note that this is an imperative command, as we told Kubernetes explicitly what to do: run `hello-world`.
 
 5. List the Pods in your namespace.
 ```
@@ -103,7 +103,7 @@ kubectl get pods -o wide
 ```
 kubectl describe pod <pod_name>
 ```
-Take a look at this output—there's a lot there. If you look closely, you'll notice that there is a ReplicaSet associated with this Pod. This is because the `kubectl run` command actually created a Deployment with one replica, which in turn created a ReplicaSet. At the end of the output, you'll also see events. These give some history for this resource. For instance, you should see events that indicate that this Pod was scheduled, the image was pulled, and the container was started.
+Take a look at this output--there's a lot there. If you look closely, you'll notice that there is a ReplicaSet associated with this Pod. This is because the `kubectl run` command actually created a Deployment with one replica, which in turn created a ReplicaSet. At the end of the output, you'll also see events. These give some history for this resource. For example, you should see events that indicate that this Pod was scheduled, the image was pulled, and the container was started.
 
 7. List the Deployments and ReplicaSets in your namespace to verify that one of each was created.
 ```
@@ -139,7 +139,7 @@ Note that this is indeed imperative, as you explicitly told Kubernetes to *creat
 ```
 kubectl get pods
 ```
-In this case, `kubectl` does not create a Deployment for us, because the YAML file explicitly defined a Pod.
+In this case, `kubectl` does not create a Deployment for us because the YAML file explicitly defined a Pod.
 
 5. Delete the Pod.
 ```
@@ -163,7 +163,7 @@ You can ignore the rest for now. We will get to a lot of those concepts in the n
 kubectl apply -f hello-world-apply.yaml
 ```
 
-4. Get the Deployments to ensure that one was created.
+4. Get the Deployments to ensure that a Deployment was created.
 ```
 kubectl get deployments
 ```
@@ -203,7 +203,7 @@ hello-world-dd6b5d745-qvs9t   1/1     Running   0          39s
 # Load balancing the application
 Since there are three replicas of this application deployed in the cluster, Kubernetes will load balance requests across these three instances. Let's expose our application to the internet and see how Kubernetes load balances requests.
 
-1. In order to access the application, we have to expose it to the internet via a Kubernetes Service.
+1. In order to access the application, we have to expose it to the internet using a Kubernetes Service.
 ```
 kubectl expose deployment/hello-world --type=NodePort --port=8080 --name=hello-world --target-port=8080
 ```
@@ -214,7 +214,7 @@ This command creates what is called a NodePort Service. This will open up a port
 kubectl get services
 ```
 
-3. Two things are needed to access this application: a worker node IP address and the correct port. To get a worker node IP, rerun the list Pods command with the `wide` option and note any one of the node IP addresses (from the column entitled `NODE`):
+3. Two things are needed to access this application: a worker node IP address and the correct port. To get a worker node IP, rerun the `get pods` command with the `wide` option and note any one of the node IP addresses (from the column entitled `NODE`):
 ```
 kubectl get pods -o wide
 ```
@@ -233,7 +233,7 @@ export NODE_IP=<node_ip>
 ```
 Using the sample output, one correct command would be `export NODE_IP=10.114.85.153`.
 
-5. To get the port number, run the following command and note the port.
+5. To get the port number, run the following command and note the port:
 ```
 kubectl get services
 ```
@@ -258,7 +258,7 @@ curl $NODE_IP:$NODE_PORT
 ```
 for i in `seq 10`; do curl $NODE_IP:$NODE_PORT; done
 ```
-You should see more than one Pod name, and quite possibly all three Pod names, in the output. This is because Kubernetes load balances the requests across the three replicas, so each request may hit a different instance of our application.
+You should see more than one Pod name, and quite possibly all three Pod names, in the output. This is because Kubernetes load balances the requests across the three replicas, so each request could hit a different instance of our application.
 
 9. Delete the Deployment and Service.
 ```
