@@ -104,18 +104,18 @@ In real-world situations, load on an application can vary over time. If our appl
 kubectl scale deployment hello-world --replicas=3
 ```
 
-2. Get Pods to ensure that there are now there Pods instead of just one. In addition, the status should eventually be "Running" for all three.
+2. Get Pods to ensure that there are now three Pods instead of just one. In addition, the status should eventually update to "Running" for all three.
 ```
 kubectl get pods
 ```
 
-3. As you did in the last lab, ping your application multiple time to ensure that Kubernetes is load balancing across the replicas.
+3. As you did in the last lab, ping your application multiple time to ensure that Kubernetes is load-balancing across the replicas.
 ```
 for i in `seq 10`; do curl $NODE_IP:$NODE_PORT; done
 ```
 You should see that the queries are going to different Pods.
 
-4. Likewise, you can use the `scale` command to scale down your Deployment.
+4. Similarly, you can use the `scale` command to scale down your Deployment.
 ```
 kubectl scale deployment hello-world --replicas=1
 ```
@@ -182,7 +182,7 @@ kubectl get deployments -o wide
 Look for the `IMAGES` column and ensure that the tag is `1`.
 
 # Using a ConfigMap to store configuration
-ConfigMaps and Secrets are used to store configuration information separate from the code so that nothing is hardcoded. It also lets the application pick up configuration changes without needed to be redeployed. To exemplify this, we'll store the application's message in a ConfigMap so that the message can be updated simply by updating the ConfigMap.
+ConfigMaps and Secrets are used to store configuration information separate from the code so that nothing is hardcoded. It also lets the application pick up configuration changes without needing to be redeployed. To demonstrate this, we'll store the application's message in a ConfigMap so that the message can be updated simply by updating the ConfigMap.
 
 1. Create a ConfigMap that contains a new message.
 ```
@@ -201,7 +201,7 @@ containers:
     name: app-config
 ```
 
-3. Use the Explorer to open the `app.js` file. The path to this file is `cc201/labs/Scaling Applications and using Services/`. Find the line that says, `res.send('Hello world from ' + hostname + '! Your app is up and running!\n')`. Edit this line to look like the following
+3. Use the Explorer to open the `app.js` file. The path to this file is `cc201/labs/Scaling Applications and using Services/`. Find the line that says, `res.send('Hello world from ' + hostname + '! Your app is up and running!\n')`. Edit this line to look like the following:
 ```
 res.send(process.env.MESSAGE + '\n')
 ```
