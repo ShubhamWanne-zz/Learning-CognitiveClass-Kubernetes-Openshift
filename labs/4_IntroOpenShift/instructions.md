@@ -1,4 +1,4 @@
-# Introduction to Kubernetes
+# Introduction to OpenShift
 
 ## Objectives
 In this lab, you will:
