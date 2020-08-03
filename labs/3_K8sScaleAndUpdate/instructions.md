@@ -22,7 +22,7 @@ cd /home/project
 
 4. Change to the directory for this third lab.
 ```
-cd cc201/labs/Scaling\ Applications\ and\ using\ Services/
+cd cc201/labs/3_K8sScaleAndUpdate/
 ```
 
 5. List the contents of this directory to see the artifacts for this lab.

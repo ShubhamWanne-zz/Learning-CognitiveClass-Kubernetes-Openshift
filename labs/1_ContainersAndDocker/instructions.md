@@ -41,7 +41,7 @@ git clone https://gitlab.com/ibm/skills-network/courses/cc201.git
 
 5. Change to the directory for this first lab.
 ```
-cd cc201/labs/Introduction\ to\ Containers\ and\ Docker/
+cd cc201/labs/1_ContainersAndDocker/
 ```
 
 6. List the contents of this directory to see the artifacts for this lab.

@@ -36,7 +36,7 @@ cd /home/project
 
 5. Change to the directory for this second lab.
 ```
-cd cc201/labs/Introduction\ to\ Kubernetes/
+cd cc201/labs/2_IntroKubernetes/
 ```
 
 6. List the contents of this directory to see the artifacts for this lab.
@@ -86,48 +86,42 @@ docker build -t us.icr.io/$MY_NAMESPACE/hello-world:1 . && docker push us.icr.io
 ```
 kubectl run hello-world --image us.icr.io/$MY_NAMESPACE/hello-world:1 --overrides='{ "spec": { "imagePullSecrets": [{"name": "icr"}] } }'
 ```
-You will see a warning, but the Pod has been created for you. The `--overrides` option here enables us to specify the needed credentials to pull this image from IBM Cloud Container Registry. Note that this is an imperative command, as we told Kubernetes explicitly what to do: run `hello-world`.
+The `--overrides` option here enables us to specify the needed credentials to pull this image from IBM Cloud Container Registry. Note that this is an imperative command, as we told Kubernetes explicitly what to do: run `hello-world`.
 
 5. List the Pods in your namespace.
 ```
 kubectl get pods
 ```
-Great, the previous command indeed created a Pod for us. You can see an auto-generated name was given to this Pod.
+Great, the previous command indeed created a Pod for us. It is named `hello-world` as we specified.
 
 You can also specify the wide option for the output to get more details about the resource.
 ```
 kubectl get pods -o wide
 ```
 
-6. Note the Pod name from the previous step, and describe the Pod to get more details about it.
+6. Describe the Pod to get more details about it.
 ```
-kubectl describe pod <pod_name>
+kubectl describe pod hello-world
 ```
-Take a look at this output--there's a lot there. If you look closely, you'll notice that there is a ReplicaSet associated with this Pod. This is because the `kubectl run` command actually created a Deployment with one replica, which in turn created a ReplicaSet. At the end of the output, you'll also see events. These give some history for this resource. For example, you should see events that indicate that this Pod was scheduled, the image was pulled, and the container was started.
+At the end of the output, you'll see events. These give some history for this resource. For example, you should see events that indicate that this Pod was scheduled, the image was pulled, and the container was started.
 
-7. List the Deployments and ReplicaSets in your namespace to verify that one of each was created.
+7. Delete the Pod.
 ```
-kubectl get deployments,replicasets
-```
-
-8. Delete the Deployment. This will also delete the ReplicaSet and the Pod.
-```
-kubectl delete deployment hello-world
+kubectl delete pod hello-world
 ```
 
-9. List the Pods to verify that none exist.
+8. List the Pods to verify that none exist.
 ```
 kubectl get pods
 ```
-The ReplicaSet and the Pod were deleted since the owning Deployment was deleted.
 
 # Create a Pod with imperative object configuration
-Imperative object configuration lets you create objects imperatively while using a configuration file. A configuration file, `hello-world-create.yaml`, is provided to you in this directory.
+Imperative object configuration lets you create objects by specifying the action to take (e.g., create, update, delete) while using a configuration file. A configuration file, `hello-world-create.yaml`, is provided to you in this directory.
 
 1. Use the Explorer to view and edit the configuration file. Click the Explorer icon (it looks like a sheet of paper) on the left side of the window, and then navigate to the directory for this lab: `cc201 > labs > Introduction to Kubernetes`. Click `hello-world-create.yaml` to view the configuration file.
 ![Imperative object configuration file in Explorer](images/imperative-obj-config-explorer.png)
 
-2. Use the Explorer to edit `hello-world-apply.yaml`. You need to insert your namespace where it says `<my_namespace>`. Make sure to save the file when you're done.
+2. Use the Explorer to edit `hello-world-create.yaml`. You need to insert your namespace where it says `<my_namespace>`. Make sure to save the file when you're done.
 
 3. Imperatively create a Pod using the provided configuration file.
 ```
@@ -260,9 +254,9 @@ for i in `seq 10`; do curl $NODE_IP:$NODE_PORT; done
 ```
 You should see more than one Pod name, and quite possibly all three Pod names, in the output. This is because Kubernetes load balances the requests across the three replicas, so each request could hit a different instance of our application.
 
-9. Delete the Deployment and Service.
+9. Delete the Deployment and Service. This can be done in a single command by using slashes.
 ```
-kubectl delete deployment hello-world service hello-world
+kubectl delete deployment/hello-world service/hello-world
 ```
 
 Congratulations! You have completed the second lab of this course.

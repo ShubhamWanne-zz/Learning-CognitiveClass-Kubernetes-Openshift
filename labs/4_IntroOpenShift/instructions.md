@@ -36,7 +36,7 @@ cd /home/project
 
 5. Change to the directory for this second lab.
 ```
-cd cc201/labs/Introduction\ to\ Kubernetes/
+cd cc201/labs/4_IntroOpenShift/
 ```
 
 6. List the contents of this directory to see the artifacts for this lab.
