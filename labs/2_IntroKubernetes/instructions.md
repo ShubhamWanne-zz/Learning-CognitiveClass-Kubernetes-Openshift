@@ -92,28 +92,35 @@ The `--overrides` option here enables us to specify the needed credentials to pu
 ```
 kubectl get pods
 ```
-Great, the previous command indeed created a Pod for us. It is named `hello-world` as we specified.
+Great, the previous command indeed created a Pod for us. You can see an auto-generated name was given to this Pod.
 
 You can also specify the wide option for the output to get more details about the resource.
 ```
 kubectl get pods -o wide
 ```
 
-6. Describe the Pod to get more details about it.
+6. Note the Pod name from the previous step, and describe the Pod to get more details about it.
 ```
 kubectl describe pod hello-world
 ```
-At the end of the output, you'll see events. These give some history for this resource. For example, you should see events that indicate that this Pod was scheduled, the image was pulled, and the container was started.
+Take a look at this output--there's a lot there. If you look closely, you'll notice that there is a ReplicaSet associated with this Pod. This is because the `kubectl run` command actually created a Deployment with one replica, which in turn created a ReplicaSet. At the end of the output, you'll also see events. These give some history for this resource. For example, you should see events that indicate that this Pod was scheduled, the image was pulled, and the container was started.
 
-7. Delete the Pod.
+
+7. List the Deployments and ReplicaSets in your namespace to verify that one of each was created.
 ```
-kubectl delete pod hello-world
+kubectl get deployments,replicasets
 ```
 
-8. List the Pods to verify that none exist.
+8. Delete the Deployment. This will also delete the ReplicaSet and the Pod.
+```
+kubectl delete deployment hello-world
+```
+
+9. List the Pods to verify that none exist.
 ```
 kubectl get pods
 ```
+The ReplicaSet and the Pod were deleted since the owning Deployment was deleted.
 
 # Create a Pod with imperative object configuration
 Imperative object configuration lets you create objects by specifying the action to take (e.g., create, update, delete) while using a configuration file. A configuration file, `hello-world-create.yaml`, is provided to you in this directory.
