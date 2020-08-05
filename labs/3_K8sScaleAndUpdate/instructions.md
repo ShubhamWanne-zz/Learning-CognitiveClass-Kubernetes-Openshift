@@ -48,7 +48,7 @@ docker build -t us.icr.io/$MY_NAMESPACE/hello-world:1 . && docker push us.icr.io
 ```
 
 # Deploy the application to Kubernetes
-1. Use the Explorer to edit `deployment.yaml` in this directory. The path to this file is `cc201/labs/Scaling Applications and using Services/`. You need to insert your namespace where it says `<my_namespace>`. Make sure to save the file when you're done.
+1. Use the Explorer to edit `deployment.yaml` in this directory. The path to this file is `cc201/labs/3_K8sScaleAndUpdate/`. You need to insert your namespace where it says `<my_namespace>`. Make sure to save the file when you're done.
 
 1. Run your image as a Deployment.
 ```
@@ -128,7 +128,7 @@ kubectl get pods
 # Perform rolling updates
 Rolling updates are an easy way to update our application in an automated and controlled fashion. To simulate an update, let's first build a new version of our application and push it to Container Registry.
 
-1. Use the Explorer to edit `app.js`. The path to this file is `cc201/labs/Scaling Applications and using Services/`. Change the welcome message from `'Hello world from ' + hostname + '! Your app is up and running!\n'` to `'Welcome to ' + hostname + '! Your app is up and running!\n'`. Make sure to save the file when you're done.
+1. Use the Explorer to edit `app.js`. The path to this file is `cc201/labs/3_K8sScaleAndUpdate/`. Change the welcome message from `'Hello world from ' + hostname + '! Your app is up and running!\n'` to `'Welcome to ' + hostname + '! Your app is up and running!\n'`. Make sure to save the file when you're done.
 
 2. Build and push this new version to Container Registry. Update the tag to indicate that this is a second version of this application.
 ```
@@ -189,7 +189,9 @@ ConfigMaps and Secrets are used to store configuration information separate from
 kubectl create configmap app-config --from-literal=MESSAGE="This message came from a ConfigMap!"
 ```
 
-2. Use the Explorer to open the `deployment-configmap-env-var.yaml` file. The path to this file is `cc201/labs/Scaling Applications and using Services/`. Notice the section reproduced below. The bottom portion indicates that environment variables should be defined in the container from the data in the ConfigMap `app-config`.
+2. Use the Explorer to edit `deployment-configmap-env-var.yaml`. The path to this file is `cc201/labs/3_K8sScaleAndUpdate/`. You need to insert your namespace where it says `<my_namespace>`. Make sure to save the file when you're done.
+
+3. In the same file, notice the section reproduced below. The bottom portion indicates that environment variables should be defined in the container from the data in a ConfigMap named `app-config`.
 ```
 containers:
 - name: hello-world
@@ -201,41 +203,40 @@ containers:
     name: app-config
 ```
 
-3. Use the Explorer to open the `app.js` file. The path to this file is `cc201/labs/Scaling Applications and using Services/`. Find the line that says, `res.send('Hello world from ' + hostname + '! Your app is up and running!\n')`. Edit this line to look like the following:
+4. Use the Explorer to open the `app.js` file. The path to this file is `cc201/labs/3_K8sScaleAndUpdate/`. Find the line that says, `res.send('Hello world from ' + hostname + '! Your app is up and running!\n')`. Edit this line to look like the following:
 ```
 res.send(process.env.MESSAGE + '\n')
 ```
 Make sure to save the file when you're done. This change indicates that requests to the app will return the environment variable `MESSAGE`.
 
-4. Build and push a new image that contains your new application code.
+5. Build and push a new image that contains your new application code.
 ```
 docker build -t us.icr.io/$MY_NAMESPACE/hello-world:3 . && docker push us.icr.io/$MY_NAMESPACE/hello-world:3
 ```
 The `deployment-configmap-env-var.yaml` file is already configured to use the tag `3`.
 
-5. Apply the new Deployment configuration.
+6. Apply the new Deployment configuration.
 ```
 kubectl apply -f deployment-configmap-env-var.yaml
 ```
 
-6. Ping your application again to see if the message from the environment variable is returned.
+7. Ping your application again to see if the message from the environment variable is returned.
 ```
 curl $NODE_IP:$NODE_PORT
 ```
 If you see the message, "This message came from a ConfigMap!", then great job!
 
-7. Because the configuration is separate from the code, the message can be changed without rebuilding the image. Using the following two commands, delete the old ConfigMap and create a new one with the same name but a different message.
+8. Because the configuration is separate from the code, the message can be changed without rebuilding the image. Using the following command, delete the old ConfigMap and create a new one with the same name but a different message.
 ```
-kubectl delete configmap app-config
-kubectl create configmap app-config --from-literal=MESSAGE="This message is different, and you didn't have to rebuild the image!"
+kubectl delete configmap app-config && kubectl create configmap app-config --from-literal=MESSAGE="This message is different, and you didn't have to rebuild the image!"
 ```
 
-8. Restart the Deployment so that the containers restart. This is necessary since the environment variables are set at start time.
+9. Restart the Deployment so that the containers restart. This is necessary since the environment variables are set at start time.
 ```
 kubectl rollout restart deployment hello-world
 ```
 
-9. Ping your application again to see if the new message from the environment variable is returned.
+10. Ping your application again to see if the new message from the environment variable is returned.
 ```
 curl $NODE_IP:$NODE_PORT
 ```
