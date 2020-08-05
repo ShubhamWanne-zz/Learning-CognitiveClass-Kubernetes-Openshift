@@ -241,4 +241,9 @@ kubectl rollout restart deployment hello-world
 curl $NODE_IP:$NODE_PORT
 ```
 
+11. Delete the Deployment.
+```
+kubectl delete -f deployment-configmap-env-var.yaml 
+```
+
 Congratulations! You have completed the third lab of this course.
