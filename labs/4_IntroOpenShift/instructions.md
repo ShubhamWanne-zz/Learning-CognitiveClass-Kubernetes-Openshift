@@ -2,26 +2,23 @@
 
 ## Objectives
 In this lab, you will:
-- Use the `kubectl` CLI
-- Create a Kubernetes Pod
-- Create a Kubernetes Deployment
-- Create a ReplicaSet that maintains a set number of replicas
-- Witness Kubernetes load balancing in action
+- Use the `oc` CLI
+- Use the OpenShift web console
+- Build and deploy an application using s2i
+- Inspect a BuildConfig and an ImageStream
 
 # Verify the environment and command line tools
 1. If a terminal is not already open, open a terminal window by using the menu in the editor: `Terminal > New Terminal`.
 ![New terminal](images/new-terminal.png)
 
-2. Verify that `kubectl` CLI is installed.
+2. Verify that `oc` CLI is installed.
 ```
-kubectl version
+oc version
 ```
 You should see output similar to this, though the versions may be different:
 ```
-Client Version: version.Info{Major:"1", Minor:"17", GitVersion:"v1.17.2", GitCommit:"59603c6e503c87169aea6106f57b9f242f64df89", G
-itTreeState:"clean", BuildDate:"2020-01-18T23:30:10Z", GoVersion:"go1.13.5", Compiler:"gc", Platform:"linux/amd64"}
-Server Version: version.Info{Major:"1", Minor:"16", GitVersion:"v1.16.10+IKS", GitCommit:"a0052bd119c067cf48e8a19f0ab7d5a5e2ca0a1
-8", GitTreeState:"clean", BuildDate:"2020-05-20T20:48:06Z", GoVersion:"go1.13.9", Compiler:"gc", Platform:"linux/amd64"}
+Client Version: 4.5.0-202002280431-79259a8
+Kubernetes Version: v1.16.2+45a4ac4
 ```
 
 3. Change to your project folder.
@@ -44,8 +41,8 @@ cd cc201/labs/4_IntroOpenShift/
 ls
 ```
 
-# Use the `kubectl` CLI
-Recall that Kubernetes namespaces enable you to virtualize a cluster. You already have access to one namespace in a Kubernetes cluster, and `kubectl` is already set to target that cluster and namespace.
+# Use the `oc` CLI
+OpenShift projects are Kubernetes namespace with additional administrative functions. Therefore, projects also provide isolation within an OpenShift cluster. You already have access to one project in an OpenShift cluster, and `oc` is already set to target that cluster and project.
 
 Let's look at some basic `kubectl` commands.
 
@@ -63,6 +60,14 @@ kubectl config get-contexts
 ```
 kubectl get pods
 ```
+
+# Use the OpenShift web console
+In addition to the CLI, OpenShift provides an intuitive web console. This is very useful and powerful, as you are able to deploy applications, view resources, monitor applications and view logs, and much more right in the console.
+
+Let's open up the console and have a look around.
+
+1. Open the OpenShift web console using the link at the top of the lab environment. It can take a few minutes to become available after opening the lab environment, so if you get an error, wait a minute and try again.
+![Open OpenShift web console](images/open-web-console.png)
 
 # Create a Pod with an imperative command
 Now it's time to create your first Pod. This Pod will run the `hello-world` image you built and pushed to IBM Cloud Container Registry in the last lab. As explained in the videos for this module, you can create a Pod imperatively or declaratively. Let's do it imperatively first.
