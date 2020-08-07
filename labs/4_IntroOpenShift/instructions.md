@@ -1,4 +1,4 @@
-66666# Introduction to OpenShift
+# Introduction to OpenShift
 
 ## Objectives
 In this lab, you will:
@@ -44,9 +44,23 @@ ls
 # Use the `oc` CLI
 OpenShift projects are Kubernetes namespace with additional administrative functions. Therefore, projects also provide isolation within an OpenShift cluster. You already have access to one project in an OpenShift cluster, and `oc` is already set to target that cluster and project.
 
-Let's look at some basic `oc` commands.
+Let's look at some basic `oc` commands. Recall that `oc` comes with a copy of `kubectl`, so all the `kubectl` commands can be run with `oc`.
 
-1.
+1. List the Pods in this namespace.
+```
+oc get pods
+```
+
+2. In addition to Kubernetes objects, you can get OpenShift specific objects.
+```
+oc get buildconfigs
+```
+Since you haven't created a BuildConfig yet, this will not return any resources.
+
+3. View the OpenShift project that is currently in use.
+```
+oc project
+```
 
 # Use the OpenShift web console
 In addition to the CLI, OpenShift provides an intuitive web console. This is very useful and powerful, as you are able to deploy applications, view resources, monitor applications and view logs, and much more right in the console.
@@ -60,7 +74,7 @@ Let's open up the console and have a look around.
 
 3. Familiarize yourself with the items in the left navigation menu. You can see Operators, many different Kubernetes objects, and some OpenShift-specific objects, all of which we have talked about in this course. There won't yet be many instances of these objects, but they will fill up once we deploy our application.
 
-4. Notice the word "Administrator" at the top left. This indicates that you are in the administrator perspective. There is also a developer perspective. Each perspective provides workflows specific to that persona. Switch to the developer perspective to begin deploying an application.
+4. Notice the word "Administrator" at the top left. This indicates that you are in the administrator perspective. There is also a developer perspective. Each perspective provides workflows specific to that persona. Switch to the developer perspective to begin deploying an application. (If it says "Developer" already, don't change it.)
 ![Web console perspectives](images/console-perspectives.png)
 
 # Deploy an application in the web console
@@ -90,5 +104,6 @@ The topology view gives quick links to a lot of important parts of an applicatio
 4. Read through the logs to see a few key steps taken. The repository is cloned, a Dockerfile is generated, an image is built, and the image is pushed to the internal registry.
 
 5. Return to the topology view and click on your Deployment info. Click the Route that OpenShift automatically created for you. This will open the application in the browser.
+Wow! OpenShift did some pretty incredible work on your behalf. All it needed was a code repository, and it was able to build the code into a container image, push that image to a registry, create a Deployment that references that image, and also expose the application to the internet with a hostname.
 
 Congratulations! You have completed the third lab of this course.
