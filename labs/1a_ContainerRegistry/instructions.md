@@ -1,4 +1,4 @@
-# Introduction to Containers, Docker, and IBM Cloud Container Registry
+# IBM Cloud and IBM Cloud Container Registry
 
 ## Objectives
 In this lab, you will:
