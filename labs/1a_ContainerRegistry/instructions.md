@@ -1,4 +1,4 @@
-# IBM Cloud and IBM Cloud Container Registry
+# Creating an IBM Cloud Container Registry Namespace
 
 ## Objectives
 In this lab, you will:
