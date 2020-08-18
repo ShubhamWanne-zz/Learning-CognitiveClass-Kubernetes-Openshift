@@ -31,7 +31,7 @@ Congratulations! You can now explore the [IBM Cloud catalog](https://cloud.ibm.c
 2. In the "Search the catalog…" box, type "Container Registry" and hit "Enter" on your keyboard to search.
 
 3. Click on the "Container Registry" tile in the search results.
-![Container Registry tile](images/container/registry-tile.png)
+![Container Registry tile](images/registry-tile.png)
 
 4. You can now read about the Container Registry service and visit links for API documentation and docs about how to use the service.
 ![Registry catalog](images/registry-catalog.png)
