@@ -50,6 +50,7 @@ Let's look at some basic `oc` commands. Recall that `oc` comes with a copy of `k
 ```
 oc get pods
 ```
+You will likely see a few Pods that are part of the environment. You don't need to worry about these.
 
 2. In addition to Kubernetes objects, you can get OpenShift specific objects.
 ```
@@ -61,6 +62,7 @@ Since you haven't created a BuildConfig yet, this will not return any resources.
 ```
 oc project
 ```
+This project is specific to you and provides isolation within the cluster so that you can deploy your own applications.
 
 # Use the OpenShift web console
 In addition to the CLI, OpenShift provides an intuitive web console. This is very useful and powerful, as you are able to deploy applications, view resources, monitor applications and view logs, and much more right in the console.
@@ -78,22 +80,22 @@ Let's open up the console and have a look around.
 ![Web console perspectives](images/console-perspectives.png)
 
 # Deploy an application in the web console
-The Developer perspective provides workflows specific to developer use cases, such as the ability to create and deploy applications. Let's start here! You should currently be in the "Topology" view, which provides a visual representation of applications.
+The Developer perspective provides workflows specific to developer use cases, such as the ability to create and deploy applications. Let's start here! You are likely in the "Topology" view, which provides a visual representation of applications. If not, switch to it to take a look.
 
 1. Click the "+Add" button to add a new application to this project.
 
 2. There are several ways to add a new application in OpenShift. Choose the "From Catalog" option.
 
-3. Search for "node" and click the "Node.js" tile. Click "Create Application" on the window that pops up.
+3. Search for "node" and click the "Node.js" tile. Click "Create Application" in the window that pops up.
 ![Node in catalog](images/node-in-catalog.png)
 
-4. Beneath the "Git Repo URL" box, click "Try Sample". This will populate the field with the URL of a sample application.
+4. You should now be on a screen to create a source-to-image application. Recall that this means OpenShift will deploy an application using only one input from you: the application source. Beneath the "Git Repo URL" box, click "Try Sample". This will populate the field with the URL of a sample application.
 
 5. Keep the rest of the default options and click "Create".
 This should take you to the "Topology" view again, and you should see your newly created application.
 
 # View application in the web console
-The topology view gives quick links to a lot of important parts of an application. You can click the outer circle to get info on the application. You can click the inner circle with the Node.js logo to get info on the Deployment. You can click the GitHub icon to access the code repository. You can click a check mark to view the most recent build (it will be circular arrows if the build hasn't completed yet). And you can click the arrow coming out of a box to view the application in the browser.
+The topology view gives quick links to a lot of important parts of an application. You can click the outer circle to get info on the application. You can click the inner circle with the Node.js logo to get info on the Deployment. You can click the GitHub icon to access the code repository. You can click the check mark to view the most recent build (it will be circular arrows if the build is in progress). And you can click the arrow coming out of a box to view the application in the browser if it's externally available.
 
 1. Click the inner circle with the Node.js logo to bring up information on the Deployment.
 
@@ -103,7 +105,17 @@ The topology view gives quick links to a lot of important parts of an applicatio
 
 4. Read through the logs to see a few key steps taken. The repository is cloned, a Dockerfile is generated, an image is built, and the image is pushed to the internal registry.
 
-5. Return to the topology view and click on your Deployment info. Click the Route that OpenShift automatically created for you. This will open the application in the browser.
+5. Click the "Overview" tab for this Build.
+
+6. Click the link to the owning BuildConfig under "Owner."
+
+7. If you look at the "Overview" and "YAML" tabs, you'll see many concepts that we talked about in this module: triggers, build strategy, webhooks, and more.
+
+8. From the "Overview" tab, click the link to the ImageStreamTag under "Output To."
+
+9. Now you can see the ImageStreamTag that was created as an output of the build. Click the "History" tab to see the image in the internal registry to which this ImageStreamTag points.
+
+10. Return to the topology view and click on your Deployment info. Click the Route that OpenShift automatically created for you. This will open the application in the browser.
 Wow! OpenShift did some pretty incredible work on your behalf. All it needed was a code repository, and it was able to build the code into a container image, push that image to a registry, create a Deployment that references that image, and also expose the application to the internet with a hostname.
 
-Congratulations! You have completed the third lab of this course.
+Congratulations! You have completed the fourth lab of this course.
