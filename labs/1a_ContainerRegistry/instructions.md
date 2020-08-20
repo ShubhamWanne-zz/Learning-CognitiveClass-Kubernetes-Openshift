@@ -8,12 +8,15 @@ In this lab, you will:
 - Create a Container Registry namespace
 
 ## Lab Overview
-IBM Cloud offers numerous cloud resources and services. In this hands-on lab, you will create a Lite account on IBM Cloud. You can then use your IBM Cloud Lite account, in this course or otherwise, to explore the catalog and provision many cloud services at no charge.
+IBM Cloud offers numerous cloud resources and services. In this hands-on lab, you will create a Lite account on IBM Cloud. You can then use your IBM Cloud Lite account, in this course or otherwise, to explore the catalog and provision many cloud services at no charge. In this lab you will also create an IBM Cloud Container Registry namespace which you will use in a subsequent lab.
 
 ## About IBM Cloud
 The IBM Cloud platform is deployed across data centers around the world. It combines platform as a service (PaaS) with infrastructure as a service (IaaS) to provide an integrated experience. The platform scales and supports both large enterprise businesses and small development teams and organizations.
 
 The platform is built to support your needs, whether it's working only in the public cloud or taking advantage of a multicloud deployment model. IBM Cloud offers a variety of services, including Compute, Network, Storage, Management, Security, Databases, Analytics, AI, and Cloud Paks.
+
+## About IBM Cloud Container Registry namespaces
+IBM Cloud Container Registry is a multi-tenant registry in the public cloud. Namespaces are used to provide isolation for users' images. The namespace is a slice of the registry to which you can push your images. The namespace will be a part of the image name when you tag and push an image. For example, `us.icr.io/<my_namespace>/<my_repo>:<my_tag>`.
 
 # Create an IBM Cloud account
 1. Go to [IBM Cloud sign-up page](https://cloud.ibm.com/registration?target=%2Fkubernetes%2Fregistry%2Fmain%2Fstart).
@@ -53,6 +56,6 @@ Congratulations! You can now explore the [IBM Cloud catalog](https://cloud.ibm.c
 
 11. Click **Create** at the bottom of the panel to create the namespace.
 
-You now have a namespace to which you can push images. Since IBM Cloud Container Registry is a multi-tenant registry in the public cloud, namespaces are used to provide isolation for users' images. The namespace is a slice of the registry to which you can push your images. The namespace will be a part of the image name when you tag and push the image. For example, `us.icr.io/<my_namespace>/<my_repo>:<my_tag>`. You will use this namespace in the lab for the next module.
+You now have a namespace to which you can push images.
 
 Congratulations! You have completed this lab.
