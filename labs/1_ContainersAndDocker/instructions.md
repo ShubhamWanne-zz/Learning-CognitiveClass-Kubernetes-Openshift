@@ -15,6 +15,7 @@ In this lab, you will:
 ```
 docker --version
 ```
+{: codeblock}
 You should see output similar to this, though the version may be different:
 ```
 Docker version 18.09.7, build 2d0083d
