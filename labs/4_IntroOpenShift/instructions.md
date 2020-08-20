@@ -15,6 +15,8 @@ In this lab, you will:
 ```
 oc version
 ```
+{: codeblock}
+
 You should see output similar to this, though the versions may be different:
 ```
 Client Version: 4.5.0-202002280431-79259a8
@@ -25,21 +27,25 @@ Kubernetes Version: v1.16.2+45a4ac4
 ```
 cd /home/project
 ```
+{: codeblock}
 
 4. Clone the git repository that contains the artifacts needed for this lab, if it doesn't already exist.
 ```
 [ ! -d 'cc201' ] && git clone https://gitlab.com/ibm/skills-network/courses/cc201.git
 ```
+{: codeblock}
 
 5. Change to the directory for this second lab.
 ```
 cd cc201/labs/4_IntroOpenShift/
 ```
+{: codeblock}
 
 6. List the contents of this directory to see the artifacts for this lab.
 ```
 ls
 ```
+{: codeblock}
 
 # Use the `oc` CLI
 OpenShift projects are Kubernetes namespace with additional administrative functions. Therefore, projects also provide isolation within an OpenShift cluster. You already have access to one project in an OpenShift cluster, and `oc` is already set to target that cluster and project.
@@ -50,18 +56,24 @@ Let's look at some basic `oc` commands. Recall that `oc` comes with a copy of `k
 ```
 oc get pods
 ```
+{: codeblock}
+
 You will likely see a few Pods that are part of the environment. You don't need to worry about these.
 
 2. In addition to Kubernetes objects, you can get OpenShift specific objects.
 ```
 oc get buildconfigs
 ```
+{: codeblock}
+
 Since you haven't created a BuildConfig yet, this will not return any resources.
 
 3. View the OpenShift project that is currently in use.
 ```
 oc project
 ```
+{: codeblock}
+
 This project is specific to you and provides isolation within the cluster so that you can deploy your own applications.
 
 # Use the OpenShift web console

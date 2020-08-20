@@ -16,6 +16,8 @@ In this lab, you will:
 ```
 kubectl version
 ```
+{: codeblock}
+
 You should see output similar to this, though the versions may be different:
 ```
 Client Version: version.Info{Major:"1", Minor:"17", GitVersion:"v1.17.2", GitCommit:"59603c6e503c87169aea6106f57b9f242f64df89", G
@@ -28,21 +30,25 @@ Server Version: version.Info{Major:"1", Minor:"16", GitVersion:"v1.16.10+IKS", G
 ```
 cd /home/project
 ```
+{: codeblock}
 
 4. Clone the git repository that contains the artifacts needed for this lab, if it doesn't already exist.
 ```
 [ ! -d 'cc201' ] && git clone https://gitlab.com/ibm/skills-network/courses/cc201.git
 ```
+{: codeblock}
 
 5. Change to the directory for this second lab.
 ```
 cd cc201/labs/2_IntroKubernetes/
 ```
+{: codeblock}
 
 6. List the contents of this directory to see the artifacts for this lab.
 ```
 ls
 ```
+{: codeblock}
 
 # Use the `kubectl` CLI
 Recall that Kubernetes namespaces enable you to virtualize a cluster. You already have access to one namespace in a Kubernetes cluster, and `kubectl` is already set to target that cluster and namespace.
@@ -53,16 +59,19 @@ Let's look at some basic `kubectl` commands.
 ```
 kubectl config get-clusters
 ```
+{: codeblock}
 
 2. A `kubectl` context is a group of access parameters, including a cluster, a user, and a namespace. View your current context with the following command:
 ```
 kubectl config get-contexts
 ```
+{: codeblock}
 
 3. List all the Pods in your namespace. If this is a new session for you, you will not see any Pods.
 ```
 kubectl get pods
 ```
+{: codeblock}
 
 # Create a Pod with an imperative command
 Now it's time to create your first Pod. This Pod will run the `hello-world` image you built and pushed to IBM Cloud Container Registry in the last lab. As explained in the videos for this module, you can create a Pod imperatively or declaratively. Let's do it imperatively first.
@@ -71,38 +80,48 @@ Now it's time to create your first Pod. This Pod will run the `hello-world` imag
 ```
 echo $MY_NAMESPACE
 ```
+{: codeblock}
 
 2. If it's not set, export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your namespace, run `ibmcloud cr namespaces`.
 ```
 export MY_NAMESPACE=<my_namespace>
 ```
+{: codeblock}
 
 3. Build and push the image again, as it may have been deleted automatically since you completed the first lab.
 ```
 docker build -t us.icr.io/$MY_NAMESPACE/hello-world:1 . && docker push us.icr.io/$MY_NAMESPACE/hello-world:1
 ```
+{: codeblock}
 
 4. Run the `hello-world` image as a container in Kubernetes.
 ```
 kubectl run hello-world --image us.icr.io/$MY_NAMESPACE/hello-world:1 --overrides='{"spec":{"template":{"spec":{"imagePullSecrets":[{"name":"icr"}]}}}}'
 ```
+{: codeblock}
+
 The `--overrides` option here enables us to specify the needed credentials to pull this image from IBM Cloud Container Registry. Note that this is an imperative command, as we told Kubernetes explicitly what to do: run `hello-world`.
 
 5. List the Pods in your namespace.
 ```
 kubectl get pods
 ```
+{: codeblock}
+
 Great, the previous command indeed created a Pod for us. You can see an auto-generated name was given to this Pod.
 
 You can also specify the wide option for the output to get more details about the resource.
 ```
 kubectl get pods -o wide
 ```
+{: codeblock}
 
 6. Note the Pod name from the previous step, and describe the Pod to get more details about it.
 ```
 kubectl describe pod <pod_name>
 ```
+{: codeblock}
+
 Take a look at this output--there's a lot there. If you look closely, you'll notice that there is a ReplicaSet associated with this Pod. This is because the `kubectl run` command actually created a Deployment with one replica, which in turn created a ReplicaSet. At the end of the output, you'll also see events. These give some history for this resource. For example, you should see events that indicate that this Pod was scheduled, the image was pulled, and the container was started.
 
 
@@ -110,16 +129,20 @@ Take a look at this output--there's a lot there. If you look closely, you'll not
 ```
 kubectl get deployments,replicasets
 ```
+{: codeblock}
 
 8. Delete the Deployment. This will also delete the ReplicaSet and the Pod.
 ```
 kubectl delete deployment hello-world
 ```
+{: codeblock}
 
 9. List the Pods to verify that none exist.
 ```
 kubectl get pods
 ```
+{: codeblock}
+
 The ReplicaSet and the Pod were deleted since the owning Deployment was deleted.
 
 # Create a Pod with imperative object configuration
@@ -134,18 +157,24 @@ Imperative object configuration lets you create objects by specifying the action
 ```
 kubectl create -f hello-world-create.yaml
 ```
+{: codeblock}
+
 Note that this is indeed imperative, as you explicitly told Kubernetes to *create* the resources defined in the file.
 
 4. List the Pods in your namespace.
 ```
 kubectl get pods
 ```
+{: codeblock}
+
 In this case, `kubectl` does not create a Deployment for us because the YAML file explicitly defined a Pod.
 
 5. Delete the Pod.
 ```
 kubectl delete pod hello-world
 ```
+{: codeblock}
+
 This command can take some time to run.
 
 # Create a Pod with a declarative command
@@ -163,28 +192,36 @@ You can ignore the rest for now. We will get to a lot of those concepts in the n
 ```
 kubectl apply -f hello-world-apply.yaml
 ```
+{: codeblock}
 
 4. Get the Deployments to ensure that a Deployment was created.
 ```
 kubectl get deployments
 ```
+{: codeblock}
 
 5. List the Pods to ensure that three replicas exist.
 ```
 kubectl get pods
 ```
+{: codeblock}
+
 With declarative management, we did not tell Kubernetes which actions to perform. Instead, `kubectl` inferred that this Deployment needed to be created. If you delete a Pod now, a new one will be created in its place to maintain three replicas.
 
 6. Note one of the Pod names from the previous step, and delete that Pod.
 ```
 kubectl delete pod <pod_name>
 ```
+{: codeblock}
+
 This command can take some time to run.
 
 7. List the Pods to see a new one being created.
 ```
 kubectl get pods
 ```
+{: codeblock}
+
 If you do this quickly enough, you can see one Pod being terminated and another Pod being created.
 ```
 NAME                    READY   STATUS              RESTARTS   AGE
@@ -208,17 +245,22 @@ Since there are three replicas of this application deployed in the cluster, Kube
 ```
 kubectl expose deployment/hello-world --type=NodePort --port=8080 --name=hello-world --target-port=8080
 ```
+{: codeblock}
+
 This command creates what is called a NodePort Service. This will open up a port on the worker node to allow the application to be accessed using that port and the IP address of the node.
 
 2. List Services in order to see that this service was created.
 ```
 kubectl get services
 ```
+{: codeblock}
 
 3. Two things are needed to access this application: a worker node IP address and the correct port. To get a worker node IP, rerun the `get pods` command with the `wide` option and note any one of the node IP addresses (from the column entitled `NODE`):
 ```
 kubectl get pods -o wide
 ```
+{: codeblock}
+
 Here is some sample output.
 ```
 NAME                          READY   STATUS    RESTARTS   AGE   IP               NODE            NOMINATED NODE   READINESS GATES
@@ -232,12 +274,16 @@ Using this sample output, you could choose `10.114.85.153`, `10.114.85.151`, or 
 ```
 export NODE_IP=<node_ip>
 ```
+{: codeblock}
+
 Using the sample output, one correct command would be `export NODE_IP=10.114.85.153`.
 
 5. To get the port number, run the following command and note the port:
 ```
 kubectl get services
 ```
+{: codeblock}
+
 Here is some sample output. In this sample, the port number we need is `31758`.
 ```
 NAME          TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
@@ -248,22 +294,28 @@ hello-world   NodePort   172.21.121.84   <none>        8080:31758/TCP   58s
 ```
 export NODE_PORT=<node_port>
 ```
+{: codeblock}
+
 Using the sample output, the correct command would be `export NODE_PORT=31758`.
 
 7. Ping the application to get a response.
 ```
 curl $NODE_IP:$NODE_PORT
 ```
+{: codeblock}
 
 8. Notice that this output includes the Pod name. Run the command ten times and note the different Pod names in each line of output.
 ```
 for i in `seq 10`; do curl $NODE_IP:$NODE_PORT; done
 ```
+{: codeblock}
+
 You should see more than one Pod name, and quite possibly all three Pod names, in the output. This is because Kubernetes load balances the requests across the three replicas, so each request could hit a different instance of our application.
 
 9. Delete the Deployment and Service. This can be done in a single command by using slashes.
 ```
 kubectl delete deployment/hello-world service/hello-world
 ```
+{: codeblock}
 
 Congratulations! You have completed the second lab of this course.
