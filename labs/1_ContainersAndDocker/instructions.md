@@ -13,8 +13,9 @@ In this lab, you will:
 
 2. Verify that `docker` CLI is installed.
 ```
-docker --version {: codeblock}
+docker --version
 ```
+{: codeblock}
 
 You should see output similar to this, though the version may be different:
 ```
