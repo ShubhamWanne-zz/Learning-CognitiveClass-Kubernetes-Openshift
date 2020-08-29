@@ -22,7 +22,7 @@ cd /home/project
 ```
 {: codeblock}
 
-4. Change to the directory for this third lab.
+4. Change to the directory for this lab.
 ```
 cd cc201/labs/3_K8sScaleAndUpdate/
 ```
@@ -293,4 +293,4 @@ kubectl delete -f deployment-configmap-env-var.yaml
 ```
 {: codeblock}
 
-Congratulations! You have completed the third lab of this course.
+Congratulations! You have completed the lab for the third module of this course.

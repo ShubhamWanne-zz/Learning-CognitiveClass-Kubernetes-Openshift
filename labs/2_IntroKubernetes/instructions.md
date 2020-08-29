@@ -38,7 +38,7 @@ cd /home/project
 ```
 {: codeblock}
 
-5. Change to the directory for this second lab.
+5. Change to the directory for this lab.
 ```
 cd cc201/labs/2_IntroKubernetes/
 ```
@@ -318,4 +318,4 @@ kubectl delete deployment/hello-world service/hello-world
 ```
 {: codeblock}
 
-Congratulations! You have completed the second lab of this course.
+Congratulations! You have completed the lab for the second module of this course.

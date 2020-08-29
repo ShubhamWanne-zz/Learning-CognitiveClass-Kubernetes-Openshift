@@ -58,4 +58,4 @@ Congratulations! You can now explore the [IBM Cloud catalog](https://cloud.ibm.c
 
 You now have a namespace to which you can push images.
 
-Congratulations! You have completed this lab.
+Congratulations! You have completed the second lab for the first module of this course.

@@ -35,7 +35,7 @@ cd /home/project
 ```
 {: codeblock}
 
-5. Change to the directory for this second lab.
+5. Change to the directory for this lab.
 ```
 cd cc201/labs/4_IntroOpenShift/
 ```
@@ -130,4 +130,4 @@ The topology view gives quick links to a lot of important parts of an applicatio
 10. Return to the topology view and click on your Deployment info. Click the Route that OpenShift automatically created for you. This will open the application in the browser.
 Wow! OpenShift did some pretty incredible work on your behalf. All it needed was a code repository, and it was able to build the code into a container image, push that image to a registry, create a Deployment that references that image, and also expose the application to the internet with a hostname.
 
-Congratulations! You have completed the fourth lab of this course.
+Congratulations! You have completed the lab for the fourth module of this course.

@@ -45,7 +45,7 @@ git clone https://gitlab.com/ibm/skills-network/courses/cc201.git
 ```
 {: codeblock}
 
-5. Change to the directory for this first lab.
+5. Change to the directory for this lab.
 ```
 cd cc201/labs/1_ContainersAndDocker/
 ```
@@ -204,4 +204,4 @@ ibmcloud cr images
 
 You should see your image name in the output. Recall from the module videos that we discussed Vulnerability Advisor, which scans images in IBM Cloud Container Registry for common vulnerabilities and exposures. In the last column of the output, note that Vulnerability Advisor is either scanning your image or it has provided a security status, depending on how quickly you list the images and how long the scan takes.
 
-Congratulations! You have completed the first lab of this course.
+Congratulations! You have completed the first lab for the first module of this course.
