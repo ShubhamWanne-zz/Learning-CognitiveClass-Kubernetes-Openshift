@@ -24,7 +24,7 @@ IBM Cloud Container Registry is a multi-tenant registry in the public cloud. Nam
 2. Follow the steps to create your account. You will need to provide an email address and password, as well as some personal information. You'll have to verify your account by accessing your email.
 ![IBM Cloud signup page](images/signup-page.png){ width=840 height=482 }
 
-3. Once you have created an account, go to the [IBM Cloud login page](https://cloud.ibm.com/login) and log in to your account.\
+3. Once you have created an account, go to the [IBM Cloud login page](https://cloud.ibm.com/login) and log in to your account.  
 ![IBM Cloud login page](images/login-page.png){ width=840 height=482 }
 
 Congratulations! You can now explore the [IBM Cloud catalog](https://cloud.ibm.com/catalog) and provision various services.
