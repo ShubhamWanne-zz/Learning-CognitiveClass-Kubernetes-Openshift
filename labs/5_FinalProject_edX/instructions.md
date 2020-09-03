@@ -143,7 +143,7 @@ Let's update the guestbook and see how OpenShift's image streams can help us upd
 2. Let's edit the title to be more specific. On the line that says `<h1>Guestbook - v1</h1>`, change it to include your name. Something like `<h1>Alex's Guestbook - v1</h1>`. Make sure to save the file when you're done.
 
 3. Build and push the app again using the same tag. This will overwrite the previous image.
-``````
+```
 docker build . -t us.icr.io/$MY_NAMESPACE/simple-guestbook:v1 && docker push us.icr.io/$MY_NAMESPACE/simple-guestbook:v1
 ```
 {: codeblock}
