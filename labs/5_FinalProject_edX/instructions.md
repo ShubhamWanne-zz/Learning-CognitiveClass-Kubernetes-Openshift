@@ -40,21 +40,19 @@ cd /home/project
 ```
 {: codeblock}
 
-4. Go to the [git repository](https://github.com/ajp-io/guestbook.git) for this application and fork it. You will need to sign into your personal GitHub account to do this. If you don't have an account, go [create an account](https://github.com/join). You need to fork the repo so that you can make changes to it later.
-
-5. Clone your forked git repository. Insert the URL to your repository here.
+4. Clone the git repository that contains the artifacts needed for this lab.
 ```
-git clone <your_url>
+git clone https://github.com/ajp-io/guestbook.git
 ```
 {: codeblock}
 
-6. Change to the directory for this second lab.
+5. Change to the directory for this lab.
 ```
 cd guestbook
 ```
 {: codeblock}
 
-7. List the contents of this directory to see the artifacts for this lab.
+6. List the contents of this directory to see the artifacts for this lab.
 ```
 ls
 ```
@@ -63,19 +61,19 @@ ls
 # Build the guestbook app
 To begin, we will build and deploy the web front end for the guestbook app.
 
-1. Change to the `v1/guestbook` directory. ### CHANGE THIS IF WE DON'T MOVE THE DOCKERFILE OUT OF GUESTBOOK
+1. Change to the `v1/guestbook` directory.
 ```
 cd v1/guestbook
 ```
 {: codeblock}
 
-2. Run the following command or open the Dockerfile in the Explorer to familiarize yourself with it. This Dockerfile incorporates a more advanced strategy called multi-stage builds, so feel free to read more about that [here](https://docs.docker.com/develop/develop-images/multistage-build/).
+2. Run the following command or open the Dockerfile in the Explorer to familiarize yourself with it. The path to this file is `guestbook/v1/guestbook/Dockerfile`. This Dockerfile incorporates a more advanced strategy called multi-stage builds, so feel free to read more about that [here](https://docs.docker.com/develop/develop-images/multistage-build/).
 ```
 cat Dockerfile
 ```
 {: codeblock}
 
-3. Check whether your namespace is still set as an environment variable after an earlier lab. Make sure that it's set to the namespace provided for you by the lab environment, not the namespace you created in your own account.
+3. Check whether your Container Registry namespace is still set as an environment variable after an earlier lab. Make sure that it's set to the namespace provided for you by the lab environment, not the namespace you created in your own account.
 ```
 echo $MY_NAMESPACE
 ```
@@ -103,6 +101,7 @@ docker push us.icr.io/$MY_NAMESPACE/simple-guestbook:v1
 ```
 ibmcloud cr images
 ```
+{: codeblock}
 
 # Deploy guestbook app from the OpenShift internal registry
 As discussed in the course, IBM Cloud Container Registry scans images for common vulnerabilities and exposures to ensure that images are secure. But OpenShift also provides an internal registry—recall the discussion of image streams and image stream tags. Using the internal registry has benefits too. For example, there is less latency when pulling images for deployments. What if we could use both—IBM Cloud Container Registry to scan our images and then automatically import those images to the internal registry for lower latency?
@@ -111,6 +110,7 @@ As discussed in the course, IBM Cloud Container Registry scans images for common
 ```
 oc tag us.icr.io/$MY_NAMESPACE/simple-guestbook:v1 simple-guestbook:v1 --reference-policy=local --scheduled
 ```
+{: codeblock}
 
 With the `--reference-policy=local` option, a copy of the image from IBM Cloud Container Registry is imported into the local cache of the internal registry and made available to the cluster's projects as an image stream. The `--schedule` option sets up periodic importing of the image from IBM Cloud Container Registry into the internal registry. The default frequency is 15 minutes.
 
@@ -145,6 +145,7 @@ Let's update the guestbook and see how OpenShift's image streams can help us upd
 ``````
 docker build . -t us.icr.io/$MY_NAMESPACE/simple-guestbook:v1 && docker push us.icr.io/$MY_NAMESPACE/simple-guestbook:v1
 ```
+{: codeblock}
 
 4. Recall the `--schedule` option we specified when we imported our image into the OpenShift internal registry. As a result, OpenShift will regularly import new images pushed to the specified tag. Since we pushed our newly built image to the same tag, OpenShift will import the updated image within about 15 minutes.
 
@@ -180,26 +181,31 @@ In a multi-tier application, there are two primary ways that service dependencie
 ```
 cd ../v2
 ```
+{: codeblock}
 
 2. Run the following command or open the `redis-master-deployment.yaml` in the Explorer to familiarize yourself with the Deployment configuration for the Redis master.
 ```
 cat redis-master-deployment.yaml
 ```
+{: codeblock}
 
 3. Create the Redis master Deployment.
 ```
 oc apply -f redis-master-deployment.yaml
 ```
+{: codeblock}
 
 4. Verify that the Deployment was created.
 ```
 oc get deployments
 ```
+{: codeblock}
 
 5. List Pods to see the Pod created by the Deployment.
 ```
 oc get pods
 ```
+{: codeblock}
 
 You can also return to the **Topology** view in the OpenShift web console and see that the Deployment has appeared there.
 
@@ -207,6 +213,7 @@ You can also return to the **Topology** view in the OpenShift web console and se
 ```
 cat redis-master-service.yaml
 ```
+{: codeblock}
 
 Services find the Pods to load balance based on Pod labels. The Pod that you created in previous step has the labels `app=redis` and `role=master`. The selector field of the Service determines which Pods will receive the traffic sent to the Service.
 
@@ -214,6 +221,7 @@ Services find the Pods to load balance based on Pod labels. The Pod that you cre
 ```
 oc apply -f redis-master-service.yaml
 ```
+{: codeblock}
 
 If you click on the `redis-master` Deployment in the **Topology** view, you should now see the `redis-master` Service in the **Resources** tab.
 
@@ -267,11 +275,13 @@ But remember that we still need a Watson Tone Analyzer service to complete the a
 ```
 ibmcloud login [--sso]
 ```
+{: codeblock}
 
 8. Ensure that you target the resource group in which you created the Tone Analyzer service. This may be something like "Default".
 ```
 ibmcloud target -g <resource_group>
 ```
+{: codeblock}
 
 9. Use the Explorer to edit `binding-hack.sh`. The path to this file is `guestbook/v2/binding-hack.sh`. You need to insert your OpenShift project where it says `<my_project>`. If you don't remember your project name, run `oc project`. Make sure to save the file when you're done.
 
@@ -279,6 +289,7 @@ ibmcloud target -g <resource_group>
 ```
 ./binding-hack.sh
 ```
+{: codeblock}
 
 You should see the following output: `secret/tone-binding created`.
 
@@ -289,11 +300,13 @@ Now that the Tone Analyzer service is created and its credentials are provided i
 ```
 cd analyzer
 ```
+{: codeblock}
 
 2. Build and push the analyzer image.
 ```
 docker build . -t us.icr.io/$MY_NAMESPACE/analyzer:v1 && docker push us.icr.io/$MY_NAMESPACE/analyzer:v1
 ```
+{: codeblock}
 
 3. Return to the `v2` directory.
 ```
@@ -306,11 +319,13 @@ cd ..
 ```
 oc apply -f analyzer-deployment.yaml
 ```
+{: codeblock}
 
 6. Create the `analyzer` Service.
 ```
 oc apply -f analyzer-service.yaml
 ```
+{: codeblock}
 
 7. Return to the guestbook in the browser, refresh the page, and submit a new entry. You should see your entry appear along with a tone analysis.
 
@@ -333,6 +348,7 @@ In this case, we're going to request 3 millicores of CPU and 40 MB of RAM. We'll
               cpu: 3m
               memory: 40Mi
 ```
+{: codeblock}
 
 3. Click **Save**.
 
@@ -361,6 +377,7 @@ spec:
         name: cpu
         targetAverageUtilization: 1
 ```
+{: codeblock}
 
 This HPA indicates that we're going to scale based on CPU usage. Generally you want to scale when your CPU utilization is in the 50-90% range. For this example, we're going to use 1% so that the app is more likely to need scaling. The `minReplicas` and `maxReplicas` fields indicate that the Deployment should have between one and three replicas at any given time depending on load.
 
