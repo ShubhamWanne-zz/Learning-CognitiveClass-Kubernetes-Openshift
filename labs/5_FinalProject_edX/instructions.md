@@ -2,11 +2,12 @@
 
 ## Objectives
 In this lab, you will:
-- Build
--
+- Build and deploy a simple guestbook application
+- Use OpenShift image streams to roll out an update
+- Deploy a multi-tier version of the guestbook application
 - Create a Watson Tone Analyzer service
-- Bind the Tone Analyzer service to your cluster
--
+- Bind the Tone Analyzer service to your application
+- Autoscale the guestbook app
 
 # Project Overview
 
