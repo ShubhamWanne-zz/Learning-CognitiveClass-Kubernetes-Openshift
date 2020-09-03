@@ -312,7 +312,7 @@ docker build . -t us.icr.io/$MY_NAMESPACE/analyzer:v1 && docker push us.icr.io/$
 3. Return to the `v2` directory.
 ```
 cd ..
-``
+```
 
 4. Use the Explorer to edit `analyzer-deployment.yaml`. The path to this file is `guestbook/v2/analyzer-deployment.yaml`. You need to insert your Container Registry namespace where it says `<cr_namespace>`. If you don't remember your namespace, run `ibmcloud cr namespaces`. Make sure to save the file when you're done. Also notice the `env` section, which indicates that environment variables will be set using the `binding-tone` Secret you created.
 
