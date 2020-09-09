@@ -22,38 +22,25 @@ We will deploy and manage this entire application on OpenShift.
 1. If a terminal is not already open, open a terminal window by using the menu in the editor: `Terminal > New Terminal`.
 ![New terminal](images/new-terminal.png)
 
-2. Verify that `oc` CLI is installed.
-```
-oc version
-```
-{: codeblock}
-
-You should see output similar to this, though the versions may be different:
-```
-Client Version: 4.5.0-202002280431-79259a8
-Kubernetes Version: v1.16.2+45a4ac4
-```
-{: codeblock}
-
-3. Change to your project folder.
+2. Change to your project folder.
 ```
 cd /home/project
 ```
 {: codeblock}
 
-4. Clone the git repository that contains the artifacts needed for this lab.
+3. Clone the git repository that contains the artifacts needed for this lab.
 ```
 git clone https://github.com/ajp-io/guestbook.git
 ```
 {: codeblock}
 
-5. Change to the directory for this lab.
+4. Change to the directory for this lab.
 ```
 cd guestbook
 ```
 {: codeblock}
 
-6. List the contents of this directory to see the artifacts for this lab.
+5. List the contents of this directory to see the artifacts for this lab.
 ```
 ls
 ```
