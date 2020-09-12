@@ -143,7 +143,7 @@ docker build . -t us.icr.io/$MY_NAMESPACE/guestbook:v1 && docker push us.icr.io/
 
 7. Click the `guestbook` image stream.
 
-8. Click the **History** menu. If you only see one entry listed here, it means OpenShift hasn't imported your new image yet. Wait a few minutes and refresh the page. Eventually you should see a second entry, indicating that a new version of this image stream tag has been imported.
+8. Click the **History** menu. If you only see one entry listed here, it means OpenShift hasn't imported your new image yet. Wait a few minutes and refresh the page. Eventually you should see a second entry, indicating that a new version of this image stream tag has been imported. This can take some time as the default frequency for importing is 15 minutes.
 
 9. Return to the Developer perspective.
 
@@ -376,7 +376,7 @@ This HPA indicates that we're going to scale based on CPU usage. Generally you w
 
 8. Click **Create**.
 
-9. If you wait, you'll see both **Current Replicas** and **Desired Replicas** become 3. This is because the HPA detected sufficient load to trigger a scale up to the maximum number of Pods, which is three. You can also view the **Last Scale Time** as well as the current and target CPU utilization. The target is obviously 1% since that's what we set it to.
+9. If you wait, you'll see both **Current Replicas** and **Desired Replicas** become three. This is because the HPA detected sufficient load to trigger a scale up to the maximum number of Pods, which is three. You can also view the **Last Scale Time** as well as the current and target CPU utilization. The target is obviously 1% since that's what we set it to.
 
 10. If you click the `guestbook` Deployment under **Scale Target**, you'll be directed to the Deployment where you can verify that there are now three Pods.
 

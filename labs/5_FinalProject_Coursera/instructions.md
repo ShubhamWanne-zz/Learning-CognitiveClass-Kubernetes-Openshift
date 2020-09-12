@@ -75,13 +75,13 @@ export MY_NAMESPACE=<my_namespace>
 
 5. Build the guestbook app.
 ```
-docker build . -t us.icr.io/$MY_NAMESPACE/simple-guestbook:v1
+docker build . -t us.icr.io/$MY_NAMESPACE/guestbook:v1
 ```
 {: codeblock}
 
 6. Push the image to IBM Cloud Container Registry.
 ```
-docker push us.icr.io/$MY_NAMESPACE/simple-guestbook:v1
+docker push us.icr.io/$MY_NAMESPACE/guestbook:v1
 ```
 {: codeblock}
 
@@ -96,7 +96,7 @@ As discussed in the course, IBM Cloud Container Registry scans images for common
 
 1. Create an image stream that points to your image in IBM Cloud Container Registry.
 ```
-oc tag us.icr.io/$MY_NAMESPACE/simple-guestbook:v1 simple-guestbook:v1 --reference-policy=local --scheduled
+oc tag us.icr.io/$MY_NAMESPACE/guestbook:v1 guestbook:v1 --reference-policy=local --scheduled
 ```
 {: codeblock}
 
@@ -112,11 +112,11 @@ Now let's head over to the OpenShift web console to deploy the guestbook app usi
 
 5. Under **Image**, switch to "Image name from internal registry".
 
-6. Select your project, and the image stream and tag you just created (`simple-guestbook` and `v1`, respectively). You should have only have one option for each of these fields anyway since you only have access to a single project and you only created one image stream and one image stream tag.
+6. Select your project, and the image stream and tag you just created (`guestbook` and `v1`, respectively). You should have only have one option for each of these fields anyway since you only have access to a single project and you only created one image stream and one image stream tag.
 
 7. Keep all the default values and hit **Create** at the bottom. This will create the application and take you to the **Topology** view.
 
-8. From the **Topology** view, click the `simple-guestbook` Deployment. This should take you to the **Resources** tab for this Deployment, where you can see the Pod that is running the application as well as the Service and Route that expose it.
+8. From the **Topology** view, click the `guestbook` Deployment. This should take you to the **Resources** tab for this Deployment, where you can see the Pod that is running the application as well as the Service and Route that expose it.
 
 9. Click the Route location (the link) to view the guestbook in action.
 
@@ -131,7 +131,7 @@ Let's update the guestbook and see how OpenShift's image streams can help us upd
 
 3. Build and push the app again using the same tag. This will overwrite the previous image.
 ```
-docker build . -t us.icr.io/$MY_NAMESPACE/simple-guestbook:v1 && docker push us.icr.io/$MY_NAMESPACE/simple-guestbook:v1
+docker build . -t us.icr.io/$MY_NAMESPACE/guestbook:v1 && docker push us.icr.io/$MY_NAMESPACE/guestbook:v1
 ```
 {: codeblock}
 
@@ -141,22 +141,31 @@ docker build . -t us.icr.io/$MY_NAMESPACE/simple-guestbook:v1 && docker push us.
 
 6. Click **Builds** > **Image Streams** in the navigation.
 
-7. Click the `simple-guestbook` image stream.
+7. Click the `guestbook` image stream.
 
-8. Click the **History** menu. If you only see one entry listed here, it means OpenShift hasn't imported your new image yet. Wait a few minutes and refresh the page. Eventually you should see a second entry, indicating that a new version of this image stream tag has been imported.
+8. Click the **History** menu. If you only see one entry listed here, it means OpenShift hasn't imported your new image yet. Wait a few minutes and refresh the page. Eventually you should see a second entry, indicating that a new version of this image stream tag has been imported. This can take some time as the default frequency for importing is 15 minutes.
 
 9. Return to the Developer perspective.
 
-10. View the guestbook in the browser again. If you still have the tab open, go there. If not, click the Route again from the `simple-guestbook` Deployment. You should see your new title on this page! OpenShift imported the new version of our image, and since the Deployment points to the image stream, it began running this new version as well.
+10. View the guestbook in the browser again. If you still have the tab open, go there. If not, click the Route again from the `guestbook` Deployment. You should see your new title on this page! OpenShift imported the new version of our image, and since the Deployment points to the image stream, it began running this new version as well.
 
 # Guestbook storage
 1. From the guestbook in the browser, click the `/info` link beneath the input box. This is an information endpoint for the guestbook. Notice that it says "In-memory datastore (not redis)". Currently, we have only deployed the guestbook web front end, so it is using in-memory datastore to keep track of the entries. This is not very resilient, however, because any update or even a restart of the Pod will cause the entries to be lost. But let's confirm this.
 
-2. Return to the OpenShift web console and click the **Overview** tab for the `simple-guestbook` Deployment.
+2. Return to the OpenShift web console and click the **Overview** tab for the `guestbook` Deployment.
 
 3. At the top, you should see a visual indicator of how many Pods are running. It should say one. Click the down arrow next to that graphic. After it reaches zero, click the up arrow to create one Pod again. This is just a quick way to recreate the Pod for the Deployment.
 
 4. Now return to the guestbook application in the browser by clicking the Route location again. You should see that your previous entries appear no more.
+
+# Delete the guestbook
+In order to deploy a more complex version of the guestbook, delete this simple version.
+
+1. From the Topology view, click the `guestbook-app` application. This is the light gray circle that surrounds the `guestbook` Deployment.
+
+2. Click **Actions** > **Delete Application**.
+
+3. Type in the application name and click **Delete**.
 
 # Deploy Redis master and slave
 We've demonstrated that we need persistent storage in order for the guestbook to be effective. Let's deploy Redis so that we get just that. Redis is an open source, in-memory data structure store, used as a database, cache and message broker.
@@ -232,16 +241,12 @@ To demonstrate the various options available in OpenShift, we'll deploy this gue
 
 6. Under **Container Port**, enter 3000.
 
-7. Scroll down to **Application**. We want to create a new application since this isn't a part of the `simple-guestbook` app. Click the **Application** box and select **Create Application**.
-
-8. Enter "guestbook-app" under **Application Name**.
-
-9. Leave the rest of the default options and click **Create**.
+7. Leave the rest of the default options and click **Create**.
 Since we gave OpenShift a Dockerfile, it will create a BuildConfig and a Build that will build an image using the Dockerfile, push it to the internal registry, and use that image for a Deployment.
 
-10. From the **Topology** view, click the `guestbook` Deployment. In the **Resources** tab, click the Route location to load the guestbook in the browser. Notice that the header says "Guestbook - v2" instead of "Guestbook - v1".
+8. From the **Topology** view, click the `guestbook` Deployment. In the **Resources** tab, click the Route location to load the guestbook in the browser. Notice that the header says "Guestbook - v2" instead of "Guestbook - v1".
 
-11. From the guestbook in the browser, click the `/info` link beneath the input box. Notice that it now gives information on Redis since we're no longer using the in-memory datastore.
+9. From the guestbook in the browser, click the `/info` link beneath the input box. Notice that it now gives information on Redis since we're no longer using the in-memory datastore.
 
 But remember that we still need a Watson Tone Analyzer service to complete the application.
 
@@ -371,7 +376,7 @@ This HPA indicates that we're going to scale based on CPU usage. Generally you w
 
 8. Click **Create**.
 
-9. If you wait, you'll see both **Current Replicas** and **Desired Replicas** become 3. This is because the HPA detected sufficient load to trigger a scale up to the maximum number of Pods, which is three. You can also view the **Last Scale Time** as well as the current and target CPU utilization. The target is obviously 1% since that's what we set it to.
+9. If you wait, you'll see both **Current Replicas** and **Desired Replicas** become three. This is because the HPA detected sufficient load to trigger a scale up to the maximum number of Pods, which is three. You can also view the **Last Scale Time** as well as the current and target CPU utilization. The target is obviously 1% since that's what we set it to.
 
 10. If you click the `guestbook` Deployment under **Scale Target**, you'll be directed to the Deployment where you can verify that there are now three Pods.
 
