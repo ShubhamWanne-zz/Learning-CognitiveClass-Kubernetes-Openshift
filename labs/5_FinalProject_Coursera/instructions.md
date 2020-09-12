@@ -114,9 +114,9 @@ Now let's head over to the OpenShift web console to deploy the guestbook app usi
 
 6. Select your project, and the image stream and tag you just created (`guestbook` and `v1`, respectively). You should have only have one option for each of these fields anyway since you only have access to a single project and you only created one image stream and one image stream tag.
 
-7. Keep all the default values and hit **Create** at the bottom. This will create the application and take you to the **Topology** view.
+7. Keep all the default values and hit **Create** at the bottom. This will create the application and take you to the Topology view.
 
-8. From the **Topology** view, click the `guestbook` Deployment. This should take you to the **Resources** tab for this Deployment, where you can see the Pod that is running the application as well as the Service and Route that expose it.
+8. From the Topology view, click the `guestbook` Deployment. This should take you to the **Resources** tab for this Deployment, where you can see the Pod that is running the application as well as the Service and Route that expose it.
 
 9. Click the Route location (the link) to view the guestbook in action.
 
@@ -204,7 +204,7 @@ oc get pods
 ```
 {: codeblock}
 
-You can also return to the **Topology** view in the OpenShift web console and see that the Deployment has appeared there.
+You can also return to the Topology view in the OpenShift web console and see that the Deployment has appeared there.
 
 6. Run the following command or open the `redis-master-service.yaml` in the Explorer to familiarize yourself with the Service configuration for the Redis master.
 ```
@@ -220,9 +220,47 @@ oc apply -f redis-master-service.yaml
 ```
 {: codeblock}
 
-If you click on the `redis-master` Deployment in the **Topology** view, you should now see the `redis-master` Service in the **Resources** tab.
+If you click on the `redis-master` Deployment in the Topology view, you should now see the `redis-master` Service in the **Resources** tab.
 
-The $REDIS_MASTER_SERVICE_HOST environment variable indicates the host. All new Pods will see the `redis-master` Service running on that host at port 6379, or running on redis-master:6379.
+8. Run the following command or open the `redis-slave-deployment.yaml` in the Explorer to familiarize yourself with the Deployment configuration for the Redis slave.
+```
+cat redis-slave-deployment.yaml
+```
+{: codeblock}
+
+9. Create the Redis slave Deployment.
+```
+oc apply -f redis-slave-deployment.yaml
+```
+{: codeblock}
+
+10. Verify that the Deployment was created.
+```
+oc get deployments
+```
+{: codeblock}
+
+11. List Pods to see the Pod created by the Deployment.
+```
+oc get pods
+```
+{: codeblock}
+
+You can also return to the Topology view in the OpenShift web console and see that the Deployment has appeared there.
+
+12. Run the following command or open the `redis-slave-service.yaml` in the Explorer to familiarize yourself with the Service configuration for the Redis slave.
+```
+cat redis-slave-service.yaml
+```
+{: codeblock}
+
+13. Create the Redis slave Service.
+```
+oc apply -f redis-slave-service.yaml
+```
+{: codeblock}
+
+If you click on the `redis-slave` Deployment in the Topology view, you should now see the `redis-slave` Service in the **Resources** tab.
 
 # Deploy v2 guestbook app
 Now it's time to deploy the second version of the guestbook app, which will leverage Redis for persistent storage.
@@ -244,7 +282,7 @@ To demonstrate the various options available in OpenShift, we'll deploy this gue
 7. Leave the rest of the default options and click **Create**.
 Since we gave OpenShift a Dockerfile, it will create a BuildConfig and a Build that will build an image using the Dockerfile, push it to the internal registry, and use that image for a Deployment.
 
-8. From the **Topology** view, click the `guestbook` Deployment. In the **Resources** tab, click the Route location to load the guestbook in the browser. Notice that the header says "Guestbook - v2" instead of "Guestbook - v1".
+8. From the Topology view, click the `guestbook` Deployment. In the **Resources** tab, click the Route location to load the guestbook in the browser. Notice that the header says "Guestbook - v2" instead of "Guestbook - v1".
 
 9. From the guestbook in the browser, click the `/info` link beneath the input box. Notice that it now gives information on Redis since we're no longer using the in-memory datastore.
 
@@ -306,7 +344,7 @@ docker build . -t us.icr.io/$MY_NAMESPACE/analyzer:v1 && docker push us.icr.io/$
 cd ..
 ```
 
-4. Use the Explorer to edit `analyzer-deployment.yaml`. The path to this file is `guestbook/v2/analyzer-deployment.yaml`. You need to insert your Container Registry namespace where it says `<my_namespace>`. If you don't remember your namespace, run `ibmcloud cr namespaces`. Make sure to save the file when you're done. Also notice the `env` section, which indicates that environment variables will be set using the `binding-tone` Secret you created.
+4. Use the Explorer to edit `analyzer-deployment.yaml`. The path to this file is `guestbook/v2/analyzer-deployment.yaml`. You need to insert your Container Registry namespace where it says `<my_namespace>`. If you don't remember your namespace, run `echo $MY_NAMESPACE`. Make sure to save the file when you're done. Also notice the `env` section, which indicates that environment variables will be set using the `binding-tone` Secret you created.
 
 5. Create the `analyzer` Deployment.
 ```
@@ -323,7 +361,7 @@ oc apply -f analyzer-service.yaml
 7. Return to the guestbook in the browser, refresh the page, and submit a new entry. You should see your entry appear along with a tone analysis.
 
 # Autoscale guestbook
-Now that guestbook is successfully up and running, let's set up a horizontal pod autoscaler (HPA) so that it can handle any load that comes its way.
+Now that guestbook is successfully up and running, let's set up a horizontal pod autoscaler (HPA) so that it can handle any load that comes its way. Make sure to keep the guestbook open in a browser tab so that it continues to make requests and consume resources so that it can be successfully autoscaled.
 
 First, we need to set resource requests and limits for the containers that will run. If a container requests a resource like CPU or memory, Kubernetes will only schedule it on a node that can give it that resource. On the other hand, limits prevent a container from consuming more than a certain amount of a resource.
 
@@ -376,7 +414,7 @@ This HPA indicates that we're going to scale based on CPU usage. Generally you w
 
 8. Click **Create**.
 
-9. If you wait, you'll see both **Current Replicas** and **Desired Replicas** become three. This is because the HPA detected sufficient load to trigger a scale up to the maximum number of Pods, which is three. You can also view the **Last Scale Time** as well as the current and target CPU utilization. The target is obviously 1% since that's what we set it to.
+9. If you wait, you'll see both **Current Replicas** and **Desired Replicas** become three. This is because the HPA detected sufficient load to trigger a scale up to the maximum number of Pods, which is three. You can also view the **Last Scale Time** as well as the current and target CPU utilization. The target is obviously 1% since that's what we set it to. Note that it can take a few minutes to trigger the scale up.
 
 10. If you click the `guestbook` Deployment under **Scale Target**, you'll be directed to the Deployment where you can verify that there are now three Pods.
 

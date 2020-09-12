@@ -108,10 +108,10 @@ In the Topology view, you should now see your newly created application.
 
 # View application in the web console
 The Topology view provides quick links to a lot of important parts of an application. You can:
-* Click the outer circle to get information on the application. 
-* Click the inner circle with the Node.js logo to get information on the Deployment. 
-* Click the GitHub icon to access the code repository. 
-* Click the check mark to view the most recent build (you will see circular arrows if the build is in progress). 
+* Click the outer circle to get information on the application.
+* Click the inner circle with the Node.js logo to get information on the Deployment.
+* Click the GitHub icon to access the code repository.
+* Click the check mark to view the most recent build (you will see circular arrows if the build is in progress).
 * Click the arrow coming out of a box to view the application in the browser if the application is externally available.
 
 Let's try some specific steps:
