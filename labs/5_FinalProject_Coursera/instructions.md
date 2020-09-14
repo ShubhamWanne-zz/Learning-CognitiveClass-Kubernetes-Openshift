@@ -5,8 +5,8 @@ In this lab, you will:
 - Build and deploy a simple guestbook application
 - Use OpenShift image streams to roll out an update
 - Deploy a multi-tier version of the guestbook application
-- Create a Watson Tone Analyzer service
-- Bind the Tone Analyzer service to your application
+- Create a Watson Tone Analyzer service instance on IBM Cloud
+- Bind the Tone Analyzer service instance to your application
 - Autoscale the guestbook app
 
 # Project Overview
@@ -92,7 +92,7 @@ ibmcloud cr images
 {: codeblock}
 
 # Deploy guestbook app from the OpenShift internal registry
-As discussed in the course, IBM Cloud Container Registry scans images for common vulnerabilities and exposures to ensure that images are secure. But OpenShift also provides an internal registry—recall the discussion of image streams and image stream tags. Using the internal registry has benefits too. For example, there is less latency when pulling images for deployments. What if we could use both—IBM Cloud Container Registry to scan our images and then automatically import those images to the internal registry for lower latency?
+As discussed in the course, IBM Cloud Container Registry scans images for common vulnerabilities and exposures to ensure that images are secure. But OpenShift also provides an internal registry -- recall the discussion of image streams and image stream tags. Using the internal registry has benefits too. For example, there is less latency when pulling images for deployments. What if we could use both—use IBM Cloud Container Registry to scan our images and then automatically import those images to the internal registry for lower latency?
 
 1. Create an image stream that points to your image in IBM Cloud Container Registry.
 ```
@@ -288,35 +288,33 @@ Since we gave OpenShift a Dockerfile, it will create a BuildConfig and a Build t
 
 But remember that we still need a Watson Tone Analyzer service to complete the application.
 
-# Create a Tone Analyzer service
+# Create a Tone Analyzer service instance
 1. Go to the [IBM Cloud catalog](https://cloud.ibm.com/catalog).
 
 2. Sign in with your personal account. You should have created one during a lab in the first module of this course.
 
 3. In the search box, type "tone analyzer". A dropdown should show appear and show services. Click the "Tone Analyzer" service as seen in the image below.
-![Catalog search tone analyzer](images/catalog-search-tone-analyzer.png)
+![Catalog search Tone Analyzer](images/catalog-search-tone-analyzer.png)
 
-4. You'll create an instance on the Lite plan, which is free. Leave all the default options and click **Create**. This will take you to a details page for the service instance.
+4. You'll create an instance on the Lite plan, which is free. Take note of the resource group, as you'll need this later. It may be something like "Default". Leave all the default options and click **Create**. This will take you to a details page for the service instance.
 
 5. Now that you have an instance, you need credentials with which you can access it. Click **Service credentials** on the left navigation to view credentials that are automatically generated for you.
 
-6. We need to store these credentials in a Kubernetes secret in order for our analyzer microservice to utilize them.
-
-7. From the terminal in the lab environment, login in to your IBM Cloud account. If you have a federated ID, use the `--sso` option. Use the provided URL in your CLI output to retrieve your one-time passcode. You know you have a federated ID when the login fails without the `--sso` and succeeds with the `--sso` option.
+6. We need to store these credentials in a Kubernetes secret in order for our analyzer microservice to utilize them. From the terminal in the lab environment, login in to your IBM Cloud account. If you have a federated ID, use the `--sso` option. Use the provided URL in your CLI output to retrieve your one-time passcode. You know you have a federated ID when the login fails without the `--sso` and succeeds with the `--sso` option.
 ```
 ibmcloud login [--sso]
 ```
 {: codeblock}
 
-8. Ensure that you target the resource group in which you created the Tone Analyzer service. This may be something like "Default".
+7. Ensure that you target the resource group in which you created the Tone Analyzer service. Remember that you noted this resource group in a previous step.
 ```
 ibmcloud target -g <resource_group>
 ```
 {: codeblock}
 
-9. Use the Explorer to edit `binding-hack.sh`. The path to this file is `guestbook/v2/binding-hack.sh`. You need to insert your OpenShift project where it says `<my_project>`. If you don't remember your project name, run `oc project`. Make sure to save the file when you're done.
+8. Use the Explorer to edit `binding-hack.sh`. The path to this file is `guestbook/v2/binding-hack.sh`. You need to insert your OpenShift project where it says `<my_project>`. If you don't remember your project name, run `oc project`. Make sure to save the file when you're done.
 
-10. Run the script to create a Secret containing credentials for your Tone Analyzer service.
+9. Run the script to create a Secret containing credentials for your Tone Analyzer service.
 ```
 ./binding-hack.sh
 ```
@@ -365,7 +363,7 @@ Now that guestbook is successfully up and running, let's set up a horizontal pod
 
 First, we need to set resource requests and limits for the containers that will run. If a container requests a resource like CPU or memory, Kubernetes will only schedule it on a node that can give it that resource. On the other hand, limits prevent a container from consuming more than a certain amount of a resource.
 
-In this case, we're going to request 3 millicores of CPU and 40 MB of RAM. We'll limit the containers to 30 millicores and 100 MB.
+In this case, we're going to request 3 millicores of CPU and 40 MB of RAM. We'll limit the containers to 30 millicores and 100 MB. These numbers are contrived in order to ensure that the app scales.
 
 1. From the Topology view, click the `guestbook` Deployment. Then click **Actions** > **Edit Deployment**.
 
