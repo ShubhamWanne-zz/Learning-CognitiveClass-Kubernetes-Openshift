@@ -182,7 +182,7 @@ In a multi-tier application, there are two primary ways that service dependencie
 
 1. From the terminal in the lab environment, change to the v2 directory.
 ```
-cd ../v2
+cd ../../v2
 ```
 {: codeblock}
 
