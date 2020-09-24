@@ -53,31 +53,25 @@ cat Dockerfile
 ```
 {: codeblock}
 
-2. Check whether your Container Registry namespace is still set as an environment variable after an earlier lab. Make sure that it's set to the namespace provided for you by the lab environment, not the namespace you created in your own account.
-```
-echo $MY_NAMESPACE
-```
-{: codeblock}
-
-3. If it's not set, export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your namespace, run `ibmcloud cr namespaces`.
+2. Export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your lab account namespace, run `ibmcloud cr namespaces`.
 ```
 export MY_NAMESPACE=<my_namespace>
 ```
 {: codeblock}
 
-4. Build the health app.
+3. Build the health app.
 ```
 docker build . -t us.icr.io/$MY_NAMESPACE/patient-ui:v1
 ```
 {: codeblock}
 
-6. Push the image to IBM Cloud Container Registry.
+4. Push the image to IBM Cloud Container Registry.
 ```
 docker push us.icr.io/$MY_NAMESPACE/patient-ui:v1
 ```
 {: codeblock}
 
-7. Verify that the image was pushed successfully.
+5. Verify that the image was pushed successfully.
 ```
 ibmcloud cr images
 ```

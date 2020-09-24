@@ -61,31 +61,25 @@ cat Dockerfile
 ```
 {: codeblock}
 
-3. Check whether your Container Registry namespace is still set as an environment variable after an earlier lab. Make sure that it's set to the namespace provided for you by the lab environment, not the namespace you created in your own account.
-```
-echo $MY_NAMESPACE
-```
-{: codeblock}
-
-4. If it's not set, export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your namespace, run `ibmcloud cr namespaces`.
+3. Export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your lab account namespace, run `ibmcloud cr namespaces`.
 ```
 export MY_NAMESPACE=<my_namespace>
 ```
 {: codeblock}
 
-5. Build the guestbook app.
+4. Build the guestbook app.
 ```
 docker build . -t us.icr.io/$MY_NAMESPACE/guestbook:v1
 ```
 {: codeblock}
 
-6. Push the image to IBM Cloud Container Registry.
+5. Push the image to IBM Cloud Container Registry.
 ```
 docker push us.icr.io/$MY_NAMESPACE/guestbook:v1
 ```
 {: codeblock}
 
-7. Verify that the image was pushed successfully.
+6. Verify that the image was pushed successfully.
 ```
 ibmcloud cr images
 ```

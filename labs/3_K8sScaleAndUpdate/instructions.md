@@ -35,20 +35,13 @@ ls
 {: codeblock}
 
 # Build and push application image to IBM Cloud Container Registry
-
-1. Check whether your namespace is still set as an environment variable after the first lab.
-```
-echo $MY_NAMESPACE
-```
-{: codeblock}
-
-2. If it's not set, export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your namespace, run `ibmcloud cr namespaces`.
+1. Export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your lab account namespace, run `ibmcloud cr namespaces`.
 ```
 export MY_NAMESPACE=<my_namespace>
 ```
 {: codeblock}
 
-3. Build and push the image again, as it may have been deleted automatically since you completed the first lab.
+2. Build and push the image again, as it may have been deleted automatically since you completed the first lab.
 ```
 docker build -t us.icr.io/$MY_NAMESPACE/hello-world:1 . && docker push us.icr.io/$MY_NAMESPACE/hello-world:1
 ```
