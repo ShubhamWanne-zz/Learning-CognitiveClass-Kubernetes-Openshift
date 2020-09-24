@@ -176,15 +176,21 @@ ibmcloud target -g <resource_group>
 ```
 {: codeblock}
 
-9. Use the Explorer to edit `binding-hack.sh`. The path to this file is `patient-ui/binding-hack.sh`. You need to insert your OpenShift project where it says `<my_project>`. If you don't remember your project name, run `oc project`. Make sure to save the file when you're done.
+11. Use the Explorer to edit `binding-hack.sh`. The path to this file is `patient-ui/binding-hack.sh`. You need to insert your OpenShift project where it says `<my_project>`. If you don't remember your project name, run `oc project`. Make sure to save the file when you're done.
 
-10. Run the script to create a Secret containing credentials for your Cloudant service.
+12. Run the script to create a Secret containing credentials for your Cloudant service.
 ```
 ./binding-hack.sh
 ```
 {: codeblock}
 
 You should see the following output: `secret/cloudant-binding created`.
+
+13. Log back into the lab account.
+```
+ibmcloud login --apikey $IBMCLOUD_API_KEY
+```
+{: codeblock}
 
 # Deploy the patient database microservice
 Now that the Cloudant service instance is created and its credentials are provided in a Kubernetes Secret, we can deploy the patient database microservice. This microservice populates your Cloudant instance with patient data on startup, and it also serves that data to the front end application that you have already deployed.

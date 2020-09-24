@@ -322,6 +322,12 @@ ibmcloud target -g <resource_group>
 
 You should see the following output: `secret/tone-binding created`.
 
+10. Log back into the lab account.
+```
+ibmcloud login --apikey $IBMCLOUD_API_KEY
+```
+{: codeblock}
+
 # Deploy the analyzer microservice
 Now that the Tone Analyzer service is created and its credentials are provided in a Kubernetes Secret, we can deploy the analyzer microservice.
 
