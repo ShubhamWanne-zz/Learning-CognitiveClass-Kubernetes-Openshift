@@ -127,7 +127,7 @@ docker images
 ```
 {: codeblock}
 
-Note that compared to the `hello-world` image, this image has a different image ID. This means that the two images consist of different layers—in other words, they're not the same image.
+Note that compared to the `hello-world` image, this image has a different image ID. This means that the two images consist of different layers -- in other words, they're not the same image.
 
 You should also see a `node` image in the images output. This is because the `docker build` command pulled `node:9.4.0-alpine` to use it as the base image for the image you built.
 
@@ -178,25 +178,43 @@ ibmcloud cr namespaces
 ```
 {: codeblock}
 
-3. Export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign.
+3. However, since you created your own IBM Cloud Container Registry namespace in the previous lab, we'll use that one for this lab. To do so, login in to your IBM Cloud account. If you have a federated ID, use the `--sso` option. Use the provided URL in your CLI output to retrieve your one-time passcode. You know you have a federated ID when the login fails without the `--sso` and succeeds with the `--sso` option.
+```
+ibmcloud login [--sso]
+```
+{: codeblock}
+
+4. Ensure that you are targeting the `us-south` region where you created your namespace.
+```
+ibmcloud cr region-set us-south
+```
+{: codeblock}
+
+5. Log your local Docker daemon into IBM Cloud Container Registry so that you can push to and pull from the registry.
+```
+ibmcloud cr login
+```
+{: codeblock}
+
+6. Export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your namespace, run `ibmcloud cr namespaces`. Since you're now logged into your personal account, you should see your personal namespace instead of the one in the lab account.
 ```
 export MY_NAMESPACE=<my_namespace>
 ```
 {: codeblock}
 
-3. Tag your image so that it can be pushed to IBM Cloud Container Registry.
+7. Tag your image so that it can be pushed to IBM Cloud Container Registry.
 ```
 docker tag myimage:v1 us.icr.io/$MY_NAMESPACE/hello-world:1
 ```
 {: codeblock}
 
-4. Push the newly tagged image to IBM Cloud Container Registry.
+8. Push the newly tagged image to IBM Cloud Container Registry.
 ```
 docker push us.icr.io/$MY_NAMESPACE/hello-world:1
 ```
 {: codeblock}
 
-5. Verify that the image was successfully pushed by listing images in Container Registry.
+9. Verify that the image was successfully pushed by listing images in Container Registry.
 ```
 ibmcloud cr images
 ```
@@ -204,4 +222,10 @@ ibmcloud cr images
 
 You should see your image name in the output. Recall from the module videos that we discussed Vulnerability Advisor, which scans images in IBM Cloud Container Registry for common vulnerabilities and exposures. In the last column of the output, note that Vulnerability Advisor is either scanning your image or it has provided a security status, depending on how quickly you list the images and how long the scan takes.
 
-Congratulations! You have completed the first lab for the first module of this course.
+10. Since you will use the namespace in the lab account in future labs, log back into the lab account.
+```
+ibmcloud login --apikey $IBMCLOUD_API_KEY
+```
+{: codeblock}
+
+Congratulations! You have completed the second lab for the first module of this course.
