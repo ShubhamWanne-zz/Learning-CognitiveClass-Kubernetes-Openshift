@@ -164,11 +164,13 @@ We've demonstrated that we need persistent storage in order for the health app t
 
 8. Name the new credential "cloudant-health-creds". Leave the role as **Manager** and click **Add**.
 
-9. We need to store this credential in a Kubernetes secret in order for our patient database microservice to utilize it. From the terminal in the lab environment, login in to your IBM Cloud account. If you have a federated ID, use the `--sso` option. Use the provided URL in your CLI output to retrieve your one-time passcode. You know you have a federated ID when the login fails without the `--sso` and succeeds with the `--sso` option.
+9. We need to store this credential in a Kubernetes secret in order for our patient database microservice to utilize it. From the terminal in the lab environment, login to your IBM Cloud account.
 ```
-ibmcloud login [--sso]
+ibmcloud login
 ```
 {: codeblock}
+
+If you have a federated ID, use the `--sso` option. Use the provided URL in your CLI output to retrieve your one-time passcode. You know you have a federated ID when the login fails without the `--sso` and succeeds with the `--sso` option.
 
 10. Ensure that you target the resource group in which you created the Cloudant service. Remember that you noted this resource group in a previous step.
 ```

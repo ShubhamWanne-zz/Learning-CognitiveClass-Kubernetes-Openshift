@@ -178,11 +178,13 @@ ibmcloud cr namespaces
 ```
 {: codeblock}
 
-3. However, since you created your own IBM Cloud Container Registry namespace in the previous lab, we'll use that one for this lab. To do so, login in to your IBM Cloud account. If you have a federated ID, use the `--sso` option. Use the provided URL in your CLI output to retrieve your one-time passcode. You know you have a federated ID when the login fails without the `--sso` and succeeds with the `--sso` option.
+3. However, since you created your own IBM Cloud Container Registry namespace in the previous lab, we'll use that one for this lab. To do so, login to your IBM Cloud account.
 ```
-ibmcloud login [--sso]
+ibmcloud login
 ```
 {: codeblock}
+
+If you have a federated ID, use the `--sso` option. Use the provided URL in your CLI output to retrieve your one-time passcode. You know you have a federated ID when the login fails without the `--sso` and succeeds with the `--sso` option.
 
 4. Ensure that you are targeting the `us-south` region where you created your namespace.
 ```
