@@ -110,33 +110,23 @@ kubectl get pods -o wide
 ```
 {: codeblock}
 
-5. Note the Pod name from the previous step, and describe the Pod to get more details about it.
+5. Describe the Pod to get more details about it.
 ```
-kubectl describe pod <pod_name>
-```
-{: codeblock}
-
-Take a look at this output--there's a lot there. If you look closely, you'll notice that there is a ReplicaSet associated with this Pod. This is because the `kubectl run` command actually created a Deployment with one replica, which in turn created a ReplicaSet. At the end of the output, you'll also see events. These give some history for this resource. For example, you should see events that indicate that this Pod was scheduled, the image was pulled, and the container was started.
-
-6. List the Deployments and ReplicaSets in your namespace to verify that one of each was created.
-```
-kubectl get deployments,replicasets
+kubectl describe pod hello-world
 ```
 {: codeblock}
 
-7. Delete the Deployment. This will also delete the ReplicaSet and the Pod.
+6. Delete the Pod.
 ```
-kubectl delete deployment hello-world
+kubectl delete pod hello-world
 ```
 {: codeblock}
 
-8. List the Pods to verify that none exist.
+7. List the Pods to verify that none exist.
 ```
 kubectl get pods
 ```
 {: codeblock}
-
-The ReplicaSet and the Pod were deleted since the owning Deployment was deleted.
 
 # Create a Pod with imperative object configuration
 Imperative object configuration lets you create objects by specifying the action to take (e.g., create, update, delete) while using a configuration file. A configuration file, `hello-world-create.yaml`, is provided to you in this directory.
@@ -159,8 +149,6 @@ Note that this is indeed imperative, as you explicitly told Kubernetes to *creat
 kubectl get pods
 ```
 {: codeblock}
-
-In this case, `kubectl` does not create a Deployment for us because the YAML file explicitly defined a Pod.
 
 5. Delete the Pod.
 ```
