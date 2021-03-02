@@ -7,7 +7,8 @@ In this lab, you will:
 - Build an image using a Dockerfile
 - Push an image to IBM Cloud Container Registry
 
-In this lab you will be using an IBM Cloud account that has been automatically generated for you. The lab environment will _not_ have access to any resources within your personal IBM Cloud account, including ICR namespaces and images. 
+**Important:**
+You may already have an IBM Cloud account and may even have a namespace in the IBM Container Registry (ICR). However, in this lab **you will not be using your own IBM Cloud account or your own ICR namespace**. You will be using an IBM Cloud account that has been automatically generated for you for this excercise. The lab environment will _not_ have access to any resources within your personal IBM Cloud account, including ICR namespaces and images. 
 
 # Verify the environment and command line tools
 1. Open a terminal window by using the menu in the editor: `Terminal > New Terminal`.
@@ -168,13 +169,13 @@ exit
 In the original terminal window, the `docker run` command has exited and you are able to type commands in that terminal window again.
 
 # Push the image to IBM Cloud Container Registry
-1. The environment should have already logged you into the IBM Cloud account that has been automatically generated for you by the Skills Network lab environment. The following command will give you information about the account you're targeting:
+1. The environment should have already logged you into the IBM Cloud account that has been automatically generated for you by the Skills Network Labs environment. The following command will give you information about the account you're targeting:
 ```
 ibmcloud target
 ```
 {: codeblock}
 
-2. The environment also created an IBM Cloud Container Registry namespace for you. Since Container Registry is multi-tenant, namespaces are used to divvy up the registry among several users. Use the following command to see the namespaces you have access to:
+2. The environment also created an IBM Cloud Container Registry (ICR) namespace for you. Since Container Registry is multi-tenant, namespaces are used to divvy up the registry among several users. Use the following command to see the namespaces you have access to:
 ```
 ibmcloud cr namespaces
 ```
@@ -185,7 +186,7 @@ You should see two namespaces:
 - `sn-labs-<username>`: This is a namespace just for you. You have full _read_ and _write_ access to this namespace.
 - `sn-labsassets`: This is a shared namespace you only have _read_ access to.
 
-3. Ensure that you are targeting the `us-south` region where you created your namespace.
+3. Ensure that you are targeting the `us-south` region where these namespaces reside as you saw in the output of the `ibmcloud target` command.
 ```
 ibmcloud cr region-set us-south
 ```
@@ -197,7 +198,7 @@ ibmcloud cr login
 ```
 {: codeblock}
 
-5. Export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your namespace, run `ibmcloud cr namespaces`.
+5. Export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your namespace, run `ibmcloud cr namespaces` again or just look it up in your terminal.
 ```
 export MY_NAMESPACE=sn-labs-$USERNAME
 ```
