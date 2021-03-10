@@ -38,22 +38,22 @@ Congratulations! You can now explore the [IBM Cloud catalog](https://cloud.ibm.c
 ![Container Registry tile](images/registry-tile.png){ width=626 height=527 }
 
 4. You can now read about the Container Registry service and visit links for API documentation and docs about how to use the service.
-![Registry catalog](images/registry-catalog.png){ width=615 height=376 }
+![Registry catalog](images/registry-catalog.png){ width=615 height=377 }
 
-5. At the top right, click **Create**.
+5. At the top right, click **Get started**.
 
 6. Ensure that the location is set to **Dallas**.
-![Container Registry location](images/registry-location.png){ width=510 height=280 }
+![Container Registry location](images/registry-location.png){ width=435 height=280 }
 
 7. Click the **Namespaces** tab.
-![Container Registry namespaces menu](images/registry-namespaces-menu.png){ width=624 height=340 }
+![Container Registry namespaces menu](images/registry-namespaces-menu.png){ width=295 height=340 }
 
 8. On the right side of the Namespaces panel, click **Create**. A **Create namespace** panel opens.
 
 9. In the **Resource group** field, select the name of the resource group you would like this namespace to reside in. For this lab, you can simply leave the selection as **default**.
 
 10. In the **Name** field, type a unique name for the namespace. The name must be unique across all users of the Container Registry service in this region.
-![Container Registry namespace create](images/registry-namespace-create.png){ width=223 height=514 }
+![Container Registry namespace create](images/registry-namespace-create.png){ width=445 height=514 }
 
 11. Click **Create** at the bottom of the panel to create the namespace.
 
