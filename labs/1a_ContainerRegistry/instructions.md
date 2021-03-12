@@ -1,3 +1,7 @@
+<center>
+<img src="images/labs_module_1_images_IDSNlogo.png" width = "300">
+</center>
+
 # Creating an IBM Cloud Container Registry Namespace
 
 ## Objectives
