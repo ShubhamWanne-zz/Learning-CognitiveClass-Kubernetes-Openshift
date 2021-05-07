@@ -137,7 +137,7 @@ docker build . -t us.icr.io/$MY_NAMESPACE/guestbook:v1 && docker push us.icr.io/
 
 5. If you don't want to wait for OpenShift to automatically import the image, run the following command.
 ```
-oc import-image patient-ui:v1 --from=us.icr.io/sn-labs-alexanderpa1/patient-ui:v1 --confirm
+oc import-image guestbook:v1 --from=us.icr.io/$MY_NAMESPACE/guestbook:v1 --confirm
 ```
 {: codeblock}
 
