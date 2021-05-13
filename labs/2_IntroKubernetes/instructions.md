@@ -80,9 +80,9 @@ kubectl get pods
 # Create a Pod with an imperative command
 Now it's time to create your first Pod. This Pod will run the `hello-world` image you built and pushed to IBM Cloud Container Registry in the last lab. As explained in the videos for this module, you can create a Pod imperatively or declaratively. Let's do it imperatively first.
 
-1. Export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your lab account namespace, run `ibmcloud cr namespaces`.
+1. Export your namespace as an environment variable so that it can be used in subsequent commands.
 ```
-export MY_NAMESPACE=<my_namespace>
+export MY_NAMESPACE=sn-labs-$USERNAME
 ```
 {: codeblock}
 

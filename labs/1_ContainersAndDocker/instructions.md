@@ -12,7 +12,7 @@ In this lab, you will:
 - Push an image to IBM Cloud Container Registry
 
 **Important:**
-You may already have an IBM Cloud account and may even have a namespace in the IBM Container Registry (ICR). However, in this lab **you will not be using your own IBM Cloud account or your own ICR namespace**. You will be using an IBM Cloud account that has been automatically generated for you for this excercise. The lab environment will _not_ have access to any resources within your personal IBM Cloud account, including ICR namespaces and images. 
+You may already have an IBM Cloud account and may even have a namespace in the IBM Container Registry (ICR). However, in this lab **you will not be using your own IBM Cloud account or your own ICR namespace**. You will be using an IBM Cloud account that has been automatically generated for you for this excercise. The lab environment will _not_ have access to any resources within your personal IBM Cloud account, including ICR namespaces and images.
 
 # Verify the environment and command line tools
 1. Open a terminal window by using the menu in the editor: `Terminal > New Terminal`.
@@ -202,7 +202,7 @@ ibmcloud cr login
 ```
 {: codeblock}
 
-5. Export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your namespace, run `ibmcloud cr namespaces` again or just look it up in your terminal.
+5. Export your namespace as an environment variable so that it can be used in subsequent commands.
 ```
 export MY_NAMESPACE=sn-labs-$USERNAME
 ```

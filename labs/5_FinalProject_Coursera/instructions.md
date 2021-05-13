@@ -65,9 +65,9 @@ cat Dockerfile
 ```
 {: codeblock}
 
-3. Export your namespace as an environment variable so that it can be used in subsequent commands. Make sure to substitute your namespace after the equals sign. If you don't remember your lab account namespace, run `ibmcloud cr namespaces`.
+3. Export your namespace as an environment variable so that it can be used in subsequent commands.
 ```
-export MY_NAMESPACE=<my_namespace>
+export MY_NAMESPACE=sn-labs-$USERNAME
 ```
 {: codeblock}
 
