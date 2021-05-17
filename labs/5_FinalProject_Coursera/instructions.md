@@ -156,11 +156,7 @@ oc import-image guestbook:v1 --from=us.icr.io/$MY_NAMESPACE/guestbook:v1 --confi
 # Guestbook storage
 1. From the guestbook in the browser, click the `/info` link beneath the input box. This is an information endpoint for the guestbook. Notice that it says "In-memory datastore (not redis)". Currently, we have only deployed the guestbook web front end, so it is using in-memory datastore to keep track of the entries. This is not very resilient, however, because any update or even a restart of the Pod will cause the entries to be lost. But let's confirm this.
 
-2. Return to the OpenShift web console and click the **Overview** tab for the `guestbook` Deployment.
-
-3. At the top, you should see a visual indicator of how many Pods are running. It should say one. Click the down arrow next to that graphic. After it reaches zero, click the up arrow to create one Pod again. This is just a quick way to recreate the Pod for the Deployment.
-
-4. Now return to the guestbook application in the browser by clicking the Route location again. You should see that your previous entries appear no more.
+2. Return to the guestbook application in the browser by clicking the Route location again. You should see that your previous entries appear no more. This is because the guestbook was restarted when your update was deployed in the last section. We need a way to persist the guestbook entries even after restarts.
 
 # Delete the guestbook
 In order to deploy a more complex version of the guestbook, delete this simple version.
