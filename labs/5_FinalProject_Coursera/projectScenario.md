@@ -1,4 +1,4 @@
-<img src="../images/IDSNlogo.png" width="200" height="200"/>
+<img src="images/IDSNlogo.png" width="200" height="200"/>
 
 
 # Final Project: Scenario and Review Criteria
