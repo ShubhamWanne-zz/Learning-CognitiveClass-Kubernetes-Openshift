@@ -65,9 +65,9 @@ cat Dockerfile
 ```
 {: codeblock}
 
-3. Export your namespace as an environment variable so that it can be used in subsequent commands.
+3. Export your namespace as an environment variable so that it can be used in subsequent commands. 
 ```
-export MY_NAMESPACE=sn-labs-$USERNAME
+export MY_NAMESPACE=sn-labs-staging-$USERNAME
 ```
 {: codeblock}
 
