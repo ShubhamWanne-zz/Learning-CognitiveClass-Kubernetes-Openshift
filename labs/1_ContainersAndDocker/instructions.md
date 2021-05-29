@@ -109,7 +109,7 @@ docker container rm <container_id>
 ```
 {: codeblock}
 
-Congratulations on pulling an image and running you first container! Now let's build an image on our own instead of using one pulled from Docker Hub.
+Congratulations on pulling an image and running your first container! Now let's build an image on our own instead of using one pulled from Docker Hub.
 
 # Build an image using a Dockerfile
 1. The current working directory contains a simple Node.js application that we will run in a container. The app will print a hello message along with the hostname. The following files are needed to run the app in a container:
