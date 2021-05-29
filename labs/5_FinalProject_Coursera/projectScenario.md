@@ -9,7 +9,7 @@
 In this final project, you will build and deploy a simple guestbook application. You will roll out updates using Openshift image streams. You will be rolling out a multi-tier version of the guestbook application. Finally, you will create and bind a tone analyzer service instance to your application and autoscale the guestbook.
 
 ## Review Criteria
-After completing the hands-on lab: Build and Deploy a Simple Guestbook App, you will complete the peer-graded assignment and graded on the following nine tasks.
+After completing the hands-on lab: Build and Deploy a Simple Guestbook App, you will complete the peer-graded assignment and be graded on the following nine tasks.
 
 For each of the nine tasks, provide a screenshot and upload the JPEG (.jpg) file for your peers to review when you submit your work.  
 
