@@ -125,25 +125,23 @@ docker build . -t us.icr.io/$MY_NAMESPACE/patient-ui:v1 && docker push us.icr.io
 ```
 {: codeblock}
 
-4. Recall the `--schedule` option we specified when we imported our image into the OpenShift internal registry. As a result, OpenShift will regularly import new images pushed to the specified tag. Since we pushed our newly built image to the same tag, OpenShift will import the updated image within about 15 minutes.
-
-5. If you don't want to wait for OpenShift to automatically import the updated image, run the following command.
+4. Recall the `--schedule` option we specified when we imported our image into the OpenShift internal registry. As a result, OpenShift will regularly import new images pushed to the specified tag. Since we pushed our newly built image to the same tag, OpenShift will import the updated image within about 15 minutes. If you don't want to wait for OpenShift to automatically import the updated image, run the following command.
 ```
 oc import-image patient-ui:v1 --from=us.icr.io/sn-labs-alexanderpa1/patient-ui:v1 --confirm
 ```
 {: codeblock}
 
-6. Switch to the Administrator perspective so that you can view image streams.
+5. Switch to the Administrator perspective so that you can view image streams.
 
-7. Click **Builds** > **Image Streams** in the navigation.
+6. Click **Builds** > **Image Streams** in the navigation.
 
-8. Click the `patient-ui` image stream.
+7. Click the `patient-ui` image stream.
 
-9. Click the **History** menu. If you only see one entry listed here, it means OpenShift hasn't imported your new image yet. Wait a few minutes and refresh the page. Eventually you should see a second entry, indicating that a new version of this image stream tag has been imported. This can take some time as the default frequency for importing is 15 minutes.
+8. Click the **History** menu. If you only see one entry listed here, it means OpenShift hasn't imported your new image yet. Wait a few minutes and refresh the page. Eventually you should see a second entry, indicating that a new version of this image stream tag has been imported. This can take some time as the default frequency for importing is 15 minutes.
 
-10. Return to the Developer perspective.
+9. Return to the Developer perspective.
 
-11. View the health app in the browser again. If you still have the tab open, go there. If not, click the Route again from the `patient-ui` Deployment. You should see your new title on this page! OpenShift imported the new version of our image, and since the Deployment points to the image stream, it began running this new version as well.
+10. View the health app in the browser again. If you still have the tab open, go there. If not, click the Route again from the `patient-ui` Deployment. You should see your new title on this page! OpenShift imported the new version of our image, and since the Deployment points to the image stream, it began running this new version as well.
 
 # Health app storage
 1. From the health app in the browser, click the **Settings** link. If you're on the login page, this is beneath the login box. If you have already logged in, this is in the top navigation. This shows the current settings for the health app. Currently, the app is running in demo mode, which means that it serves static information on one mock patient. We want the app to require valid login credentials and to store patient details in a database instead of in memory.
