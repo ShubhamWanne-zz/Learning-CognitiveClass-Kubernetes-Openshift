@@ -158,7 +158,7 @@ We've demonstrated that we need persistent storage in order for the health app t
 
 4. You'll create an instance on the Lite plan, which is free. Scroll down to **Authentication method** and change it to **IAM and legacy credentials**. Take note of the resource group, as you'll need this later. It may be something like "Default".
 
-> If you do not change the **Authentication Method** to `IAM and legacy credentials` the lab with not work as expected
+> If you do not change the **Authentication Method** to `IAM and legacy credentials` the lab will not work as expected
 
 5. Leave all the other default options and click **Create**. This will take you to the IBM Cloud resource list page.
 
@@ -173,8 +173,6 @@ We've demonstrated that we need persistent storage in order for the health app t
 ibmcloud login -u <youremailid>
 ```
 {: codeblock}
-
-> Or you could use the `-u` and `-p` options for your username and password.
 
 10. Ensure that you target the resource group in which you created the Cloudant service. Remember that you noted this resource group in a previous step.
 ```
