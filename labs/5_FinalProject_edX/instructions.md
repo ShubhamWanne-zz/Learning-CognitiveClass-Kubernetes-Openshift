@@ -158,6 +158,8 @@ We've demonstrated that we need persistent storage in order for the health app t
 
 4. You'll create an instance on the Lite plan, which is free. Scroll down to **Authentication method** and change it to **IAM and legacy credentials**. Take note of the resource group, as you'll need this later. It may be something like "Default".
 
+> If you do not change the **Authentication Method** to `IAM and legacy credentials` the lab with not work as expected
+
 5. Leave all the other default options and click **Create**. This will take you to the IBM Cloud resource list page.
 
 6. It will take a few minutes to provision the Cloudant service instance. Find your Cloudant instance under the **Services** section. Refresh the page a few times. Once the status on your instance is **Active**, click the instance to go to its details page.
@@ -166,13 +168,13 @@ We've demonstrated that we need persistent storage in order for the health app t
 
 8. Name the new credential "cloudant-health-creds". Leave the role as **Manager** and click **Add**.
 
-9. We need to store this credential in a Kubernetes secret in order for our patient database microservice to utilize it. From the terminal in the lab environment, login to your IBM Cloud account.
+9. We need to store this credential in a Kubernetes secret in order for our patient database microservice to utilize it. From the terminal in the lab environment, login to your IBM Cloud account and authenticate yourself with your password.
 ```
-ibmcloud login
+ibmcloud login -u <youremailid>
 ```
 {: codeblock}
 
-If you have a federated ID, use the `--sso` option. Use the provided URL in your CLI output to retrieve your one-time passcode. You know you have a federated ID when the login fails without the `--sso` and succeeds with the `--sso` option. If you don't have a federated ID, use the `-u` and `-p` options for your username and password.
+> Or you could use the `-u` and `-p` options for your username and password.
 
 10. Ensure that you target the resource group in which you created the Cloudant service. Remember that you noted this resource group in a previous step.
 ```
@@ -180,7 +182,7 @@ ibmcloud target -g <resource_group>
 ```
 {: codeblock}
 
-11. Use the Explorer to edit `binding-hack.sh`. The path to this file is `patient-ui/binding-hack.sh`. You need to insert your OpenShift project where it says `<my_project>`. If you don't remember your project name, run `oc project`. Make sure to save the file when you're done.
+11. Use the Explorer to edit `binding-hack.sh`. The path to this file is `patient-ui/binding-hack.sh`. You need to insert your OpenShift project where it says `<my_project>`. If you don't remember your project name, run `oc project`. Make sure to save the file when you're done. It would be `sn-labs-` followed by your username. 
 
 12. Run the script to create a Secret containing credentials for your Cloudant service.
 ```
@@ -190,11 +192,13 @@ ibmcloud target -g <resource_group>
 
 You should see the following output: `secret/cloudant-binding created`.
 
-13. Log back into the lab account.
+13. Log back into the lab account. 
 ```
 ibmcloud login --apikey $IBMCLOUD_API_KEY
 ```
 {: codeblock}
+
+> You have to use your lab account to use the Open Shift console. It will not work with your IBM Cloud credentials.
 
 # Deploy the patient database microservice
 Now that the Cloudant service instance is created and its credentials are provided in a Kubernetes Secret, we can deploy the patient database microservice. This microservice populates your Cloudant instance with patient data on startup, and it also serves that data to the front end application that you have already deployed.
