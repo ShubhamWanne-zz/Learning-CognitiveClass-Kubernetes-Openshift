@@ -127,7 +127,7 @@ docker build . -t us.icr.io/$MY_NAMESPACE/patient-ui:v1 && docker push us.icr.io
 
 4. Recall the `--schedule` option we specified when we imported our image into the OpenShift internal registry. As a result, OpenShift will regularly import new images pushed to the specified tag. Since we pushed our newly built image to the same tag, OpenShift will import the updated image within about 15 minutes. If you don't want to wait for OpenShift to automatically import the updated image, run the following command.
 ```
-oc import-image patient-ui:v1 --from=us.icr.io/sn-labs-staging-$MY_NAMESPACE/patient-ui:v1 --confirm
+oc import-image patient-ui:v1 --from=us.icr.io/$MY_NAMESPACE/patient-ui:v1 --confirm
 ```
 {: codeblock}
 
@@ -156,9 +156,7 @@ We've demonstrated that we need persistent storage in order for the health app t
 3. In the search box, type "cloudant". A dropdown should show appear and show services. Click the "Cloudant" service as seen in the image below.
 ![Catalog search Cloudant](images/catalog-search-cloudant.png)
 
-4. You'll create an instance on the Lite plan, which is free. Scroll down to **Authentication method** and change it to **IAM and legacy credentials**. Take note of the resource group, as you'll need this later. It may be something like "Default".
-
-> If you do not change the **Authentication Method** to `IAM and legacy credentials` the lab will not work as expected
+4. You'll create an instance on the Lite plan, which is free. Scroll down to **Authentication method** and change it to **IAM and legacy credentials**. If you do not change the **Authentication Method** to **IAM and legacy credentials**, the lab will not work as expected. Take note of the resource group, as you'll need this later. It may be something like "Default".
 
 5. Leave all the other default options and click **Create**. This will take you to the IBM Cloud resource list page.
 
@@ -168,9 +166,9 @@ We've demonstrated that we need persistent storage in order for the health app t
 
 8. Name the new credential "cloudant-health-creds". Leave the role as **Manager** and click **Add**.
 
-9. We need to store this credential in a Kubernetes secret in order for our patient database microservice to utilize it. From the terminal in the lab environment, login to your IBM Cloud account and authenticate yourself with your password.
+9. We need to store this credential in a Kubernetes secret in order for our patient database microservice to utilize it. From the terminal in the lab environment, login to your IBM Cloud account with your username and password.
 ```
-ibmcloud login -u <youremailid>
+ibmcloud login -u <your_email_address>
 ```
 {: codeblock}
 
@@ -180,7 +178,7 @@ ibmcloud target -g <resource_group>
 ```
 {: codeblock}
 
-11. Use the Explorer to edit `binding-hack.sh`. The path to this file is `patient-ui/binding-hack.sh`. You need to insert your OpenShift project where it says `<my_project>`. It would be `sn-labs-` followed by your username. If you don't remember your project name, run `oc project`. Make sure to save the file when you're done.  
+11. Use the Explorer to edit `binding-hack.sh`. The path to this file is `patient-ui/binding-hack.sh`. You need to insert your OpenShift project where it says `<my_project>`. Your project is `sn-labs-` followed by your username. If you don't remember your project name, run `oc project`. Make sure to save the file when you're done.
 
 12. Run the script to create a Secret containing credentials for your Cloudant service.
 ```
@@ -190,13 +188,11 @@ ibmcloud target -g <resource_group>
 
 You should see the following output: `secret/cloudant-binding created`.
 
-13. Log back into the lab account. 
+13. Log back into the lab account. You have to use your lab account to use the Open Shift console; it will not work with your IBM Cloud credentials.
 ```
 ibmcloud login --apikey $IBMCLOUD_API_KEY
 ```
 {: codeblock}
-
-> You have to use your lab account to use the Open Shift console. It will not work with your IBM Cloud credentials.
 
 # Deploy the patient database microservice
 Now that the Cloudant service instance is created and its credentials are provided in a Kubernetes Secret, we can deploy the patient database microservice. This microservice populates your Cloudant instance with patient data on startup, and it also serves that data to the front end application that you have already deployed.
