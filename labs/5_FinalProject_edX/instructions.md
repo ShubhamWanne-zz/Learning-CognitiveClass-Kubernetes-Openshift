@@ -127,7 +127,7 @@ docker build . -t us.icr.io/$MY_NAMESPACE/patient-ui:v1 && docker push us.icr.io
 
 4. Recall the `--schedule` option we specified when we imported our image into the OpenShift internal registry. As a result, OpenShift will regularly import new images pushed to the specified tag. Since we pushed our newly built image to the same tag, OpenShift will import the updated image within about 15 minutes. If you don't want to wait for OpenShift to automatically import the updated image, run the following command.
 ```
-oc import-image patient-ui:v1 --from=us.icr.io/sn-labs-alexanderpa1/patient-ui:v1 --confirm
+oc import-image patient-ui:v1 --from=us.icr.io/sn-labs-staging-$MY_NAMESPACE/patient-ui:v1 --confirm
 ```
 {: codeblock}
 
