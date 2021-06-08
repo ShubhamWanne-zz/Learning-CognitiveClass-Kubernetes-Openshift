@@ -180,7 +180,7 @@ ibmcloud target -g <resource_group>
 ```
 {: codeblock}
 
-11. Use the Explorer to edit `binding-hack.sh`. The path to this file is `patient-ui/binding-hack.sh`. You need to insert your OpenShift project where it says `<my_project>`. If you don't remember your project name, run `oc project`. Make sure to save the file when you're done. It would be `sn-labs-` followed by your username. 
+11. Use the Explorer to edit `binding-hack.sh`. The path to this file is `patient-ui/binding-hack.sh`. You need to insert your OpenShift project where it says `<my_project>`. It would be `sn-labs-` followed by your username. If you don't remember your project name, run `oc project`. Make sure to save the file when you're done.  
 
 12. Run the script to create a Secret containing credentials for your Cloudant service.
 ```
