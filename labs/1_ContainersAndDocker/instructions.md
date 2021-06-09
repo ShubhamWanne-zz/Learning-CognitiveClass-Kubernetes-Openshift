@@ -187,7 +187,7 @@ ibmcloud cr namespaces
 
 You should see two namespaces listed starting with `sn-labs`:
 
-- The first one with your user name is a namespace just for you. You have full _read_ and _write_ access to this namespace.
+- The first one with your username is a namespace just for you. You have full _read_ and _write_ access to this namespace.
 - The second one is a shared namespace you only have _read_ access to.
 
 3. Ensure that you are targeting the `us-south` region where these namespaces reside as you saw in the output of the `ibmcloud target` command.
