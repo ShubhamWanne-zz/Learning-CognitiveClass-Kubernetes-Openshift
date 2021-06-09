@@ -185,10 +185,10 @@ ibmcloud cr namespaces
 ```
 {: codeblock}
 
-You should see two namespaces:
+You should see two namespaces listed starting with `sn-labs`:
 
-- `sn-labs-staging-<username>`: This is a namespace just for you. You have full _read_ and _write_ access to this namespace.
-- `sn-labsassets`: This is a shared namespace you only have _read_ access to.
+- The first one with your user name is a namespace just for you. You have full _read_ and _write_ access to this namespace.
+- The second one is a shared namespace you only have _read_ access to.
 
 3. Ensure that you are targeting the `us-south` region where these namespaces reside as you saw in the output of the `ibmcloud target` command.
 ```
@@ -204,7 +204,7 @@ ibmcloud cr login
 
 5. Export your namespace as an environment variable so that it can be used in subsequent commands.
 ```
-export MY_NAMESPACE=sn-labs-staging-$USERNAME
+export MY_NAMESPACE=$(ibmcloud cr namespaces|grep sn-labs-|xargs)
 ```
 {: codeblock}
 
