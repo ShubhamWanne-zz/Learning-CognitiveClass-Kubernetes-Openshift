@@ -298,9 +298,9 @@ But remember that we still need a Watson Tone Analyzer service to complete the a
 
 5. Now that you have an instance, you need credentials with which you can access it. Click **Service credentials** on the left navigation to view credentials that are automatically generated for you.
 
-6. We need to store these credentials in a Kubernetes secret in order for our analyzer microservice to utilize them. From the terminal in the lab environment, login to your IBM Cloud account. From the terminal in the lab environment, login to your IBM Cloud account with your username and password.
+6. We need to store these credentials in a Kubernetes secret in order for our analyzer microservice to utilize them. From the terminal in the lab environment, login to your IBM Cloud account with your username. When prompted enter you password to login.
 ```
-ibmcloud login -u <your_email_address>
+ibmcloud login -u <your_email_address> 
 ```
 {: codeblock}
 
