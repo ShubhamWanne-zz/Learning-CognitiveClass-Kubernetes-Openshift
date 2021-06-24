@@ -298,13 +298,13 @@ But remember that we still need a Watson Tone Analyzer service to complete the a
 
 5. Now that you have an instance, you need credentials with which you can access it. Click **Service credentials** on the left navigation to view credentials that are automatically generated for you.
 
-6. We need to store these credentials in a Kubernetes secret in order for our analyzer microservice to utilize them. From the terminal in the lab environment, login to your IBM Cloud account.
+6. We need to store these credentials in a Kubernetes secret in order for our analyzer microservice to utilize them. From the terminal in the lab environment, login to your IBM Cloud account with your username. When prompted enter you password to login.
 ```
-ibmcloud login
+ibmcloud login -u <your_email_address> 
 ```
 {: codeblock}
 
-If you have a federated ID, use the `--sso` option. Use the provided URL in your CLI output to retrieve your one-time passcode. You know you have a federated ID when the login fails without the `--sso` and succeeds with the `--sso` option. If you don't have a federated ID, use the `-u` and `-p` options for your username and password.
+>If you are a federated user that uses a corporate or enterprise single sign-on ID, you can log in to IBM Cloud® from the console by using a federated ID and password. Use the provided URL in your CLI output to retrieve your one-time passcode. You know you have a federated ID when the login fails without the `--sso` and succeeds with the `--sso` option.
 
 7. Ensure that you target the resource group in which you created the Tone Analyzer service. Remember that you noted this resource group in a previous step.
 ```

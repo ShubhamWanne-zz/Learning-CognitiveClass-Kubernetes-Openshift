@@ -173,6 +173,8 @@ ibmcloud login -u <your_email_address>
 ```
 {: codeblock}
 
+>If you are a federated user that uses a corporate or enterprise single sign-on ID, you can log in to IBM Cloud® from the console by using a federated ID and password. Use the provided URL in your CLI output to retrieve your one-time passcode. You know you have a federated ID when the login fails without the `--sso` and succeeds with the `--sso` option.
+
 10. Ensure that you target the resource group in which you created the Cloudant service. Remember that you noted this resource group in a previous step.
 ```
 ibmcloud target -g <resource_group>
