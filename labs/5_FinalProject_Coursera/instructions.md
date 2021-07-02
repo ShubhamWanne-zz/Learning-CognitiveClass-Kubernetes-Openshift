@@ -67,7 +67,7 @@ cat Dockerfile
 
 3. Export your namespace as an environment variable so that it can be used in subsequent commands. 
 ```
-export MY_NAMESPACE=$(ibmcloud cr namespaces|grep sn-labs-|xargs)
+export MY_NAMESPACE=sn-labs-$USERNAME
 ```
 {: codeblock}
 
