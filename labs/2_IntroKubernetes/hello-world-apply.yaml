@@ -25,7 +25,7 @@ spec:
         imagePullPolicy: Always
         name: hello-world
         ports:
-        - containerPort: 80
+        - containerPort: 8080
           protocol: TCP
       imagePullSecrets:
       - name: icr

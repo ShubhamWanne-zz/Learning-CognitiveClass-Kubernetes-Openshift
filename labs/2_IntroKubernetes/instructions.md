@@ -228,11 +228,11 @@ Since there are three replicas of this application deployed in the cluster, Kube
 
 1. In order to access the application, we have to expose it to the internet using a Kubernetes Service.
 ```
-kubectl expose deployment/hello-world --type=NodePort --port=8080 --name=hello-world --target-port=8080
+kubectl expose deployment/hello-world
 ```
 {: codeblock}
 
-This command creates what is called a NodePort Service. This will open up a port on the worker node to allow the application to be accessed using that port and the IP address of the node.
+This command creates what is called a ClusterIP Service. This creates an IP address that accessible within the cluster.
 
 2. List Services in order to see that this service was created.
 ```
@@ -240,67 +240,36 @@ kubectl get services
 ```
 {: codeblock}
 
-3. Two things are needed to access this application: a worker node IP address and the correct port. To get a worker node IP, rerun the `get pods` command with the `wide` option and note any one of the node IP addresses (from the column entitled `NODE`):
+3. Open a new terminal window using `Terminal > New Terminal`.
+
+4. Since the cluster IP is not accessible outside of the cluster, we need to create a proxy. Note that this is not how you would make an application externally accessible in a production scenario. Run this command in the new terminal window since your environment variables need to be accessible in the original window for subsequent commands.
 ```
-kubectl get pods -o wide
+kubectl proxy
 ```
 {: codeblock}
 
-Here is some sample output.
-```
-NAME                          READY   STATUS    RESTARTS   AGE   IP               NODE            NOMINATED NODE   READINESS GATES
-hello-world-dd6b5d745-f9xjk   1/1     Running   0          7m    172.30.104.185   10.114.85.153   <none>           <none>
-hello-world-dd6b5d745-m89fc   1/1     Running   0          7m    172.30.165.182   10.114.85.151   <none>           <none>
-hello-world-dd6b5d745-qvs9t   1/1     Running   0          7m    172.30.69.68     10.114.85.172   <none>           <none>
-```
-Using this sample output, you could choose `10.114.85.153`, `10.114.85.151`, or `10.114.85.172` for the node IP address.
+This command doesn't terminate until you terminate it. Keep it running so that you can continue to access your app.
 
-4. Export the node IP address as an environment variable. Make sure to substitute the copied IP address into this command.
+5. In the original terminal window, ping the application to get a response.
 ```
-export NODE_IP=<node_ip>
+curl -L localhost:8001/api/v1/namespaces/sn-labs-$USERNAME/services/hello-world/proxy
 ```
 {: codeblock}
 
-Using the sample output, one correct command would be `export NODE_IP=10.114.85.153`.
-
-5. To get the port number, run the following command and note the port:
+6. Notice that this output includes the Pod name. Run the command ten times and note the different Pod names in each line of output.
 ```
-kubectl get services
-```
-{: codeblock}
-
-Here is some sample output. In this sample, the port number we need is `31758`.
-```
-NAME          TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-hello-world   NodePort   172.21.121.84   <none>        8080:31758/TCP   58s
-```
-
-6. Export the port as an environment variable. Make sure to substitute the copied port into this command.
-```
-export NODE_PORT=<node_port>
-```
-{: codeblock}
-
-Using the sample output, the correct command would be `export NODE_PORT=31758`.
-
-7. Ping the application to get a response.
-```
-curl $NODE_IP:$NODE_PORT
-```
-{: codeblock}
-
-8. Notice that this output includes the Pod name. Run the command ten times and note the different Pod names in each line of output.
-```
-for i in `seq 10`; do curl $NODE_IP:$NODE_PORT; done
+for i in `seq 10`; do curl -L localhost:8001/api/v1/namespaces/sn-labs-$USERNAME/services/hello-world/proxy; done
 ```
 {: codeblock}
 
 You should see more than one Pod name, and quite possibly all three Pod names, in the output. This is because Kubernetes load balances the requests across the three replicas, so each request could hit a different instance of our application.
 
-9. Delete the Deployment and Service. This can be done in a single command by using slashes.
+7. Delete the Deployment and Service. This can be done in a single command by using slashes.
 ```
 kubectl delete deployment/hello-world service/hello-world
 ```
 {: codeblock}
+
+8. Return to the terminal window running the `proxy` command and kill it using `Ctrl+C`.
 
 Congratulations! You have completed the lab for the second module of this course.

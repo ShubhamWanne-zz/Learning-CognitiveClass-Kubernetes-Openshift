@@ -54,66 +54,46 @@ docker build -t us.icr.io/$MY_NAMESPACE/hello-world:1 . && docker push us.icr.io
 # Deploy the application to Kubernetes
 1. Use the Explorer to edit `deployment.yaml` in this directory. The path to this file is `cc201/labs/3_K8sScaleAndUpdate/`. You need to insert your namespace where it says `<my_namespace>`. Make sure to save the file when you're done.
 
-1. Run your image as a Deployment.
+2. Run your image as a Deployment.
 ```
 kubectl apply -f deployment.yaml
 ```
 {: codeblock}
 
-2. List Pods until the status is "Running".
+3. List Pods until the status is "Running".
 ```
 kubectl get pods
 ```
 {: codeblock}
 
-3. In order to access the application, we have to expose it to the internet via a Kubernetes Service.
+4. In order to access the application, we have to expose it to the internet via a Kubernetes Service.
 ```
-kubectl expose deployment/hello-world --type=NodePort --port=8080 --name=hello-world --target-port=8080
-```
-{: codeblock}
-
-Now we can follow the same steps as before to gain access to this application.
-
-4. To get a worker node IP, rerun the list Pods command with the `wide` option and the node IP address (from the column entitled `NODE`):
-```
-kubectl get pods -o wide
+kubectl expose deployment/hello-world
 ```
 {: codeblock}
 
-4. Export the node IP address as an environment variable. Make sure to substitute the copied IP address into this command.
+This creates a service of type ClusterIP.
+
+5. Open a new terminal window using `Terminal > New Terminal`.
+
+6. Cluster IPs are only accesible within the cluster. To make this externally accessible, we will create a proxy. Note that this is not how you would make an application externally accessible in a production scenario. Run this command in the new terminal window since your environment variables need to be accessible in the original window for subsequent commands.
 ```
-export NODE_IP=<node_ip>
+kubectl proxy
 ```
 {: codeblock}
 
-5. To get the port number, run the following command and note the port.
-```
-kubectl get services
-```
-{: codeblock}
+This command doesn't terminate until you terminate it. Keep it running so that you can continue to access your app.
 
-Here is some sample output. In this sample, the port number we need is `31758`.
+7. In the original terminal window, ping the application to get a response.
 ```
-NAME          TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-hello-world   NodePort   172.21.121.84   <none>        8080:31758/TCP   58s
-```
-
-6. Export the port as an environment variable. Make sure to substitute the copied port into this command.
-```
-export NODE_PORT=<node_port>
-```
-{: codeblock}
-
-7. Ping the application to get a response.
-```
-curl $NODE_IP:$NODE_PORT
+curl -L localhost:8001/api/v1/namespaces/sn-labs-$USERNAME/services/hello-world/proxy
 ```
 {: codeblock}
 
 # Scaling the application using a ReplicaSet
 In real-world situations, load on an application can vary over time. If our application begins experiencing heightened load, we want to scale it up to accommodate that load. There is a simple `kubectl` command for scaling.
 
-1. Use the `scale` command to scale up your Deployment.
+1. Use the `scale` command to scale up your Deployment. Make sure to run this in the terminal window that is not running the `proxy` command.
 ```
 kubectl scale deployment hello-world --replicas=3
 ```
@@ -125,9 +105,9 @@ kubectl get pods
 ```
 {: codeblock}
 
-3. As you did in the last lab, ping your application multiple time to ensure that Kubernetes is load-balancing across the replicas.
+3. As you did in the last lab, ping your application multiple times to ensure that Kubernetes is load-balancing across the replicas.
 ```
-for i in `seq 10`; do curl $NODE_IP:$NODE_PORT; done
+for i in `seq 10`; do curl -L localhost:8001/api/v1/namespaces/sn-labs-$USERNAME/services/hello-world/proxy; done
 ```
 {: codeblock}
 
@@ -150,7 +130,7 @@ Rolling updates are an easy way to update our application in an automated and co
 
 1. Use the Explorer to edit `app.js`. The path to this file is `cc201/labs/3_K8sScaleAndUpdate/`. Change the welcome message from `'Hello world from ' + hostname + '! Your app is up and running!\n'` to `'Welcome to ' + hostname + '! Your app is up and running!\n'`. Make sure to save the file when you're done.
 
-2. Build and push this new version to Container Registry. Update the tag to indicate that this is a second version of this application.
+2. Build and push this new version to Container Registry. Update the tag to indicate that this is a second version of this application. Make sure to use the window that isn't running the `proxy` command.
 ```
 docker build -t us.icr.io/$MY_NAMESPACE/hello-world:2 . && docker push us.icr.io/$MY_NAMESPACE/hello-world:2
 ```
@@ -189,7 +169,7 @@ Look for the `IMAGES` column and ensure that the tag is `2`.
 
 7. Ping your application to ensure that the new welcome message is displayed.
 ```
-curl $NODE_IP:$NODE_PORT
+curl -L localhost:8001/api/v1/namespaces/sn-labs-$USERNAME/services/hello-world/proxy
 ```
 {: codeblock}
 
@@ -260,7 +240,7 @@ kubectl apply -f deployment-configmap-env-var.yaml
 
 7. Ping your application again to see if the message from the environment variable is returned.
 ```
-curl $NODE_IP:$NODE_PORT
+curl -L localhost:8001/api/v1/namespaces/sn-labs-$USERNAME/services/hello-world/proxy
 ```
 {: codeblock}
 
@@ -280,7 +260,7 @@ kubectl rollout restart deployment hello-world
 
 10. Ping your application again to see if the new message from the environment variable is returned.
 ```
-curl $NODE_IP:$NODE_PORT
+curl -L localhost:8001/api/v1/namespaces/sn-labs-$USERNAME/services/hello-world/proxy
 ```
 {: codeblock}
 
@@ -289,5 +269,13 @@ curl $NODE_IP:$NODE_PORT
 kubectl delete -f deployment-configmap-env-var.yaml
 ```
 {: codeblock}
+
+12. Delete the Service.
+```
+kubectl delete service hello-world
+```
+{: codeblock}
+
+13. Return to the terminal window running the `proxy` command and kill it using `Ctrl+C`.
 
 Congratulations! You have completed the lab for the third module of this course.
